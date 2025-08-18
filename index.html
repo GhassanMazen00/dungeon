@@ -3,11 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Enter the Key</title>
+  <title>Unlock the Gate</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
     body {
-      font-family: Arial, sans-serif;
-      background: #0f0f0f;
+      font-family: 'Press Start 2P', cursive;
+      background: linear-gradient(135deg, #ff0080, #7928ca, #2afadf, #ff8c00);
+      background-size: 400% 400%;
+      animation: gradientShift 8s ease infinite;
       color: #fff;
       display: flex;
       flex-direction: column;
@@ -15,48 +19,85 @@
       justify-content: center;
       height: 100vh;
       margin: 0;
+      text-align: center;
     }
-    .hidden { display: none; }
+
+    @keyframes gradientShift {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
+    }
+
+    h1 {
+      font-size: 22px;
+      margin-bottom: 20px;
+      text-shadow: 3px 3px #000;
+    }
+
     input, button {
-      padding: 10px;
-      margin: 5px;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
+      padding: 12px;
+      margin: 8px;
+      border: 3px solid #000;
+      border-radius: 0;
+      font-size: 14px;
+      font-family: 'Press Start 2P', cursive;
+      outline: none;
     }
-    input { width: 200px; }
-    button { background: #1db954; color: white; cursor: pointer; }
-    button:hover { background: #1aa34a; }
+
+    input {
+      width: 220px;
+      background: #111;
+      color: #0f0;
+    }
+
+    button {
+      background: #ff0080;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #00ffea;
+      color: #000;
+    }
+
+    .hidden { display: none; }
+
     .links a {
       display: block;
-      margin: 10px 0;
-      color: #1db954;
+      margin: 12px 0;
+      color: #00ffea;
       text-decoration: none;
-      font-size: 18px;
+      font-size: 14px;
+      text-shadow: 2px 2px #000;
+    }
+
+    .links a:hover {
+      color: #ff0;
     }
   </style>
 </head>
 <body>
-  <h1>🔒 Enter the Key</h1>
-  <input type="password" id="keyInput" placeholder="Enter key...">
-  <button onclick="unlock()">Unlock</button>
+  <h1>🕹️ ENTER THE KEY</h1>
+  <input type="password" id="keyInput" placeholder="Type here...">
+  <button onclick="unlock()">UNLOCK</button>
   
   <div id="links" class="hidden">
-    <h2>✅ Unlocked</h2>
+    <h2>🎉 ACCESS GRANTED</h2>
     <div class="links">
-      <a href="https://instagram.com/yourusername" target="_blank">Instagram</a>
-      <a href="https://x.com/yourusername" target="_blank">Twitter/X</a>
-      <a href="https://github.com/yourusername" target="_blank">GitHub</a>
+      <a href="https://instagram.com/yourusername" target="_blank">📸 Instagram</a>
+      <a href="https://x.com/yourusername" target="_blank">🐦 Twitter/X</a>
+      <a href="https://github.com/yourusername" target="_blank">💻 GitHub</a>
     </div>
   </div>
 
   <script>
     function unlock() {
       const key = document.getElementById('keyInput').value;
-      if (key === "secret123") { // change this to your secret key
+      if (key === "retro123") { // change this to your secret key
         document.getElementById('links').classList.remove('hidden');
       } else {
-        alert("❌ Wrong key, try again.");
+        alert("❌ WRONG KEY. TRY AGAIN!");
       }
     }
   </script>
