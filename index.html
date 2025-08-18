@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Unlock the Gate</title>
+  <title>Unlock Ghassan’s Vault</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
@@ -54,6 +54,7 @@
       background: #ff0080;
       color: #fff;
       cursor: pointer;
+      transition: 0.2s;
     }
 
     button:hover {
@@ -63,7 +64,7 @@
 
     .hidden { display: none; }
 
-    .links a {
+    .links a, .links button {
       display: block;
       margin: 12px 0;
       color: #00ffea;
@@ -85,9 +86,9 @@
   <div id="links" class="hidden">
     <h2>🎉 ACCESS GRANTED</h2>
     <div class="links">
-      <a href="https://instagram.com/yourusername" target="_blank">📸 Instagram</a>
-      <a href="https://x.com/yourusername" target="_blank">🐦 Twitter/X</a>
-      <a href="https://github.com/yourusername" target="_blank">💻 GitHub</a>
+      <a href="https://github.com/GhassanMazen00/GhassanMazen00" target="_blank">💻 GitHub</a>
+      <a href="https://t.snapchat.com/p3KLzoLR" target="_blank">👻 Snapchat</a>
+      <button onclick="trap()">🔞 +18 Pics of Ghassan</button>
     </div>
   </div>
 
@@ -99,6 +100,10 @@
       } else {
         alert("❌ WRONG KEY. TRY AGAIN!");
       }
+    }
+
+    function trap() {
+      alert("⚠️ Attempt logged: Ghassan has been notified that you tried to see him naked. Shame on you!");
     }
   </script>
 </body>
