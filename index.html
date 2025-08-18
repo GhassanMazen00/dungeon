@@ -28,15 +28,35 @@
       100% {background-position: 0% 50%;}
     }
 
+    .banner {
+      position: absolute;
+      top: 0;
+      width: 100%;
+      background: rgba(0,0,0,0.7);
+      color: #00ffea;
+      padding: 10px;
+      font-size: 12px;
+      border-bottom: 2px solid #ff0;
+      text-shadow: 2px 2px #000;
+    }
+
     h1 {
       font-size: 22px;
       margin-bottom: 20px;
       text-shadow: 3px 3px #000;
     }
 
+    .input-box {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
     input, button {
       padding: 12px;
-      margin: 8px;
+      margin: 4px;
       border: 3px solid #000;
       border-radius: 0;
       font-size: 14px;
@@ -79,8 +99,15 @@
   </style>
 </head>
 <body>
+  <div class="banner">Abo Mazen's dungeon</div>
+
   <h1>🕹️ ENTER THE KEY</h1>
-  <input type="password" id="keyInput" placeholder="Type here...">
+  
+  <div class="input-box">
+    <input type="password" id="keyInput" placeholder="Type here...">
+    <button onclick="showHint()">💡 Hint</button>
+  </div>
+  
   <button onclick="unlock()">UNLOCK</button>
   
   <div id="links" class="hidden">
@@ -88,6 +115,7 @@
     <div class="links">
       <a href="https://github.com/GhassanMazen00/GhassanMazen00" target="_blank">💻 GitHub</a>
       <a href="https://t.snapchat.com/p3KLzoLR" target="_blank">👻 Snapchat</a>
+      <a href="mailto:ghassanmazen@zohomail.com">📧 Email</a>
       <button onclick="trap()">🔞 +18 Pics of Ghassan</button>
     </div>
   </div>
@@ -95,15 +123,19 @@
   <script>
     function unlock() {
       const key = document.getElementById('keyInput').value;
-      if (key === "retro123") { // change this to your secret key
+      if (key === "10101999") {
         document.getElementById('links').classList.remove('hidden');
       } else {
         alert("❌ WRONG KEY. TRY AGAIN!");
       }
     }
 
+    function showHint() {
+      alert("❓ When was the greatest human on earth born?");
+    }
+
     function trap() {
-      alert("⚠️ Attempt logged: Ghassan has been notified that you tried to see him naked. Shame on you!");
+      alert("⚠️ Attempt logged: Ghassan has been notified that you tried to see him naked. Shame on you! 😂");
     }
   </script>
 </body>
