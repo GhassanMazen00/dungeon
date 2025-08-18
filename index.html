@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enter the Key</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f0f0f;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .hidden { display: none; }
+    input, button {
+      padding: 10px;
+      margin: 5px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+    input { width: 200px; }
+    button { background: #1db954; color: white; cursor: pointer; }
+    button:hover { background: #1aa34a; }
+    .links a {
+      display: block;
+      margin: 10px 0;
+      color: #1db954;
+      text-decoration: none;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🔒 Enter the Key</h1>
+  <input type="password" id="keyInput" placeholder="Enter key...">
+  <button onclick="unlock()">Unlock</button>
+  
+  <div id="links" class="hidden">
+    <h2>✅ Unlocked</h2>
+    <div class="links">
+      <a href="https://instagram.com/yourusername" target="_blank">Instagram</a>
+      <a href="https://x.com/yourusername" target="_blank">Twitter/X</a>
+      <a href="https://github.com/yourusername" target="_blank">GitHub</a>
+    </div>
+  </div>
+
+  <script>
+    function unlock() {
+      const key = document.getElementById('keyInput').value;
+      if (key === "secret123") { // change this to your secret key
+        document.getElementById('links').classList.remove('hidden');
+      } else {
+        alert("❌ Wrong key, try again.");
+      }
+    }
+  </script>
+</body>
+</html>
