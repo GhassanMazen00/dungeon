@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -97,6 +96,54 @@
     .links a:hover {
       color: #ff0;
     }
+
+    /* Modal styling */
+    .modal {
+      display: none; 
+      position: fixed;
+      z-index: 999;
+      left: 0;
+      top: 0;
+      width: 100%; 
+      height: 100%; 
+      background: rgba(0, 0, 0, 0.9);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: #111;
+      padding: 20px;
+      border: 4px solid #00ffea;
+      border-radius: 10px;
+      max-width: 700px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    .pixel-character {
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    .pixel-character:hover {
+      transform: scale(1.2);
+    }
+
+    .close-btn {
+      margin-top: 20px;
+      padding: 10px 16px;
+      background: #ff0080;
+      border: 3px solid #000;
+      color: #fff;
+      font-family: 'Press Start 2P', cursive;
+      cursor: pointer;
+    }
+    .close-btn:hover {
+      background: #00ffea;
+      color: #000;
+    }
   </style>
 </head>
 <body>
@@ -117,7 +164,32 @@
       <a href="https://github.com/GhassanMazen00/GhassanMazen00" target="_blank">💻 GitHub</a>
       <a href="https://t.snapchat.com/p3KLzoLR" target="_blank">👻 Snapchat</a>
       <a href="mailto:ghassanmazen@zohomail.com">📧 Email</a>
+      <!-- My Bitches button -->
+      <button onclick="openModal()">💃 My Bitches</button>
+      <!-- 18+ button -->
       <button onclick="trap()">🔞 +18 Pics of Ghassan</button>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal" id="myModal">
+    <div class="modal-content">
+      <a href="#" target="_blank">
+        <img src="https://i.postimg.cc/XqLnjRMS/20250819-2117-Pixel-Ginger-Character-simple-compose-01k31rss70fmktq7sny215zh9h.png" alt="Pixel Ginger" class="pixel-character" width="80">
+      </a>
+      <a href="#" target="_blank">
+        <img src="https://i.postimg.cc/JhH7NYXZ/20250819-2129-Pixel-Man-with-T-Shirt-simple-compose-01k31scc2efvfbt02vce5hkp5r-removebg-preview.png" alt="Pixel Man with T-Shirt" class="pixel-character" width="80">
+      </a>
+      <a href="#" target="_blank">
+        <img src="https://i.postimg.cc/76gxcCmL/20250819-2136-Pixel-Fat-Man-simple-compose-01k31sw-dygemgba9w7vm7tmpq5-removebg-preview.png" alt="Pixel Fat Man" class="pixel-character" width="80">
+      </a>
+      <a href="#" target="_blank">
+        <img src="https://i.postimg.cc/d1Ms4RRX/20250819-2140-Pixel-Man-with-Flag-simple-compose-01k31t39ykee6bbh3fcc1xfhjv-removebg-preview.png" alt="Pixel Man with Flag" class="pixel-character" width="80">
+      </a>
+      <a href="#" target="_blank">
+        <img src="https://i.postimg.cc/j2tsrsF4/assets-task-01k31taeamf6tavtp3htwn6b2h-1755629076-img-0.webp" alt="Pixel Asset" class="pixel-character" width="80">
+      </a>
+      <button class="close-btn" onclick="closeModal()">CLOSE</button>
     </div>
   </div>
 
@@ -137,6 +209,13 @@
 
     function trap() {
       alert("⚠️ Attempt logged: Ghassan has been notified that you tried to see him naked. Shame on you!");
+    }
+
+    function openModal() {
+      document.getElementById("myModal").style.display = "flex";
+    }
+    function closeModal() {
+      document.getElementById("myModal").style.display = "none";
     }
   </script>
 </body>
