@@ -154,6 +154,20 @@
   </div>
 
   <script>
+    let animationId;
+    let player = null;
+    let obstacles = [];
+    let score = 0;
+    const gravity = 0.6;
+
+    const characters = {
+      "Osaid": {color:"blue", speed:5},
+      "Loai": {color:"orange", speed:5},
+      "KashKash": {color:"red", speed:3},
+      "Khaled": {color:"green", speed:5},
+      "Badr": {color:"brown", speed:5}
+    };
+
     function unlock() {
       const key = document.getElementById('keyInput').value;
       if (key === "10101999") {
@@ -179,27 +193,8 @@
     function closeGame() {
       document.getElementById('gameContainer').style.display = 'none';
       cancelAnimationFrame(animationId);
+      document.removeEventListener("keydown", jump);
     }
-
-    // GAME VARIABLES
-    const canvas = document.getElementById("gameCanvas");
-    const ctx = canvas.getContext("2d");
-    let player = null;
-    let characters = {
-      "Osaid": {color:"blue", speed:5},
-      "Loai": {color:"orange", speed:5},
-      "KashKash": {color:"red", speed:3},
-      "Khaled": {color:"green", speed:5},
-      "Badr": {color:"brown", speed:5}
-    };
-
-    let charSprites = {
-      "Osaid": "👕",
-      "Loai": "🧔",
-      "KashKash": "🍔",
-      "Khaled": "🎩",
-      "Badr": "🧑‍🦱"
-    };
 
     function showCharacterSelect(){
       const container = document.getElementById("characterSelect");
@@ -212,12 +207,9 @@
       }
     }
 
-    let gravity = 0.6;
-    let obstacles = [];
-    let score = 0;
-    let animationId;
-
     function startGame(chosen){
+      const canvas = document.getElementById("gameCanvas");
+      const ctx = canvas.getContext("2d");
       player = {
         x:50,
         y:150,
@@ -232,6 +224,52 @@
       obstacles = [];
       score = 0;
       document.addEventListener("keydown", jump);
+
+      function loop(){
+        animationId = requestAnimationFrame(loop);
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        // Draw player
+        ctx.fillStyle = player.color;
+        ctx.fillRect(player.x, player.y, player.width, player.height);
+
+        // Apply gravity
+        player.y += player.dy;
+        if(player.y < 150){
+          player.dy += gravity;
+        } else {
+          player.y = 150;
+          player.dy = 0;
+          player.jumping = false;
+        }
+
+        // Spawn obstacles
+        if(Math.random()<0.02){
+          obstacles.push({x:600, y:160, width:20, height:40});
+        }
+
+        // Move obstacles
+        for(let i=0;i<obstacles.length;i++){
+          obstacles[i].x -= player.speed;
+          ctx.fillStyle = "black";
+          ctx.fillRect(obstacles[i].x, obstacles[i].y, obstacles[i].width, obstacles[i].height);
+
+          // Collision
+          if(player.x < obstacles[i].x + obstacles[i].width &&
+             player.x + player.width > obstacles[i].x &&
+             player.y < obstacles[i].y + obstacles[i].height &&
+             player.y + player.height > obstacles[i].y){
+            alert("💀 Game Over! Score: "+score);
+            cancelAnimationFrame(animationId);
+            return;
+          }
+        }
+
+        // Score
+        score++;
+        ctx.fillStyle="black";
+        ctx.fillText("Score: "+score, 10, 20);
+      }
+
       loop();
     }
 
@@ -240,50 +278,6 @@
         player.dy = -12;
         player.jumping = true;
       }
-    }
-
-    function loop(){
-      animationId = requestAnimationFrame(loop);
-      ctx.clearRect(0,0,canvas.width,canvas.height);
-      // Draw player
-      ctx.fillStyle = player.color;
-      ctx.fillRect(player.x, player.y, player.width, player.height);
-
-      // Apply gravity
-      player.y += player.dy;
-      if(player.y < 150){
-        player.dy += gravity;
-      } else {
-        player.y = 150;
-        player.dy = 0;
-        player.jumping = false;
-      }
-
-      // Spawn obstacles
-      if(Math.random()<0.02){
-        obstacles.push({x:600, y:160, width:20, height:40});
-      }
-
-      // Move obstacles
-      for(let i=0;i<obstacles.length;i++){
-        obstacles[i].x -= player.speed;
-        ctx.fillStyle = "black";
-        ctx.fillRect(obstacles[i].x, obstacles[i].y, obstacles[i].width, obstacles[i].height);
-
-        // Collision
-        if(player.x < obstacles[i].x + obstacles[i].width &&
-           player.x + player.width > obstacles[i].x &&
-           player.y < obstacles[i].y + obstacles[i].height &&
-           player.y + player.height > obstacles[i].y){
-          alert("💀 Game Over! Score: "+score);
-          cancelAnimationFrame(animationId);
-        }
-      }
-
-      // Score
-      score++;
-      ctx.fillStyle="black";
-      ctx.fillText("Score: "+score, 10, 20);
     }
   </script>
 </body>
