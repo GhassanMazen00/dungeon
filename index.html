@@ -17,7 +17,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      height: 100vh;
+      min-height: 100vh; /* allow scrolling when notes get long */
       margin: 0;
       text-align: center;
     }
@@ -29,7 +29,7 @@
     }
 
     .banner {
-      position: absolute;
+      position: fixed;
       top: 0;
       width: 100%;
       background: rgba(0,0,0,0.7);
@@ -38,11 +38,12 @@
       font-size: 12px;
       border-bottom: 2px solid #ff0;
       text-shadow: 2px 2px #000;
+      z-index: 1000;
     }
 
     h1 {
       font-size: 22px;
-      margin-bottom: 20px;
+      margin: 70px 0 20px; /* push down from fixed banner */
       text-shadow: 3px 3px #000;
     }
 
@@ -52,6 +53,7 @@
       justify-content: center;
       gap: 8px;
       margin-bottom: 10px;
+      flex-wrap: wrap;
     }
 
     input, button, textarea {
@@ -95,6 +97,19 @@
 
     .links a:hover {
       color: #ff0;
+    }
+
+    /* Badge for admin mode */
+    .badge {
+      display: inline-block;
+      margin-left: 10px;
+      padding: 6px 8px;
+      background: #00ffea;
+      color: #000;
+      border: 3px solid #000;
+      box-shadow: 3px 3px #000;
+      font-size: 10px;
+      vertical-align: middle;
     }
 
     /* Modal styling */
@@ -152,7 +167,7 @@
       background: rgba(0,0,0,0.6);
       border: 3px solid #00ffea;
       border-radius: 12px;
-      max-width: 800px;
+      max-width: 900px;
     }
 
     #notesSection h2 {
@@ -167,6 +182,7 @@
       flex-direction: column;
       gap: 10px;
       margin-bottom: 20px;
+      align-items: center;
     }
 
     .note-form input, .note-form textarea {
@@ -175,12 +191,14 @@
       border: 2px solid #00ffea;
       padding: 10px;
       font-size: 12px;
+      width: 100%;
+      max-width: 520px;
     }
 
     .note-form button {
       background: #ff0080;
       border: 2px solid #000;
-      padding: 10px;
+      padding: 10px 14px;
       cursor: pointer;
     }
     .note-form button:hover {
@@ -190,7 +208,7 @@
 
     .notes-wall {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
       gap: 15px;
     }
 
@@ -202,6 +220,9 @@
       font-size: 12px;
       word-wrap: break-word;
       transform: rotate(-1deg);
+      text-align: left;
+      position: relative;
+      min-height: 84px;
     }
     .note:nth-child(odd) { background: #333; border-color: #00ffea; transform: rotate(1deg); }
     .note .nickname {
@@ -209,6 +230,24 @@
       color: #ff0;
       margin-bottom: 8px;
       display: block;
+    }
+
+    /* Delete button (admin only visible in DOM) */
+    .delete-btn {
+      display: inline-block;
+      margin-top: 8px;
+      background: #e60026;
+      border: 3px solid #000;
+      color: #fff;
+      padding: 6px 8px;
+      font-size: 10px;
+      font-family: 'Press Start 2P', cursive;
+      cursor: pointer;
+      box-shadow: 2px 2px #000;
+    }
+    .delete-btn:hover {
+      background: #ff8c00;
+      color: #000;
     }
   </style>
 </head>
@@ -218,14 +257,18 @@
   <h1>🕹️ ENTER THE KEY</h1>
   
   <div class="input-box">
-    <input type="password" id="keyInput" placeholder="Type here...">
+    <input type="password" id="keyInput" placeholder="Type here..." onkeydown="if(event.key==='Enter')unlock()">
     <button onclick="showHint()">💡 Hint</button>
   </div>
   
   <button onclick="unlock()">UNLOCK</button>
   
   <div id="links" class="hidden">
-    <h2>🎉 ACCESS GRANTED</h2>
+    <h2>
+      🎉 ACCESS GRANTED
+      <span id="roleBadge" class="badge hidden">ADMIN MODE</span>
+    </h2>
+
     <div class="links">
       <a href="https://github.com/GhassanMazen00/GhassanMazen00" target="_blank">💻 GitHub</a>
       <a href="https://t.snapchat.com/p3KLzoLR" target="_blank">👻 Snapchat</a>
@@ -269,14 +312,34 @@
   </div>
 
   <script>
+    // Modes: 'locked' | 'visitor' | 'admin'
+    let mode = 'locked';
+    let isAdmin = false;
+
+    const VISITOR_PASS = "10101999";
+    const ADMIN_PASS = "ananke";
+
     function unlock() {
-      const key = document.getElementById('keyInput').value;
-      if (key === "10101999") {
-        document.getElementById('links').classList.remove('hidden');
-        loadNotes();
+      const key = document.getElementById('keyInput').value.trim();
+      if (key === VISITOR_PASS) {
+        mode = 'visitor';
+        isAdmin = false;
+        enterVault();
+      } else if (key === ADMIN_PASS) {
+        mode = 'admin';
+        isAdmin = true;
+        enterVault();
       } else {
         alert("❌ WRONG KEY. TRY AGAIN!");
       }
+    }
+
+    function enterVault() {
+      document.getElementById('links').classList.remove('hidden');
+      document.getElementById('roleBadge').classList.toggle('hidden', !isAdmin);
+      displayNotes();
+      // scroll down to the content if needed
+      setTimeout(() => document.getElementById('links').scrollIntoView({behavior:'smooth'}), 50);
     }
 
     function showHint() {
@@ -294,36 +357,62 @@
       document.getElementById("myModal").style.display = "none";
     }
 
-    // Notes logic with localStorage
+    // --- Notes logic with localStorage ---
+    const STORAGE_KEY = "visitorNotes";
+
+    function escapeHTML(str) {
+      return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+    }
+
     function addNote() {
-      const nickname = document.getElementById('nickname').value.trim();
-      const noteText = document.getElementById('noteText').value.trim();
+      const nicknameEl = document.getElementById('nickname');
+      const noteTextEl = document.getElementById('noteText');
+      const nickname = nicknameEl.value.trim();
+      const noteText = noteTextEl.value.trim();
+
       if (!nickname || !noteText) {
         alert("⚠️ Please enter a nickname and a note!");
         return;
       }
+
       const note = { nickname, noteText };
-      let notes = JSON.parse(localStorage.getItem("visitorNotes")) || [];
+      let notes = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
       notes.push(note);
-      localStorage.setItem("visitorNotes", JSON.stringify(notes));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
+      nicknameEl.value = "";
+      noteTextEl.value = "";
       displayNotes();
-      document.getElementById('nickname').value = "";
-      document.getElementById('noteText').value = "";
     }
 
     function displayNotes() {
       const notesWall = document.getElementById('notesWall');
       notesWall.innerHTML = "";
-      let notes = JSON.parse(localStorage.getItem("visitorNotes")) || [];
-      notes.forEach(n => {
+      let notes = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+
+      notes.forEach((n, index) => {
         const noteDiv = document.createElement('div');
         noteDiv.classList.add('note');
-        noteDiv.innerHTML = `<span class="nickname">${n.nickname}</span>${n.noteText}`;
+
+        const safeNick = escapeHTML(n.nickname);
+        const safeText = escapeHTML(n.noteText).replace(/\n/g, "<br>");
+
+        noteDiv.innerHTML = `
+          <span class="nickname">${safeNick}</span>
+          <div>${safeText}</div>
+          ${isAdmin ? `<button class="delete-btn" onclick="deleteNote(${index})">❌ Delete</button>` : ""}
+        `;
         notesWall.appendChild(noteDiv);
       });
     }
 
-    function loadNotes() {
+    function deleteNote(index) {
+      if (!isAdmin) return; // safety guard
+      let notes = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+      notes.splice(index, 1);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
       displayNotes();
     }
   </script>
