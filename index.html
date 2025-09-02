@@ -54,7 +54,7 @@
       margin-bottom: 10px;
     }
 
-    input, button {
+    input, button, textarea {
       padding: 12px;
       margin: 4px;
       border: 3px solid #000;
@@ -64,7 +64,7 @@
       outline: none;
     }
 
-    input {
+    input, textarea {
       width: 220px;
       background: #111;
       color: #0f0;
@@ -144,6 +144,72 @@
       background: #00ffea;
       color: #000;
     }
+
+    /* Notes Section */
+    #notesSection {
+      margin-top: 30px;
+      padding: 20px;
+      background: rgba(0,0,0,0.6);
+      border: 3px solid #00ffea;
+      border-radius: 12px;
+      max-width: 800px;
+    }
+
+    #notesSection h2 {
+      color: #ff0;
+      text-shadow: 2px 2px #000;
+      margin-bottom: 20px;
+      font-size: 16px;
+    }
+
+    .note-form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .note-form input, .note-form textarea {
+      background: #111;
+      color: #0f0;
+      border: 2px solid #00ffea;
+      padding: 10px;
+      font-size: 12px;
+    }
+
+    .note-form button {
+      background: #ff0080;
+      border: 2px solid #000;
+      padding: 10px;
+      cursor: pointer;
+    }
+    .note-form button:hover {
+      background: #00ffea;
+      color: #000;
+    }
+
+    .notes-wall {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 15px;
+    }
+
+    .note {
+      padding: 15px;
+      background: #222;
+      border: 3px solid #ff0080;
+      box-shadow: 3px 3px #000;
+      font-size: 12px;
+      word-wrap: break-word;
+      transform: rotate(-1deg);
+    }
+    .note:nth-child(odd) { background: #333; border-color: #00ffea; transform: rotate(1deg); }
+    .note .nickname {
+      font-weight: bold;
+      color: #ff0;
+      margin-bottom: 8px;
+      display: block;
+    }
   </style>
 </head>
 <body>
@@ -164,10 +230,19 @@
       <a href="https://github.com/GhassanMazen00/GhassanMazen00" target="_blank">💻 GitHub</a>
       <a href="https://t.snapchat.com/p3KLzoLR" target="_blank">👻 Snapchat</a>
       <a href="mailto:ghassanmazen@zohomail.com">📧 Email</a>
-      <!-- My Bitches button -->
       <button onclick="openModal()">💃 My Bitches</button>
-      <!-- 18+ button -->
       <button onclick="trap()">🔞 +18 Pics of Ghassan</button>
+    </div>
+
+    <!-- Visitor Notes Wall -->
+    <div id="notesSection">
+      <h2>📝 Visitor Wall</h2>
+      <div class="note-form">
+        <input type="text" id="nickname" placeholder="Your nickname...">
+        <textarea id="noteText" rows="3" placeholder="Leave a note..."></textarea>
+        <button onclick="addNote()">Post Note</button>
+      </div>
+      <div class="notes-wall" id="notesWall"></div>
     </div>
   </div>
 
@@ -198,6 +273,7 @@
       const key = document.getElementById('keyInput').value;
       if (key === "10101999") {
         document.getElementById('links').classList.remove('hidden');
+        loadNotes();
       } else {
         alert("❌ WRONG KEY. TRY AGAIN!");
       }
@@ -216,6 +292,39 @@
     }
     function closeModal() {
       document.getElementById("myModal").style.display = "none";
+    }
+
+    // Notes logic with localStorage
+    function addNote() {
+      const nickname = document.getElementById('nickname').value.trim();
+      const noteText = document.getElementById('noteText').value.trim();
+      if (!nickname || !noteText) {
+        alert("⚠️ Please enter a nickname and a note!");
+        return;
+      }
+      const note = { nickname, noteText };
+      let notes = JSON.parse(localStorage.getItem("visitorNotes")) || [];
+      notes.push(note);
+      localStorage.setItem("visitorNotes", JSON.stringify(notes));
+      displayNotes();
+      document.getElementById('nickname').value = "";
+      document.getElementById('noteText').value = "";
+    }
+
+    function displayNotes() {
+      const notesWall = document.getElementById('notesWall');
+      notesWall.innerHTML = "";
+      let notes = JSON.parse(localStorage.getItem("visitorNotes")) || [];
+      notes.forEach(n => {
+        const noteDiv = document.createElement('div');
+        noteDiv.classList.add('note');
+        noteDiv.innerHTML = `<span class="nickname">${n.nickname}</span>${n.noteText}`;
+        notesWall.appendChild(noteDiv);
+      });
+    }
+
+    function loadNotes() {
+      displayNotes();
     }
   </script>
 </body>
