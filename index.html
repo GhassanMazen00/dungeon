@@ -1,475 +1,192 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Unlock Ghassan’s Vault</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-
-    :root {
-      --neon: #00ffea;
-      --accent: #ff0080;
-      --purple1: #7a2aa8;
-      --purple2: #9c39d0;
-      --bg-dark: #0b0b0b;
-    }
-
-    *{box-sizing:border-box}
-    html,body{height:100%;margin:0;font-family:'Press Start 2P',cursive;background:linear-gradient(135deg,var(--accent),var(--purple1),#2afadf,#ff8c00);background-size:400% 400%;animation:gradientShift 8s ease infinite;color:#fff}
-    @keyframes gradientShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
-
-    .banner{position:fixed;top:0;left:0;right:0;background:rgba(0,0,0,0.8);color:var(--neon);padding:8px 10px;font-size:12px;border-bottom:2px solid #ff0;z-index:9999;text-shadow:2px 2px #000}
-    .wrap{min-height:100vh;padding:56px 18px 32px;display:flex;align-items:start;justify-content:center}
-    .container{width:100%;max-width:1100px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:18px;text-align:center}
-
-    h1{font-size:22px;margin-top:6px;text-shadow:3px 3px #000}
-    .input-box{display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap}
-    input[type="password"], input[type="text"], textarea {
-      background:#111;color:#0f0;border:3px solid #000;padding:12px;font-size:14px;
-      font-family:'Press Start 2P',cursive; outline:none;
-    }
-    button{font-family:'Press Start 2P',cursive;border:3px solid #000;padding:12px 14px;background:var(--accent);color:#fff;cursor:pointer;transition:0.12s}
-    button:hover{background:var(--neon);color:#000}
-
-    /* LINKS AREA - centered stack, styled like your screenshot */
-    #links{display:none;width:100%;max-width:700px}
-    .links{display:flex;flex-direction:column;align-items:center;gap:12px;margin:0 auto}
-    .links button, .links a{
-      width:100%;max-width:420px;text-align:center;
-      background:linear-gradient(180deg,#6e2ab1,#5a238f); /* purple look */
-      color:var(--neon);
-      border:4px solid rgba(0,0,0,0.6);
-      box-shadow: 0 8px 0 0 rgba(0,0,0,0.6), inset 0 0 0 3px rgba(0,0,0,0.06);
-      padding:14px 18px;border-radius:10px;font-size:16px;
-    }
-    .links button .emoji{margin-right:8px}
-    .badge{display:inline-block;margin-left:10px;padding:6px 8px;background:var(--neon);color:#000;border:3px solid #000;box-shadow:3px 3px #000;font-size:10px;vertical-align:middle}
-
-    /* Visitor wall */
-    #notesSection{margin-top:12px;padding:18px;background:rgba(0,0,0,0.45);border:4px solid var(--neon);border-radius:12px;max-width:900px;width:100%}
-    #notesSection h2{color:#ff0;margin:4px 0 14px;text-shadow:2px 2px #000}
-    .note-form{display:flex;flex-direction:column;gap:10px;align-items:center;margin-bottom:14px}
-    .note-form input,.note-form textarea{width:100%;max-width:520px;border:3px solid var(--neon);padding:10px;background:#111;color:#0f0;font-size:13px}
-    .notes-wall{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
-    .note{padding:12px;background:#222;border:3px solid var(--accent);box-shadow:3px 3px #000;font-size:12px;transform:rotate(-1deg);min-height:84px;position:relative}
-    .note:nth-child(odd){background:#333;border-color:var(--neon);transform:rotate(1deg)}
-    .note .nickname{color:#ff0;display:block;margin-bottom:8px}
-    .delete-btn{position:absolute;right:8px;bottom:8px;background:#e60026;color:#fff;border:3px solid #000;padding:6px;cursor:pointer}
-
-    /* modal */
-    .modal{display:none;position:fixed;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,0.92);z-index:9999;justify-content:center;align-items:center;overflow:auto;padding:20px}
-    .modal-content{background:#111;border:4px solid var(--neon);border-radius:10px;padding:18px;max-width:860px;width:100%;text-align:center;color:#fff}
-
-    .close-btn{margin-top:12px;padding:10px 14px;background:var(--accent);border:3px solid #000;color:#fff;cursor:pointer}
-
-    /* snake UI */
-    #snakeCanvas{background:#000;border:4px solid var(--neon);max-width:100%;display:block;margin:12px auto}
-    #score{color:#ff0;margin-top:6px}
-    #leaderboardList{list-style:none;margin:8px 0;padding:0;text-align:left;max-height:220px;overflow:auto}
-    #leaderboardList li{padding:6px 8px;border-bottom:1px dashed rgba(255,255,255,0.06)}
-    .controls{display:flex;gap:8px;justify-content:center;margin-top:12px;flex-wrap:wrap}
-    .controls button{background:var(--neon);color:#000;padding:10px;border:3px solid #000;border-radius:8px;font-size:18px}
-
-    /* small responsive */
-    @media (max-width:520px){ .links button{font-size:13px;padding:10px} .controls button{padding:10px 12px} }
+    /* 🔥 your CSS unchanged */
+    body { font-family: 'Press Start 2P', cursive; background: linear-gradient(135deg, #ff0080, #7928ca, #2afadf, #ff8c00);
+      background-size: 400% 400%; animation: gradientShift 8s ease infinite; color: #fff;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      min-height: 100vh; margin: 0; text-align: center; }
+    @keyframes gradientShift { 0% {background-position: 0% 50%;} 50% {background-position: 100% 50%;} 100% {background-position: 0% 50%;} }
+    .banner { position: fixed; top: 0; width: 100%; background: rgba(0,0,0,0.7); color: #00ffea; padding: 10px;
+      font-size: 12px; border-bottom: 2px solid #ff0; text-shadow: 2px 2px #000; z-index: 1000; }
+    h1 { font-size: 22px; margin: 70px 0 20px; text-shadow: 3px 3px #000; }
+    .input-box { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+    input, button, textarea { padding: 12px; margin: 4px; border: 3px solid #000; border-radius: 0;
+      font-size: 14px; font-family: 'Press Start 2P', cursive; outline: none; }
+    input, textarea { width: 220px; background: #111; color: #0f0; }
+    button { background: #ff0080; color: #fff; cursor: pointer; transition: 0.2s; }
+    button:hover { background: #00ffea; color: #000; }
+    .hidden { display: none; }
+    .links a, .links button { display: block; margin: 12px 0; color: #00ffea; text-decoration: none; font-size: 14px; text-shadow: 2px 2px #000; }
+    .links a:hover { color: #ff0; }
+    .badge { display: inline-block; margin-left: 10px; padding: 6px 8px; background: #00ffea; color: #000;
+      border: 3px solid #000; box-shadow: 3px 3px #000; font-size: 10px; vertical-align: middle; }
+    .modal { display: none; position: fixed; z-index: 999; left: 0; top: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.9); justify-content: center; align-items: center; }
+    .modal-content { background: #111; padding: 20px; border: 4px solid #00ffea; border-radius: 10px; max-width: 700px;
+      display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
+    .pixel-character { cursor: pointer; transition: transform 0.2s ease; }
+    .pixel-character:hover { transform: scale(1.2); }
+    .close-btn { margin-top: 20px; padding: 10px 16px; background: #ff0080; border: 3px solid #000;
+      color: #fff; font-family: 'Press Start 2P', cursive; cursor: pointer; }
+    .close-btn:hover { background: #00ffea; color: #000; }
+    #notesSection { margin-top: 30px; padding: 20px; background: rgba(0,0,0,0.6); border: 3px solid #00ffea;
+      border-radius: 12px; max-width: 900px; }
+    #notesSection h2 { color: #ff0; text-shadow: 2px 2px #000; margin-bottom: 20px; font-size: 16px; }
+    .note-form { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; align-items: center; }
+    .note-form input, .note-form textarea { background: #111; color: #0f0; border: 2px solid #00ffea;
+      padding: 10px; font-size: 12px; width: 100%; max-width: 520px; }
+    .note-form button { background: #ff0080; border: 2px solid #000; padding: 10px 14px; cursor: pointer; }
+    .note-form button:hover { background: #00ffea; color: #000; }
+    .notes-wall { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 15px; }
+    .note { padding: 15px; background: #222; border: 3px solid #ff0080; box-shadow: 3px 3px #000; font-size: 12px;
+      word-wrap: break-word; transform: rotate(-1deg); text-align: left; position: relative; min-height: 84px; }
+    .note:nth-child(odd) { background: #333; border-color: #00ffea; transform: rotate(1deg); }
+    .note .nickname { font-weight: bold; color: #ff0; margin-bottom: 8px; display: block; }
+    .delete-btn { display: inline-block; margin-top: 8px; background: #e60026; border: 3px solid #000;
+      color: #fff; padding: 6px 8px; font-size: 10px; font-family: 'Press Start 2P', cursive; cursor: pointer; box-shadow: 2px 2px #000; }
+    .delete-btn:hover { background: #ff8c00; color: #000; }
   </style>
 </head>
 <body>
   <div class="banner">Abo Mazen's dungeon</div>
+  <h1>🕹️ ENTER THE KEY</h1>
+  <div class="input-box">
+    <input type="password" id="keyInput" placeholder="Type here..." onkeydown="if(event.key==='Enter')unlock()">
+    <button onclick="showHint()">💡 Hint</button>
+  </div>
+  <button onclick="unlock()">UNLOCK</button>
 
-  <div class="wrap">
-    <div class="container">
-      <h1>🕹️ ENTER THE KEY</h1>
+  <div id="links" class="hidden">
+    <h2> 🎉 ACCESS GRANTED <span id="roleBadge" class="badge hidden">ADMIN MODE</span> </h2>
+    <div class="links">
+      <a href="https://github.com/GhassanMazen00/GhassanMazen00" target="_blank">💻 GitHub</a>
+      <a href="https://t.snapchat.com/p3KLzoLR" target="_blank">👻 Snapchat</a>
+      <a href="mailto:ghassanmazen@zohomail.com">📧 Email</a>
+      <button onclick="openModal()">💃 My Bitches</button>
+      <button onclick="trap()">🔞 +18 Pics of Ghassan</button>
+    </div>
 
-      <div class="input-box">
-        <input id="keyInput" type="password" placeholder="Type here..." onkeydown="if(event.key==='Enter') unlock()" />
-        <button onclick="showHint()">💡 Hint</button>
+    <!-- Visitor Notes Wall -->
+    <div id="notesSection">
+      <h2>📝 Visitor Wall</h2>
+      <div class="note-form">
+        <input type="text" id="nickname" placeholder="Your nickname...">
+        <textarea id="noteText" rows="3" placeholder="Leave a note..."></textarea>
+        <button onclick="addNote()">Post Note</button>
       </div>
-
-      <button onclick="unlock()">UNLOCK</button>
-
-      <!-- links area -->
-      <div id="links">
-        <h2> 🎉 ACCESS GRANTED <span id="roleBadge" class="badge hidden">ADMIN MODE</span></h2>
-        <div class="links">
-          <button id="gameBtn" onclick="openSnake()"><span class="emoji">🎮</span> Game Developing 101</button>
-          <button onclick="openSocials()"><span class="emoji">🌍</span> My Socials</button>
-          <button onclick="openModal()"><span class="emoji">💃</span> My Bitches</button>
-          <button onclick="trap()"><span class="emoji">🔞</span> +18 Pics of Ghassan</button>
-        </div>
-
-        <!-- Visitor Notes -->
-        <div id="notesSection">
-          <h2>📝 Visitor Wall</h2>
-          <div class="note-form">
-            <input id="nicknameInput" type="text" placeholder="Your nickname..." />
-            <textarea id="noteText" rows="3" placeholder="Leave a note..."></textarea>
-            <button onclick="addNote()">Post Note</button>
-          </div>
-          <div class="notes-wall" id="notesWall"></div>
-
-          <!-- leaderboard preview area will be appended automatically -->
-        </div>
-      </div>
+      <div class="notes-wall" id="notesWall"></div>
     </div>
   </div>
 
-  <!-- unchanged pixel modal -->
-  <div id="myModal" class="modal"><div class="modal-content">
-    <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">
-      <a href="https://www.instagram.com/loai_abb/" target="_blank"><img src="https://i.postimg.cc/XqLnjRMS/20250819-2117-Pixel-Ginger-Character-simple-compose-01k31rss70fmktq7sny215zh9h.png" width="80" style="cursor:pointer"></a>
-      <a href="https://www.instagram.com/osaidjano/" target="_blank"><img src="https://i.postimg.cc/JhH7NYXZ/20250819-2129-Pixel-Man-with-T-Shirt-simple-compose-01k31scc2efvfbt02vce5hkp5r.png" width="80" style="cursor:pointer"></a>
-      <a href="https://www.instagram.com/loai_kashkash/" target="_blank"><img src="https://i.postimg.cc/76gxcCmL/20250819-2136-Pixel-Fat-Man-simple-compose-01k31sw-dygemgba9w7vm7tmpq5.png" width="80" style="cursor:pointer"></a>
-      <a href="https://www.instagram.com/khalid.alfares1/" target="_blank"><img src="https://i.postimg.cc/d1Ms4RRX/20250819-2140-Pixel-Man-with-Flag-simple-compose-01k31t39ykee6bbh3fcc1xfhjv-removebg-preview.png" width="80" style="cursor:pointer"></a>
-      <a href="https://www.instagram.com/badr_sanoufi/" target="_blank"><img src="https://i.postimg.cc/j2tsrsF4/assets-task-01k31taeamf6tavtp3htwn6b2h-1755629076-img-0.webp" width="80" style="cursor:pointer"></a>
-    </div>
+  <!-- Modal -->
+<div class="modal" id="myModal">
+  <div class="modal-content">
+    <a href="https://www.instagram.com/loai_abb/" target="_blank">
+      <img src="https://i.postimg.cc/XqLnjRMS/20250819-2117-Pixel-Ginger-Character-simple-compose-01k31rss70fmktq7sny215zh9h.png" width="80" class="pixel-character">
+    </a>
+    <a href="https://www.instagram.com/osaidjano/" target="_blank">
+      <img src="https://i.postimg.cc/JhH7NYXZ/20250819-2129-Pixel-Man-with-T-Shirt-simple-compose-01k31scc2efvfbt02vce5hkp5r.png" width="80" class="pixel-character">
+    </a>
+    <a href="https://www.instagram.com/loai_kashkash/" target="_blank">
+      <img src="https://i.postimg.cc/76gxcCmL/20250819-2136-Pixel-Fat-Man-simple-compose-01k31sw-dygemgba9w7vm7tmpq5.png" width="80" class="pixel-character">
+    </a>
+    <a href="https://www.instagram.com/khalid.alfares1/" target="_blank">
+      <img src="https://i.postimg.cc/d1Ms4RRX/20250819-2140-Pixel-Man-with-Flag-simple-compose-01k31t39ykee6bbh3fcc1xfhjv-removebg-preview.png" width="80" class="pixel-character">
+    </a>
+    <a href="https://www.instagram.com/badr_sanoufi/" target="_blank">
+      <img src="https://i.postimg.cc/j2tsrsF4/assets-task-01k31taeamf6tavtp3htwn6b2h-1755629076-img-0.webp" width="80" class="pixel-character">
+    </a>
     <button class="close-btn" onclick="closeModal()">CLOSE</button>
-  </div></div>
+  </div>
+</div>
 
-  <!-- socials modal -->
-  <div id="socialsModal" class="modal"><div class="modal-content">
-    <h2>🌍 My Socials</h2>
-    <div style="display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:12px">
-      <a href="https://github.com/GhassanMazen00/GhassanMazen00" target="_blank" style="color:var(--neon);text-decoration:none">💻 GitHub</a>
-      <a href="https://t.snapchat.com/p3KLzoLR" target="_blank" style="color:var(--neon);text-decoration:none">👻 Snapchat</a>
-      <a href="mailto:ghassanmazen@zohomail.com" style="color:var(--neon);text-decoration:none">📧 Email</a>
-    </div>
-    <button class="close-btn" onclick="closeSocials()">CLOSE</button>
-  </div></div>
-
-  <!-- snake modal -->
-  <div id="snakeModal" class="modal"><div class="modal-content" role="dialog" aria-modal="true" aria-label="Snake Game">
-    <h2>🐍 Snake — Game Developing 101</h2>
-    <div style="display:flex;gap:12px;align-items:center;justify-content:center;margin-bottom:8px">
-      <div style="color:#999;font-size:12px">Player:</div>
-      <div id="playerName" style="color:var(--neon)"></div>
-      <button onclick="changeNickname()" style="background:transparent;border:2px solid var(--neon);color:var(--neon);padding:8px;font-size:12px">Change Nickname</button>
-    </div>
-
-    <canvas id="snakeCanvas" width="400" height="400"></canvas>
-    <div id="score">Score: 0</div>
-
-    <div id="gameOverScreen" style="display:none;margin-top:10px">
-      <div style="color:var(--accent);font-size:14px">Game Over – Score: <span id="finalScore"></span></div>
-      <div style="display:flex;gap:12px;justify-content:center;margin-top:10px">
-        <button onclick="restartSnake()">▶ Play Again</button>
-        <button onclick="closeSnake()" style="background:var(--neon);color:#000">CLOSE</button>
-      </div>
-    </div>
-
-    <div style="text-align:left;margin-top:12px">
-      <h3 style="color:#ff0;margin:6px 0">🏆 Leaderboard</h3>
-      <ul id="leaderboardList"></ul>
-    </div>
-
-    <div class="controls">
-      <button onclick="setDirection('LEFT')">⬅️</button>
-      <button onclick="setDirection('UP')">⬆️</button>
-      <button onclick="setDirection('DOWN')">⬇️</button>
-      <button onclick="setDirection('RIGHT')">➡️</button>
-    </div>
-
-    <button class="close-btn" onclick="closeSnake()">EXIT</button>
-  </div></div>
 
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 
   <script>
-  /* ===== Firebase setup ===== */
-  const firebaseConfig = { databaseURL: "https://dungeon-data-base-default-rtdb.firebaseio.com/" };
-  const app = firebase.initializeApp(firebaseConfig);
-  const db = firebase.database();
+    // Modes
+    let mode = 'locked';
+    let isAdmin = false;
+    const VISITOR_PASS = "10101999";
+    const ADMIN_PASS = "ananke";
 
-  /* ===== Vault unlock logic ===== */
-  let mode = 'locked', isAdmin = false;
-  const VISITOR_PASS = "10101999";
-  const ADMIN_PASS = "ananke";
+    // Firebase config
+    const firebaseConfig = {
+      databaseURL: "https://dungeon-data-base-default-rtdb.firebaseio.com/"
+    };
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
 
-  function unlock(){
-    const key = document.getElementById('keyInput').value.trim();
-    if(key === VISITOR_PASS){ mode='visitor'; isAdmin=false; enterVault(); }
-    else if(key === ADMIN_PASS){ mode='admin'; isAdmin=true; enterVault(); }
-    else { alert("❌ WRONG KEY. TRY AGAIN!"); }
-    document.getElementById('keyInput').value = '';
-  }
-  function enterVault(){
-    document.getElementById('links').style.display = 'block';
-    document.getElementById('roleBadge').classList.toggle('hidden', !isAdmin);
-    displayNotes();
-    setTimeout(()=>document.getElementById('links').scrollIntoView({behavior:'smooth'}),50);
-  }
-  function showHint(){ alert("When was the greatest human on earth born? (type numbers only, format: daymonthyear)"); }
-  function trap(){ alert("⚠️ Ghassan got notified that you tried to see him naked, shame on you!"); }
-
-  /* ===== Modal helpers ===== */
-  function openModal(){ document.getElementById('myModal').style.display='flex'; }
-  function closeModal(){ document.getElementById('myModal').style.display='none'; }
-  function openSocials(){ document.getElementById('socialsModal').style.display='flex'; }
-  function closeSocials(){ document.getElementById('socialsModal').style.display='none'; }
-
-  // click outside to close certain modals
-  window.addEventListener('click', (e)=>{
-    ['myModal','socialsModal','snakeModal'].forEach(id=>{
-      const el = document.getElementById(id);
-      if(el && e.target === el) el.style.display = 'none';
-    });
-  });
-
-  /* ===== Notes wall ===== */
-  function escapeHTML(s=''){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
-  function addNote(){
-    const nick = document.getElementById('nicknameInput').value.trim();
-    const text = document.getElementById('noteText').value.trim();
-    if(!nick || !text){ alert("⚠️ Please enter a nickname and a note!"); return; }
-    db.ref('notes').push({ nickname: nick, noteText: text, ts: Date.now() });
-    document.getElementById('nicknameInput').value = '';
-    document.getElementById('noteText').value = '';
-  }
-  function displayNotes(){
-    const notesWall = document.getElementById('notesWall');
-    db.ref('notes').orderByChild('ts').limitToLast(200).on('value', snap=>{
-      notesWall.innerHTML = '';
-      const arr = [];
-      snap.forEach(child=> arr.push({ key: child.key, val: child.val() }));
-      arr.reverse().forEach(item=>{
-        const n = item.val;
-        const div = document.createElement('div'); div.className='note';
-        const safeNick = escapeHTML(n.nickname || 'Anon');
-        const safeText = escapeHTML(n.noteText || '');
-        div.innerHTML = `<span class="nickname">${safeNick}</span><div>${safeText.replace(/\n/g,'<br>')}</div>`;
-        if(isAdmin){
-          const del = document.createElement('button'); del.className='delete-btn'; del.innerText='❌ Delete';
-          del.onclick = ()=>{ if(confirm('Delete this note?')) db.ref('notes/' + item.key).remove(); };
-          div.appendChild(del);
-        }
-        notesWall.appendChild(div);
-      });
-    });
-  }
-
-  /* ===== Snake game + leaderboard ===== */
-  const canvas = document.getElementById('snakeCanvas');
-  const ctx = canvas.getContext('2d');
-  const box = 20;
-  let snake = [], food = null, dir = null, gameInterval = null, score = 0, savedThisRound=false;
-  let leaderboardListener = null;
-
-  // sanitize key for firebase node
-  function sanitizeKey(k){ return String(k).replace(/[.#$\/\[\]]/g,'_'); }
-
-  function getNickname(){
-    let nick = localStorage.getItem('snakeNickname');
-    if(!nick){
-      nick = prompt('Enter your nickname:');
-      if(!nick || !nick.trim()) nick = 'Player' + Math.floor(Math.random()*1000);
-      nick = nick.trim();
-      localStorage.setItem('snakeNickname', nick);
-    }
-    document.getElementById('playerName').innerText = nick;
-    return nick;
-  }
-  function changeNickname(){
-    if(confirm('Reset your snake nickname? You will be asked for a new one.')){
-      localStorage.removeItem('snakeNickname');
-      getNickname();
-      loadLeaderboardOnce();
-    }
-  }
-
-  function openSnake(){ getNickname(); document.getElementById('snakeModal').style.display='flex'; startSnake(); attachLeaderboardListener(); }
-  function closeSnake(){ document.getElementById('snakeModal').style.display='none'; stopGame(); detachLeaderboardListener(); }
-
-  function startSnake(){
-    resetGame(); stopGame();
-    gameInterval = setInterval(gameTick, 120);
-  }
-  function restartSnake(){ resetGame(); startSnake(); }
-  function stopGame(){ if(gameInterval){ clearInterval(gameInterval); gameInterval=null; } }
-
-  function resetGame(){
-    const cols = Math.floor(canvas.width/box);
-    const rows = Math.floor(canvas.height/box);
-    snake = [{ x: Math.floor(cols/2)*box, y: Math.floor(rows/2)*box }];
-    dir = 'RIGHT';
-    score = 0;
-    savedThisRound = false;
-    document.getElementById('score').innerText = 'Score: 0';
-    document.getElementById('gameOverScreen').style.display = 'none';
-    placeFood();
-    draw();
-  }
-
-  function placeFood(){
-    const cols = Math.floor(canvas.width/box);
-    const rows = Math.floor(canvas.height/box);
-    while(true){
-      const fx = Math.floor(Math.random()*cols)*box;
-      const fy = Math.floor(Math.random()*rows)*box;
-      if(!snake.some(p=>p.x===fx && p.y===fy)){ food = { x: fx, y: fy }; break; }
-    }
-  }
-
-  function gameTick(){ update(); draw(); }
-
-  function update(){
-    if(!dir) return;
-    const head = { x: snake[0].x, y: snake[0].y };
-    if(dir==='LEFT') head.x -= box;
-    if(dir==='RIGHT') head.x += box;
-    if(dir==='UP') head.y -= box;
-    if(dir==='DOWN') head.y += box;
-
-    // wrap-around
-    if(head.x < 0) head.x = canvas.width - box;
-    if(head.x >= canvas.width) head.x = 0;
-    if(head.y < 0) head.y = canvas.height - box;
-    if(head.y >= canvas.height) head.y = 0;
-
-    if(snake.some(seg=>seg.x===head.x && seg.y===head.y)){ endGame(); return; }
-
-    snake.unshift(head);
-    if(head.x===food.x && head.y===food.y){
-      score++;
-      document.getElementById('score').innerText = 'Score: ' + score;
-      placeFood();
-    } else {
-      snake.pop();
-    }
-  }
-
-  function draw(){
-    ctx.fillStyle = '#000'; ctx.fillRect(0,0,canvas.width,canvas.height);
-    // food
-    ctx.fillStyle = '#ff3b3b'; ctx.fillRect(food.x, food.y, box, box);
-    // snake
-    for(let i=0;i<snake.length;i++){
-      ctx.fillStyle = (i===0)?'#fff200':'#00ff66';
-      ctx.fillRect(snake[i].x, snake[i].y, box, box);
-      ctx.strokeStyle = '#000'; ctx.strokeRect(snake[i].x, snake[i].y, box, box);
-    }
-  }
-
-  function endGame(){
-    stopGame();
-    document.getElementById('finalScore').innerText = score;
-    document.getElementById('gameOverScreen').style.display = 'block';
-    if(!savedThisRound){
-      savedThisRound = true;
-      saveBestScore(score);
-    }
-  }
-
-  // keyboard
-  document.addEventListener('keydown', e=>{
-    if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key)) e.preventDefault();
-    if(e.key==='ArrowLeft' && dir!=='RIGHT') dir='LEFT';
-    if(e.key==='ArrowRight' && dir!=='LEFT') dir='RIGHT';
-    if(e.key==='ArrowUp' && dir!=='DOWN') dir='UP';
-    if(e.key==='ArrowDown' && dir!=='UP') dir='DOWN';
-  });
-
-  // mobile controls
-  function setDirection(d){ if(d==='LEFT' && dir!=='RIGHT') dir='LEFT'; if(d==='RIGHT' && dir!=='LEFT') dir='RIGHT'; if(d==='UP' && dir!=='DOWN') dir='UP'; if(d==='DOWN' && dir!=='UP') dir='DOWN'; }
-
-  /* ===== Leaderboard storage + robust loader ===== */
-  function saveBestScore(newScore){
-    const nick = getNickname();
-    if(!nick) return;
-    const key = sanitizeKey(nick);
-    const ref = db.ref('snakeScores/' + key);
-    ref.once('value').then(snap=>{
-      const data = snap.val();
-      // either no record, or update only if bigger
-      if(!data || typeof data.score !== 'number' || newScore > data.score){
-        ref.set({ nickname: nick, score: newScore, ts: Date.now() });
+    function unlock() {
+      const key = document.getElementById('keyInput').value.trim();
+      if (key === VISITOR_PASS) {
+        mode = 'visitor'; isAdmin = false; enterVault();
+      } else if (key === ADMIN_PASS) {
+        mode = 'admin'; isAdmin = true; enterVault();
+      } else {
+        alert("❌ WRONG KEY. TRY AGAIN!");
       }
-    }).catch(e => console.error('saveBestScore err', e));
-  }
-
-  // Attach real-time listener while modal open
-  function attachLeaderboardListener(){
-    if(leaderboardListener) return;
-    const listEl = document.getElementById('leaderboardList');
-    leaderboardListener = db.ref('snakeScores').on('value', snap=>{
-      const arr = [];
-      snap.forEach(child=>{
-        const v = child.val();
-        if(v && typeof v.score === 'number'){
-          arr.push({ nickname: v.nickname || child.key, score: v.score, ts: v.ts || 0 });
-        } else if(v && typeof v === 'object'){
-          // support legacy push nodes storing { nickname:, score: } or values where key is push id
-          const possibleNick = v.nickname || v.name || child.key;
-          const possibleScore = typeof v.score === 'number' ? v.score : (Object.values(v).find(x=>typeof x==='number')||0);
-          arr.push({ nickname: possibleNick, score: possibleScore, ts: v.ts||0 });
-        } else if(typeof v === 'number'){ // rare old format: key=nick, value=number
-          arr.push({ nickname: child.key, score: v, ts: 0 });
-        }
-      });
-      arr.sort((a,b)=>b.score - a.score || a.ts - b.ts);
-      listEl.innerHTML = '';
-      arr.slice(0,15).forEach((r,i)=>{ const li = document.createElement('li'); li.innerText = `${i+1}. ${r.nickname}: ${r.score}`; listEl.appendChild(li); });
-    });
-  }
-
-  function detachLeaderboardListener(){
-    if(leaderboardListener){
-      db.ref('snakeScores').off('value', leaderboardListener);
-      leaderboardListener = null;
     }
-  }
 
-  // one-time load fallback
-  function loadLeaderboardOnce(){
-    const listEl = document.getElementById('leaderboardList');
-    db.ref('snakeScores').once('value').then(snap=>{
-      const arr = [];
-      snap.forEach(child=>{
-        const v = child.val();
-        if(v && typeof v.score === 'number') arr.push({ nickname: v.nickname || child.key, score: v.score, ts: v.ts||0 });
-        else if(v && typeof v === 'object') { const possibleNick = v.nickname || v.name || child.key; const possibleScore = typeof v.score === 'number' ? v.score : (Object.values(v).find(x=>typeof x==='number')||0); arr.push({ nickname: possibleNick, score: possibleScore, ts: v.ts||0 }); }
-        else if(typeof v === 'number') arr.push({ nickname: child.key, score: v, ts:0 });
+    function enterVault() {
+      document.getElementById('links').classList.remove('hidden');
+      document.getElementById('roleBadge').classList.toggle('hidden', !isAdmin);
+      displayNotes();
+      setTimeout(() => document.getElementById('links').scrollIntoView({behavior:'smooth'}), 50);
+    }
+
+    function showHint() { alert("When was the greatest human on earth born? ( type numbers only no ( . / - _ or space etc.) and use a day-month-year format"); }
+    function trap() { alert("⚠️ Ghassan got notified that you tried to see him naked, shame on you!"); }
+    function openModal() { document.getElementById("myModal").style.display = "flex"; }
+    function closeModal() { document.getElementById("myModal").style.display = "none"; }
+
+    function escapeHTML(str) {
+      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+
+    function addNote() {
+      const nickname = document.getElementById('nickname').value.trim();
+      const noteText = document.getElementById('noteText').value.trim();
+      if (!nickname || !noteText) { alert("⚠️ Please enter a nickname and a note!"); return; }
+      const newNote = { nickname, noteText };
+      db.ref("notes").push(newNote);
+      document.getElementById('nickname').value = "";
+      document.getElementById('noteText').value = "";
+    }
+
+    function displayNotes() {
+      const notesWall = document.getElementById('notesWall');
+      notesWall.innerHTML = "";
+      db.ref("notes").on("value", snapshot => {
+        notesWall.innerHTML = "";
+        snapshot.forEach(child => {
+          const n = child.val();
+          const noteDiv = document.createElement('div');
+          noteDiv.classList.add('note');
+          const safeNick = escapeHTML(n.nickname);
+          const safeText = escapeHTML(n.noteText).replace(/\n/g, "<br>");
+          noteDiv.innerHTML = `
+            <span class="nickname">${safeNick}</span>
+            <div>${safeText}</div>
+            ${isAdmin ? `<button class="delete-btn" onclick="deleteNote('${child.key}')">❌ Delete</button>` : ""}
+          `;
+          notesWall.appendChild(noteDiv);
+        });
       });
-      arr.sort((a,b)=>b.score - a.score || a.ts - b.ts);
-      listEl.innerHTML = '';
-      arr.slice(0,15).forEach((r,i)=>{ const li=document.createElement('li'); li.innerText = `${i+1}. ${r.nickname}: ${r.score}`; listEl.appendChild(li); });
-    });
-  }
+    }
 
-  /* ===== Leaderboard preview under vault links (Top 5) ===== */
-  function showLeaderboardPreview(){
-    // create preview container if not present
-    const preview = document.createElement('div'); preview.style.marginTop='12px'; preview.style.textAlign='center';
-    preview.innerHTML = '<div style="color:#ff0;margin-bottom:6px">🏆 Top Players</div><ul id="previewList" style="list-style:none;padding:0;margin:0"></ul>';
-    document.getElementById('links').appendChild(preview);
-    // listen for top 5
-    db.ref('snakeScores').orderByChild('score').limitToLast(5).on('value', snap=>{
-      const tmp = [];
-      snap.forEach(child=>{ const v=child.val(); if(v&&typeof v.score==='number') tmp.push({ nickname: v.nickname||child.key, score: v.score }); else if(v&&typeof v==='object') tmp.push({ nickname: v.nickname||child.key, score: typeof v.score==='number'?v.score:(Object.values(v).find(x=>typeof x==='number')||0) }); });
-      tmp.sort((a,b)=>b.score-a.score);
-      const ul = document.getElementById('previewList'); if(!ul) return;
-      ul.innerHTML=''; tmp.forEach(p=>{ const li=document.createElement('li'); li.style.padding='4px 0'; li.innerText = `${p.nickname}: ${p.score}`; ul.appendChild(li); });
-    });
-  }
-  showLeaderboardPreview();
-
-  // small canvas scaling for devicePixelRatio — keep simple so visuals don't break
-  (function quickScale(){
-    const dpr = window.devicePixelRatio || 1;
-    const w = canvas.getAttribute('width');
-    const h = canvas.getAttribute('height');
-    canvas.width = w * dpr;
-    canvas.height = h * dpr;
-    canvas.style.width = w + 'px';
-    canvas.style.height = h + 'px';
-    ctx.scale(dpr, dpr);
-  })();
-
-  // If nickname already present on page load, show it
-  if(localStorage.getItem('snakeNickname')) document.getElementById('playerName').innerText = localStorage.getItem('snakeNickname');
-
+    function deleteNote(id) {
+      if (!isAdmin) return;
+      db.ref("notes/" + id).remove();
+    }
   </script>
 </body>
 </html>
