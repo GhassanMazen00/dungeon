@@ -6,7 +6,6 @@
   <title>Unlock Ghassan’s Vault</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-    /* 🔥 your CSS unchanged */
     body { font-family: 'Press Start 2P', cursive; background: linear-gradient(135deg, #ff0080, #7928ca, #2afadf, #ff8c00);
       background-size: 400% 400%; animation: gradientShift 8s ease infinite; color: #fff;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -70,6 +69,7 @@
       <a href="mailto:ghassanmazen@zohomail.com">📧 Email</a>
       <button onclick="openModal()">💃 My Bitches</button>
       <button onclick="trap()">🔞 +18 Pics of Ghassan</button>
+      <button onclick="openSnake()">🎮 Play Snake</button>
     </div>
 
     <!-- Visitor Notes Wall -->
@@ -85,27 +85,37 @@
   </div>
 
   <!-- Modal -->
-<div class="modal" id="myModal">
-  <div class="modal-content">
-    <a href="https://www.instagram.com/loai_abb/" target="_blank">
-      <img src="https://i.postimg.cc/XqLnjRMS/20250819-2117-Pixel-Ginger-Character-simple-compose-01k31rss70fmktq7sny215zh9h.png" width="80" class="pixel-character">
-    </a>
-    <a href="https://www.instagram.com/osaidjano/" target="_blank">
-      <img src="https://i.postimg.cc/JhH7NYXZ/20250819-2129-Pixel-Man-with-T-Shirt-simple-compose-01k31scc2efvfbt02vce5hkp5r.png" width="80" class="pixel-character">
-    </a>
-    <a href="https://www.instagram.com/loai_kashkash/" target="_blank">
-      <img src="https://i.postimg.cc/76gxcCmL/20250819-2136-Pixel-Fat-Man-simple-compose-01k31sw-dygemgba9w7vm7tmpq5.png" width="80" class="pixel-character">
-    </a>
-    <a href="https://www.instagram.com/khalid.alfares1/" target="_blank">
-      <img src="https://i.postimg.cc/d1Ms4RRX/20250819-2140-Pixel-Man-with-Flag-simple-compose-01k31t39ykee6bbh3fcc1xfhjv-removebg-preview.png" width="80" class="pixel-character">
-    </a>
-    <a href="https://www.instagram.com/badr_sanoufi/" target="_blank">
-      <img src="https://i.postimg.cc/j2tsrsF4/assets-task-01k31taeamf6tavtp3htwn6b2h-1755629076-img-0.webp" width="80" class="pixel-character">
-    </a>
-    <button class="close-btn" onclick="closeModal()">CLOSE</button>
+  <div class="modal" id="myModal">
+    <div class="modal-content">
+      <a href="https://www.instagram.com/loai_abb/" target="_blank">
+        <img src="https://i.postimg.cc/XqLnjRMS/20250819-2117-Pixel-Ginger-Character-simple-compose-01k31rss70fmktq7sny215zh9h.png" width="80" class="pixel-character">
+      </a>
+      <a href="https://www.instagram.com/osaidjano/" target="_blank">
+        <img src="https://i.postimg.cc/JhH7NYXZ/20250819-2129-Pixel-Man-with-T-Shirt-simple-compose-01k31scc2efvfbt02vce5hkp5r.png" width="80" class="pixel-character">
+      </a>
+      <a href="https://www.instagram.com/loai_kashkash/" target="_blank">
+        <img src="https://i.postimg.cc/76gxcCmL/20250819-2136-Pixel-Fat-Man-simple-compose-01k31sw-dygemgba9w7vm7tmpq5.png" width="80" class="pixel-character">
+      </a>
+      <a href="https://www.instagram.com/khalid.alfares1/" target="_blank">
+        <img src="https://i.postimg.cc/d1Ms4RRX/20250819-2140-Pixel-Man-with-Flag-simple-compose-01k31t39ykee6bbh3fcc1xfhjv-removebg-preview.png" width="80" class="pixel-character">
+      </a>
+      <a href="https://www.instagram.com/badr_sanoufi/" target="_blank">
+        <img src="https://i.postimg.cc/j2tsrsF4/assets-task-01k31taeamf6tavtp3htwn6b2h-1755629076-img-0.webp" width="80" class="pixel-character">
+      </a>
+      <button class="close-btn" onclick="closeModal()">CLOSE</button>
+    </div>
   </div>
-</div>
 
+  <!-- Snake Modal -->
+  <div class="modal" id="snakeModal">
+    <div class="modal-content" style="flex-direction: column; align-items: center;">
+      <h2>🐍 Snake Game</h2>
+      <canvas id="snakeCanvas" width="300" height="300" style="background:#000; border:3px solid #00ffea;"></canvas>
+      <p id="snakeScore">Score: 0</p>
+      <div id="snakeLeaderboard" style="color:#fff; font-size:12px; text-align:left; max-height:150px; overflow:auto;"></div>
+      <button class="close-btn" onclick="closeSnake()">CLOSE</button>
+    </div>
+  </div>
 
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
@@ -134,12 +144,14 @@
       } else {
         alert("❌ WRONG KEY. TRY AGAIN!");
       }
+      document.getElementById('keyInput').value = "";
     }
 
     function enterVault() {
       document.getElementById('links').classList.remove('hidden');
       document.getElementById('roleBadge').classList.toggle('hidden', !isAdmin);
       displayNotes();
+      displaySnakeLeaderboard();
       setTimeout(() => document.getElementById('links').scrollIntoView({behavior:'smooth'}), 50);
     }
 
@@ -149,7 +161,7 @@
     function closeModal() { document.getElementById("myModal").style.display = "none"; }
 
     function escapeHTML(str) {
-      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
     }
 
     function addNote() {
@@ -185,7 +197,108 @@
 
     function deleteNote(id) {
       if (!isAdmin) return;
-      db.ref("notes/" + id).remove();
+      if (confirm("Delete this note?")) {
+        db.ref("notes/" + id).remove();
+      }
+    }
+
+    // Snake Game
+    let snake, direction, food, score, gameLoop;
+
+    function openSnake() {
+      document.getElementById("snakeModal").style.display = "flex";
+      startSnake();
+    }
+
+    function closeSnake() {
+      document.getElementById("snakeModal").style.display = "none";
+      clearInterval(gameLoop);
+    }
+
+    function startSnake() {
+      const canvas = document.getElementById("snakeCanvas");
+      const ctx = canvas.getContext("2d");
+      const box = 15;
+      snake = [{x: 5*box, y: 5*box}];
+      direction = "RIGHT";
+      food = {
+        x: Math.floor(Math.random()* (canvas.width/box)) * box,
+        y: Math.floor(Math.random()* (canvas.height/box)) * box
+      };
+      score = 0;
+      document.getElementById("snakeScore").innerText = "Score: 0";
+
+      document.onkeydown = e => {
+        if (e.key === "ArrowLeft" && direction!=="RIGHT") direction = "LEFT";
+        else if (e.key === "ArrowUp" && direction!=="DOWN") direction = "UP";
+        else if (e.key === "ArrowRight" && direction!=="LEFT") direction = "RIGHT";
+        else if (e.key === "ArrowDown" && direction!=="UP") direction = "DOWN";
+      };
+
+      clearInterval(gameLoop);
+      gameLoop = setInterval(() => drawSnake(ctx, box, canvas), 100);
+    }
+
+    function drawSnake(ctx, box, canvas) {
+      ctx.fillStyle = "#000";
+      ctx.fillRect(0,0,canvas.width,canvas.height);
+
+      for (let i=0;i<snake.length;i++) {
+        ctx.fillStyle = (i===0) ? "#0f0" : "#fff";
+        ctx.fillRect(snake[i].x, snake[i].y, box, box);
+      }
+
+      ctx.fillStyle = "#ff0";
+      ctx.fillRect(food.x, food.y, box, box);
+
+      let headX = snake[0].x;
+      let headY = snake[0].y;
+      if (direction==="LEFT") headX -= box;
+      if (direction==="UP") headY -= box;
+      if (direction==="RIGHT") headX += box;
+      if (direction==="DOWN") headY += box;
+
+      if (headX === food.x && headY === food.y) {
+        score++;
+        document.getElementById("snakeScore").innerText = "Score: " + score;
+        food = {
+          x: Math.floor(Math.random()* (canvas.width/box)) * box,
+          y: Math.floor(Math.random()* (canvas.height/box)) * box
+        };
+      } else {
+        snake.pop();
+      }
+
+      const newHead = {x: headX, y: headY};
+
+      // Game over check
+      if (headX<0 || headY<0 || headX>=canvas.width || headY>=canvas.height ||
+          snake.some(s => s.x===newHead.x && s.y===newHead.y)) {
+        clearInterval(gameLoop);
+        saveSnakeScore(score);
+        alert("Game Over! Your score: " + score);
+      }
+
+      snake.unshift(newHead);
+    }
+
+    // Save score to Firebase
+    function saveSnakeScore(score) {
+      const nickname = document.getElementById("nickname").value.trim() || "Anon";
+      db.ref("snakeScores").push({ nickname, score, ts: Date.now() });
+      displaySnakeLeaderboard();
+    }
+
+    // Display leaderboard
+    function displaySnakeLeaderboard() {
+      const board = document.getElementById("snakeLeaderboard");
+      db.ref("snakeScores").orderByChild("score").limitToLast(10).on("value", snap => {
+        let scores = [];
+        snap.forEach(child => scores.push(child.val()));
+        scores.reverse();
+        board.innerHTML = "<h3>🏆 Leaderboard</h3>" + 
+          scores.map((s,i) => `${i+1}. ${escapeHTML(s.nickname || 'Anon')}: ${s.score}`).join("<br>");
+      });
     }
   </script>
 </body>
