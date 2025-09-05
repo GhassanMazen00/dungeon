@@ -333,40 +333,46 @@
 
     /* Nickname + Leaderboard */
     function getNickname() {
-      let nickname = localStorage.getItem("snakeNickname");
-      if (!nickname) {
-        nickname = prompt("Enter your nickname:");
-        if (!nickname) nickname = "Player" + Math.floor(Math.random()*1000);
-        localStorage.setItem("snakeNickname", nickname);
-      }
-      return nickname;
+  let nickname = localStorage.getItem("snakeNickname");
+  if (!nickname) {
+    nickname = prompt("Enter your nickname:");
+    if (nickname && nickname.trim() !== "") {
+      nickname = nickname.trim();
+      localStorage.setItem("snakeNickname", nickname);
+    } else {
+      nickname = "Player" + Math.floor(Math.random() * 1000);
+      localStorage.setItem("snakeNickname", nickname);
     }
+  }
+  return nickname;
+}
     function saveScore(newScore) {
-      const nickname = getNickname();
-      const ref = db.ref("snakeScores/" + nickname);
-      ref.once("value").then(snapshot => {
-        const oldScore = snapshot.val();
-        if (!oldScore || newScore > oldScore) {
-          ref.set(newScore);
-        }
-      });
+  const nickname = getNickname();
+  const ref = db.ref("snakeScores/" + nickname);
+  ref.once("value").then(snapshot => {
+    const oldData = snapshot.val();
+    if (!oldData || newScore > oldData.score) {
+      ref.set({ score: newScore });
     }
+  });
+}
     function loadLeaderboard() {
-      const list = document.getElementById("leaderboardList");
-      db.ref("snakeScores").once("value").then(snapshot => {
-        const scores = [];
-        snapshot.forEach(child => {
-          scores.push({ name: child.key, score: child.val() });
-        });
-        scores.sort((a,b) => b.score - a.score);
-        list.innerHTML = "";
-        scores.slice(0,10).forEach(s => {
-          const li = document.createElement("li");
-          li.innerText = `${s.name}: ${s.score}`;
-          list.appendChild(li);
-        });
-      });
-    }
+  const list = document.getElementById("leaderboardList");
+  db.ref("snakeScores").once("value").then(snapshot => {
+    const scores = [];
+    snapshot.forEach(child => {
+      const data = child.val();
+      scores.push({ name: child.key, score: data.score });
+    });
+    scores.sort((a, b) => b.score - a.score);
+    list.innerHTML = "";
+    scores.slice(0, 10).forEach(s => {
+      const li = document.createElement("li");
+      li.innerText = `${s.name}: ${s.score}`;
+      list.appendChild(li);
+    });
+  });
+
   </script>
 </body>
 </html>
