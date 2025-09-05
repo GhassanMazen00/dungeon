@@ -1,377 +1,642 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Unlock Ghassan’s Vault</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-    body {
-      font-family: 'Press Start 2P', cursive;
-      background: linear-gradient(135deg, #ff0080, #7928ca, #2afadf, #ff8c00);
-      background-size: 400% 400%;
-      animation: gradientShift 8s ease infinite;
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      margin: 0;
-      text-align: center;
-    }
-    @keyframes gradientShift {
-      0% {background-position: 0% 50%;}
-      50% {background-position: 100% 50%;}
-      100% {background-position: 0% 50%;}
-    }
-    .banner { position: fixed; top: 0; width: 100%; background: rgba(0,0,0,0.7); color: #00ffea;
-      padding: 10px; font-size: 12px; border-bottom: 2px solid #ff0; text-shadow: 2px 2px #000; z-index: 1000; }
-    h1 { font-size: 22px; margin: 70px 0 20px; text-shadow: 3px 3px #000; }
-    .input-box { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
-    input, button, textarea {
-      padding: 12px; margin: 4px; border: 3px solid #000; border-radius: 0;
-      font-size: 14px; font-family: 'Press Start 2P', cursive; outline: none;
-    }
-    input, textarea { width: 220px; background: #111; color: #0f0; }
-    button { background: #ff0080; color: #fff; cursor: pointer; transition: 0.2s; }
-    button:hover { background: #00ffea; color: #000; }
-    .hidden { display: none; }
-    .links a, .links button {
-      display: block; margin: 12px 0; color: #00ffea; text-decoration: none;
-      font-size: 14px; text-shadow: 2px 2px #000;
-    }
-    .links a:hover { color: #ff0; }
-    .badge {
-      display: inline-block; margin-left: 10px; padding: 6px 8px; background: #00ffea; color: #000;
-      border: 3px solid #000; box-shadow: 3px 3px #000; font-size: 10px; vertical-align: middle;
-    }
-    .modal { display: none; position: fixed; z-index: 999; left: 0; top: 0; width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.9); justify-content: center; align-items: center; overflow-y: auto; }
-    .modal-content {
-      background: #111; padding: 20px; border: 4px solid #00ffea; border-radius: 10px;
-      max-width: 900px; width: 90%; text-align: center;
-    }
-    .close-btn {
-      margin-top: 20px; padding: 10px 16px; background: #ff0080; border: 3px solid #000;
-      color: #fff; font-family: 'Press Start 2P', cursive; cursor: pointer;
-    }
-    .close-btn:hover { background: #00ffea; color: #000; }
 
-    /* Notes */
-    #notesSection {
-      margin-top: 30px; padding: 20px; background: rgba(0,0,0,0.6);
-      border: 3px solid #00ffea; border-radius: 12px; max-width: 900px;
+    :root{
+      --neon:#00ffea;
+      --accent:#ff0080;
+      --bg1:#7928ca;
+      --bg2:#2afadf;
+      --dark:#0b0b0b;
     }
-    #notesSection h2 { color: #ff0; text-shadow: 2px 2px #000; margin-bottom: 20px; font-size: 16px; }
-    .note-form { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; align-items: center; }
-    .note-form input, .note-form textarea {
-      background: #111; color: #0f0; border: 2px solid #00ffea; padding: 10px;
-      font-size: 12px; width: 100%; max-width: 520px;
-    }
-    .note-form button { background: #ff0080; border: 2px solid #000; padding: 10px 14px; cursor: pointer; }
-    .note-form button:hover { background: #00ffea; color: #000; }
-    .notes-wall {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 15px;
-    }
-    .note {
-      padding: 15px; background: #222; border: 3px solid #ff0080; box-shadow: 3px 3px #000;
-      font-size: 12px; word-wrap: break-word; transform: rotate(-1deg);
-      text-align: left; position: relative; min-height: 84px;
-    }
-    .note:nth-child(odd) { background: #333; border-color: #00ffea; transform: rotate(1deg); }
-    .note .nickname { font-weight: bold; color: #ff0; margin-bottom: 8px; display: block; }
-    .delete-btn {
-      display: inline-block; margin-top: 8px; background: #e60026; border: 3px solid #000;
-      color: #fff; padding: 6px 8px; font-size: 10px; font-family: 'Press Start 2P', cursive;
-      cursor: pointer; box-shadow: 2px 2px #000;
-    }
-    .delete-btn:hover { background: #ff8c00; color: #000; }
 
-    /* Snake Game */
-    #snakeCanvas { background: #000; display: block; margin: 0 auto; border: 4px solid #00ffea; }
-    #score { margin: 10px; color: #ff0; }
-    #leaderboard { margin-top: 20px; text-align: left; color: #fff; }
-    #leaderboard h3 { color: #ff0; }
-    .game-over { color: #ff0080; font-size: 14px; margin: 15px 0; }
-    .controls { margin-top: 15px; }
-    .controls button {
-      background: #00ffea; border: 3px solid #000; padding: 10px; margin: 5px;
-      font-size: 18px; color: #000;
+    html,body{height:100%;}
+
+    body{
+      margin:0;
+      height:100%;
+      font-family:'Press Start 2P', cursive;
+      background: linear-gradient(135deg, var(--accent), var(--bg1), var(--bg2), #ff8c00);
+      background-size:400% 400%;
+      animation:gradientShift 8s ease infinite;
+      color:#fff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:40px 20px;
+      box-sizing:border-box;
+      text-align:center;
+    }
+    @keyframes gradientShift{
+      0%{background-position:0% 50%}
+      50%{background-position:100% 50%}
+      100%{background-position:0% 50%}
+    }
+
+    .container{
+      width:100%;
+      max-width:1100px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:18px;
+    }
+
+    .banner{
+      position:fixed;
+      top:0;
+      left:0;
+      right:0;
+      background:rgba(0,0,0,0.7);
+      color:var(--neon);
+      padding:10px;
+      font-size:12px;
+      border-bottom:2px solid #ff0;
+      text-shadow:2px 2px #000;
+      z-index:9999;
+    }
+
+    h1{font-size:22px;margin-top:36px;text-shadow:3px 3px #000;}
+
+    /* input area */
+    .input-box{display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;}
+    input,textarea,button{
+      font-family:'Press Start 2P',cursive;
+      font-size:14px;
+      border:3px solid #000;
+      padding:10px 12px;
+      background:#111;color:#0f0;
+      outline:none;
+    }
+    button{background:var(--accent); color:#fff; cursor:pointer; transition:all .12s;}
+    button:hover{background:var(--neon); color:#000;}
+
+    /* links/buttons area - centered stack */
+    #links{display:none;margin-top:8px;width:100%;}
+    .links{
+      display:flex;
+      flex-direction:column;
+      align-items:center; /* CENTERED */
+      gap:8px;
+      width:100%;
+      max-width:420px;
+      margin:0 auto;
+    }
+    .links a, .links button{
+      width:100%;
+      text-align:center;
+      background:transparent;
+      color:var(--neon);
+      text-decoration:none;
+      padding:10px;
+      border-radius:6px;
+      border:2px solid rgba(0,0,0,0.5);
+    }
+
+    .badge{
+      display:inline-block;margin-left:10px;padding:6px 8px;background:var(--neon);color:#000;border:3px solid #000;
+      box-shadow:3px 3px #000;font-size:10px;vertical-align:middle;
+    }
+
+    /* notes */
+    #notesSection{
+      margin-top:20px;padding:18px;background:rgba(0,0,0,0.45);border:3px solid var(--neon);
+      border-radius:12px;max-width:900px;width:100%;
+    }
+    #notesSection h2{color:#ff0;text-shadow:2px 2px #000;margin-bottom:14px;font-size:16px;}
+    .note-form{display:flex;flex-direction:column;gap:10px;align-items:center;margin-bottom:12px;}
+    .note-form input,.note-form textarea{background:#111;color:#0f0;border:2px solid var(--neon);width:100%;max-width:520px;padding:10px;font-size:12px;}
+    .notes-wall{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;}
+    .note{padding:12px;background:#222;border:3px solid var(--accent);box-shadow:3px 3px #000;font-size:12px;word-wrap:break-word;
+      transform:rotate(-1deg);text-align:left;min-height:70px;position:relative;}
+    .note:nth-child(odd){background:#333;border-color:var(--neon);transform:rotate(1deg);}
+    .note .nickname{color:#ff0;font-weight:bold;margin-bottom:6px;display:block;}
+    .delete-btn{position:absolute;right:8px;bottom:8px;background:#e60026;color:#fff;padding:6px 8px;border:3px solid #000;cursor:pointer;}
+
+    /* modal */
+    .modal{display:none;position:fixed;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:999;justify-content:center;align-items:center;overflow:auto;padding:20px;box-sizing:border-box;}
+    .modal-content{background:#111;border:4px solid var(--neon);padding:18px;border-radius:12px;max-width:860px;width:100%;text-align:center;color:#fff;}
+
+    .close-btn{margin-top:14px;padding:10px 16px;background:var(--accent);border:3px solid #000;color:#fff;cursor:pointer;}
+
+    /* snake UI */
+    #snakeCanvas{background:#000;border:4px solid var(--neon);display:block;margin:10px auto;max-width:100%;}
+    #score{color:#ff0;margin:8px 0;}
+    #leaderboardList{list-style:none;padding:0;margin:6px 0 0 0;text-align:left;max-height:200px;overflow:auto;}
+    #leaderboardList li{padding:6px 8px;border-bottom:1px dashed rgba(255,255,255,0.06);}
+    .controls{margin-top:14px;display:flex;justify-content:center;gap:8px;flex-wrap:wrap;}
+    .controls button{background:var(--neon);color:#000;padding:10px;border:3px solid #000;font-size:18px;border-radius:6px;}
+
+    /* small helpers */
+    .row{display:flex;gap:8px;align-items:center;justify-content:center;}
+    .muted{color:#999;font-size:12px;}
+
+    /* responsive */
+    @media (max-width:520px){
+      .modal-content{padding:14px;}
+      input,textarea{width:100%;}
+      .links{max-width:320px;}
     }
   </style>
 </head>
 <body>
   <div class="banner">Abo Mazen's dungeon</div>
-  <h1>🕹️ ENTER THE KEY</h1>
-  <div class="input-box">
-    <input type="password" id="keyInput" placeholder="Type here..." onkeydown="if(event.key==='Enter')unlock()">
-    <button onclick="showHint()">💡 Hint</button>
-  </div>
-  <button onclick="unlock()">UNLOCK</button>
 
-  <div id="links" class="hidden">
-    <h2> 🎉 ACCESS GRANTED <span id="roleBadge" class="badge hidden">ADMIN MODE</span> </h2>
-    <div class="links">
-      <a href="https://github.com/GhassanMazen00/GhassanMazen00" target="_blank">💻 GitHub</a>
-      <a href="https://t.snapchat.com/p3KLzoLR" target="_blank">👻 Snapchat</a>
-      <a href="mailto:ghassanmazen@zohomail.com">📧 Email</a>
-      <button onclick="openModal()">💃 My Bitches</button>
-      <button onclick="trap()">🔞 +18 Pics of Ghassan</button>
-      <button onclick="openSnake()">🎮 Play Snake</button>
+  <div class="container">
+    <h1>🕹️ ENTER THE KEY</h1>
+
+    <div class="input-box">
+      <input id="keyInput" type="password" placeholder="Type here..." onkeydown="if(event.key==='Enter') unlock()" />
+      <button onclick="showHint()">💡 Hint</button>
     </div>
 
-    <!-- Visitor Notes Wall -->
-    <div id="notesSection">
-      <h2>📝 Visitor Wall</h2>
-      <div class="note-form">
-        <input type="text" id="nickname" placeholder="Your nickname...">
-        <textarea id="noteText" rows="3" placeholder="Leave a note..."></textarea>
-        <button onclick="addNote()">Post Note</button>
+    <button onclick="unlock()">UNLOCK</button>
+
+    <!-- Unlocked links (centered stack) -->
+    <div id="links">
+      <h2> 🎉 ACCESS GRANTED <span id="roleBadge" class="badge hidden">ADMIN MODE</span> </h2>
+      <div class="links">
+        <!-- Game button as requested -->
+        <button id="gameBtn" onclick="openSnake()">🎮 Game Developing 101</button>
+
+        <!-- Socials grouped -->
+        <button onclick="openSocials()">🌍 My Socials</button>
+
+        <!-- Other site buttons -->
+        <button onclick="openModal()">💃 My Bitches</button>
+        <button onclick="trap()">🔞 +18 Pics of Ghassan</button>
       </div>
-      <div class="notes-wall" id="notesWall"></div>
+
+      <!-- Visitor Notes Wall -->
+      <div id="notesSection">
+        <h2>📝 Visitor Wall</h2>
+        <div class="note-form">
+          <input id="nicknameInput" type="text" placeholder="Your nickname..." />
+          <textarea id="noteText" rows="3" placeholder="Leave a note..."></textarea>
+          <button onclick="addNote()">Post Note</button>
+        </div>
+        <div class="notes-wall" id="notesWall"></div>
+      </div>
     </div>
   </div>
 
-  <!-- Snake Game Modal -->
-  <div class="modal" id="snakeModal">
+  <!-- Pixel characters modal (unchanged) -->
+  <div id="myModal" class="modal">
     <div class="modal-content">
-      <h2>🐍 Snake Game</h2>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">
+        <a href="https://www.instagram.com/loai_abb/" target="_blank"><img src="https://i.postimg.cc/XqLnjRMS/20250819-2117-Pixel-Ginger-Character-simple-compose-01k31rss70fmktq7sny215zh9h.png" width="80" style="cursor:pointer;"></a>
+        <a href="https://www.instagram.com/osaidjano/" target="_blank"><img src="https://i.postimg.cc/JhH7NYXZ/20250819-2129-Pixel-Man-with-T-Shirt-simple-compose-01k31scc2efvfbt02vce5hkp5r.png" width="80" style="cursor:pointer;"></a>
+        <a href="https://www.instagram.com/loai_kashkash/" target="_blank"><img src="https://i.postimg.cc/76gxcCmL/20250819-2136-Pixel-Fat-Man-simple-compose-01k31sw-dygemgba9w7vm7tmpq5.png" width="80" style="cursor:pointer;"></a>
+        <a href="https://www.instagram.com/khalid.alfares1/" target="_blank"><img src="https://i.postimg.cc/d1Ms4RRX/20250819-2140-Pixel-Man-with-Flag-simple-compose-01k31t39ykee6bbh3fcc1xfhjv-removebg-preview.png" width="80" style="cursor:pointer;"></a>
+        <a href="https://www.instagram.com/badr_sanoufi/" target="_blank"><img src="https://i.postimg.cc/j2tsrsF4/assets-task-01k31taeamf6tavtp3htwn6b2h-1755629076-img-0.webp" width="80" style="cursor:pointer;"></a>
+      </div>
+      <button class="close-btn" onclick="closeModal()">CLOSE</button>
+    </div>
+  </div>
+
+  <!-- Socials modal -->
+  <div id="socialsModal" class="modal">
+    <div class="modal-content">
+      <h2>🌍 My Socials</h2>
+      <div style="display:flex;flex-direction:column;gap:8px;align-items:center;margin-top:12px;">
+        <a href="https://github.com/GhassanMazen00/GhassanMazen00" target="_blank" style="color:var(--neon);text-decoration:none;">💻 GitHub</a>
+        <a href="https://t.snapchat.com/p3KLzoLR" target="_blank" style="color:var(--neon);text-decoration:none;">👻 Snapchat</a>
+        <a href="mailto:ghassanmazen@zohomail.com" style="color:var(--neon);text-decoration:none;">📧 Email</a>
+      </div>
+      <button class="close-btn" onclick="closeSocials()">CLOSE</button>
+    </div>
+  </div>
+
+  <!-- Snake Modal -->
+  <div id="snakeModal" class="modal">
+    <div class="modal-content" role="dialog" aria-modal="true" aria-label="Snake Game">
+      <h2>🐍 Snake — Game Developing 101</h2>
+
+      <!-- show player's nickname -->
+      <div class="row muted" style="gap:10px;margin-bottom:6px;">
+        <div>Player: <span id="playerName" style="color:var(--neon);"></span></div>
+        <button onclick="changeNickname()" style="background:transparent;color:var(--neon);border:2px solid var(--neon);padding:6px;font-size:12px;">Change Nickname</button>
+      </div>
+
+      <!-- canvas -->
       <canvas id="snakeCanvas" width="400" height="400"></canvas>
       <div id="score">Score: 0</div>
-      <div id="gameOverScreen" class="hidden">
-        <div class="game-over">Game Over – Score: <span id="finalScore"></span></div>
-        <button onclick="restartSnake()">▶ Play Again</button>
+
+      <!-- Game Over Screen inside modal -->
+      <div id="gameOverScreen" style="display:none;margin-top:8px;">
+        <div class="game-over" style="color:var(--accent);">Game Over – Score: <span id="finalScore"></span></div>
+        <div style="display:flex;gap:12px;justify-content:center;margin-top:8px;">
+          <button onclick="restartSnake()" style="padding:8px 12px;">▶ Play Again</button>
+          <button onclick="closeSnake()" style="padding:8px 12px;background:var(--neon);color:#000;border:3px solid #000;">CLOSE</button>
+        </div>
       </div>
-      <div id="leaderboard">
-        <h3>🏆 Leaderboard</h3>
+
+      <!-- Leaderboard -->
+      <div id="leaderboard" style="margin-top:12px;text-align:left;">
+        <h3 style="color:#ff0;margin:6px 0;">🏆 Leaderboard</h3>
         <ul id="leaderboardList"></ul>
       </div>
-      <div class="controls">
-        <button onclick="changeDirection('LEFT')">⬅️</button>
-        <button onclick="changeDirection('UP')">⬆️</button>
-        <button onclick="changeDirection('DOWN')">⬇️</button>
-        <button onclick="changeDirection('RIGHT')">➡️</button>
+
+      <!-- mobile controls -->
+      <div class="controls" style="margin-top:12px;">
+        <button onclick="setDirection('LEFT')">⬅️</button>
+        <button onclick="setDirection('UP')">⬆️</button>
+        <button onclick="setDirection('DOWN')">⬇️</button>
+        <button onclick="setDirection('RIGHT')">➡️</button>
       </div>
-      <button class="close-btn" onclick="closeSnake()">CLOSE</button>
+
+      <button class="close-btn" onclick="closeSnake()">EXIT</button>
     </div>
   </div>
 
-  <!-- Firebase -->
+  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 
   <script>
-    // Modes
-    let mode = 'locked';
-    let isAdmin = false;
-    const VISITOR_PASS = "10101999";
-    const ADMIN_PASS = "ananke";
-
-    // Firebase config
+    // ------------------ Firebase config ------------------
     const firebaseConfig = {
       databaseURL: "https://dungeon-data-base-default-rtdb.firebaseio.com/"
     };
     const app = firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    /* ---------------- Unlock ---------------- */
-    function unlock() {
+    // ------------------ Vault unlock ------------------
+    let mode = 'locked';
+    let isAdmin = false;
+    const VISITOR_PASS = "10101999";
+    const ADMIN_PASS = "ananke";
+
+    function unlock(){
       const key = document.getElementById('keyInput').value.trim();
-      if (key === VISITOR_PASS) {
-        mode = 'visitor'; isAdmin = false; enterVault();
-      } else if (key === ADMIN_PASS) {
-        mode = 'admin'; isAdmin = true; enterVault();
-      } else {
-        alert("❌ WRONG KEY. TRY AGAIN!");
-      }
+      if(key === VISITOR_PASS){ mode = 'visitor'; isAdmin = false; enterVault(); }
+      else if(key === ADMIN_PASS){ mode = 'admin'; isAdmin = true; enterVault(); }
+      else { alert("❌ WRONG KEY. TRY AGAIN!"); }
+      document.getElementById('keyInput').value = "";
     }
-    function enterVault() {
-      document.getElementById('links').classList.remove('hidden');
+    function enterVault(){
+      document.getElementById('links').style.display = 'block';
       document.getElementById('roleBadge').classList.toggle('hidden', !isAdmin);
       displayNotes();
-      setTimeout(() => document.getElementById('links').scrollIntoView({behavior:'smooth'}), 50);
+      setTimeout(()=>document.getElementById('links').scrollIntoView({behavior:'smooth'}),50);
     }
-    function showHint() { alert("When was the greatest human on earth born? (type numbers only, format: daymonthyear)"); }
-    function trap() { alert("⚠️ Ghassan got notified that you tried to see him naked, shame on you!"); }
+    function showHint(){ alert("When was the greatest human on earth born? (type numbers only, format: daymonthyear)"); }
+    function trap(){ alert("⚠️ Ghassan got notified that you tried to see him naked, shame on you!"); }
 
-    /* ---------------- Notes ---------------- */
-    function escapeHTML(str) {
-      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    // ------------------ Modals helpers ------------------
+    function openModal(){ document.getElementById('myModal').style.display='flex'; }
+    function closeModal(){ document.getElementById('myModal').style.display='none'; }
+    function openSocials(){ document.getElementById('socialsModal').style.display='flex'; }
+    function closeSocials(){ document.getElementById('socialsModal').style.display='none'; }
+
+    // close modal on outside click
+    window.addEventListener('click', (e)=>{
+      const modals = ['myModal','socialsModal','snakeModal'];
+      modals.forEach(id=>{
+        const el = document.getElementById(id);
+        if(el && e.target === el) el.style.display = 'none';
+      });
+    });
+
+    // ------------------ Notes wall ------------------
+    function escapeHTML(str = '') {
+      return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
     }
-    function addNote() {
-      const nickname = document.getElementById('nickname').value.trim();
-      const noteText = document.getElementById('noteText').value.trim();
-      if (!nickname || !noteText) { alert("⚠️ Please enter a nickname and a note!"); return; }
-      db.ref("notes").push({ nickname, noteText });
-      document.getElementById('nickname').value = "";
-      document.getElementById('noteText').value = "";
+
+    function addNote(){
+      const nick = document.getElementById('nicknameInput').value.trim();
+      const text = document.getElementById('noteText').value.trim();
+      if(!nick || !text){ alert("⚠️ Please enter a nickname and a note!"); return; }
+      db.ref('notes').push({ nickname: nick, noteText: text, ts: Date.now() });
+      document.getElementById('nicknameInput').value = '';
+      document.getElementById('noteText').value = '';
     }
-    function displayNotes() {
+
+    function displayNotes(){
       const notesWall = document.getElementById('notesWall');
-      db.ref("notes").on("value", snapshot => {
-        notesWall.innerHTML = "";
-        snapshot.forEach(child => {
-          const n = child.val();
-          const noteDiv = document.createElement('div');
-          noteDiv.classList.add('note');
-          const safeNick = escapeHTML(n.nickname);
-          const safeText = escapeHTML(n.noteText).replace(/\n/g, "<br>");
-          noteDiv.innerHTML = `
-            <span class="nickname">${safeNick}</span>
-            <div>${safeText}</div>
-            ${isAdmin ? `<button class="delete-btn" onclick="deleteNote('${child.key}')">❌ Delete</button>` : ""}
-          `;
-          notesWall.appendChild(noteDiv);
+      db.ref('notes').orderByChild('ts').limitToLast(200).on('value', snap=>{
+        notesWall.innerHTML = '';
+        const arr = [];
+        snap.forEach(child => { arr.push({ key: child.key, val: child.val() }); });
+        // reverse for newest first
+        arr.reverse().forEach(item=>{
+          const n = item.val;
+          const div = document.createElement('div');
+          div.className = 'note';
+          const safeNick = escapeHTML(n.nickname || 'Anon');
+          const safeText = escapeHTML(n.noteText || '');
+          div.innerHTML = `<span class="nickname">${safeNick}</span><div>${safeText.replace(/\n/g,'<br>')}</div>`;
+          if(isAdmin){
+            const del = document.createElement('button');
+            del.className = 'delete-btn';
+            del.innerText = '❌ Delete';
+            del.onclick = ()=>{ if(confirm('Delete this note?')) db.ref('notes/' + item.key).remove(); };
+            div.appendChild(del);
+          }
+          notesWall.appendChild(div);
         });
       });
     }
-    function deleteNote(id) {
-      if (!isAdmin) return;
-      db.ref("notes/" + id).remove();
-    }
 
-    /* ---------------- Snake Game ---------------- */
-    let snake, food, direction, score, gameInterval;
-    const box = 20;
-    const canvas = document.getElementById("snakeCanvas");
-    const ctx = canvas.getContext("2d");
-    const scoreDisplay = document.getElementById("score");
-    const finalScoreDisplay = document.getElementById("finalScore");
+    // ------------------ Snake game ------------------
+    const canvas = document.getElementById('snakeCanvas');
+    const ctx = canvas.getContext('2d');
+    const box = 20; // grid size
+    let snake = [];
+    let food = null;
+    let dir = null;
+    let gameInterval = null;
+    let score = 0;
+    let nameReady = false;
+    let savedThisRound = false; // avoid multiple saves per end
 
-    function openSnake() {
-      document.getElementById("snakeModal").style.display = "flex";
-      initSnake();
-    }
-    function closeSnake() {
-      clearInterval(gameInterval);
-      document.getElementById("snakeModal").style.display = "none";
-    }
-
-    function initSnake() {
-      snake = [{x: 9 * box, y: 10 * box}];
-      direction = null;
-      score = 0;
-      food = {
-        x: Math.floor(Math.random()*20) * box,
-        y: Math.floor(Math.random()*20) * box
-      };
-      document.getElementById("gameOverScreen").classList.add("hidden");
-      scoreDisplay.innerText = "Score: 0";
-      clearInterval(gameInterval);
-      gameInterval = setInterval(drawSnake, 100);
-      loadLeaderboard();
-    }
-
-    function changeDirection(dir) {
-      if (dir === "LEFT" && direction !== "RIGHT") direction = "LEFT";
-      else if (dir === "UP" && direction !== "DOWN") direction = "UP";
-      else if (dir === "RIGHT" && direction !== "LEFT") direction = "RIGHT";
-      else if (dir === "DOWN" && direction !== "UP") direction = "DOWN";
-    }
-    document.addEventListener("keydown", event => {
-      if (event.key === "ArrowLeft") changeDirection("LEFT");
-      else if (event.key === "ArrowUp") changeDirection("UP");
-      else if (event.key === "ArrowRight") changeDirection("RIGHT");
-      else if (event.key === "ArrowDown") changeDirection("DOWN");
-    });
-
-    function drawSnake() {
-      ctx.fillStyle = "#000"; ctx.fillRect(0, 0, canvas.width, canvas.height);
-      for (let i=0; i<snake.length; i++) {
-        ctx.fillStyle = (i===0) ? "#ff0" : "#0f0";
-        ctx.fillRect(snake[i].x, snake[i].y, box, box);
-        ctx.strokeStyle = "#000"; ctx.strokeRect(snake[i].x, snake[i].y, box, box);
+    // nickname persistence
+    function getNickname(){
+      let nick = localStorage.getItem('snakeNickname');
+      if(!nick){
+        nick = prompt('Enter your nickname:');
+        if(!nick || !nick.trim()) nick = 'Player' + Math.floor(Math.random()*1000);
+        nick = nick.trim();
+        localStorage.setItem('snakeNickname', nick);
       }
-      ctx.fillStyle = "#f00";
-      ctx.fillRect(food.x, food.y, box, box);
+      document.getElementById('playerName').innerText = nick;
+      nameReady = true;
+      return nick;
+    }
+    function changeNickname(){
+      if(confirm('Reset your snake nickname? This will ask you for a new one next game.')) {
+        localStorage.removeItem('snakeNickname');
+        getNickname(); // prompt now
+        loadLeaderboard();
+      }
+    }
 
-      let snakeX = snake[0].x;
-      let snakeY = snake[0].y;
-      if (direction === "LEFT") snakeX -= box;
-      if (direction === "UP") snakeY -= box;
-      if (direction === "RIGHT") snakeX += box;
-      if (direction === "DOWN") snakeY += box;
+    // call when opening snake modal
+    function openSnake(){
+      getNickname(); // ensure nickname ready before play
+      document.getElementById('snakeModal').style.display = 'flex';
+      startSnake();
+      // start realtime leaderboard listener while modal open
+      attachLeaderboardListener();
+    }
+    function closeSnake(){
+      document.getElementById('snakeModal').style.display = 'none';
+      stopGame();
+      detachLeaderboardListener();
+    }
 
-      // Wrap-around logic
-      if (snakeX < 0) snakeX = canvas.width - box;
-      if (snakeX >= canvas.width) snakeX = 0;
-      if (snakeY < 0) snakeY = canvas.height - box;
-      if (snakeY >= canvas.height) snakeY = 0;
+    // start/stop
+    function startSnake(){
+      resetGame();
+      stopGame(); // clear old interval if any
+      gameInterval = setInterval(gameTick, 120); // speed
+    }
+    function restartSnake(){ resetGame(); startSnake(); }
+    function stopGame(){ if(gameInterval) clearInterval(gameInterval); gameInterval = null; }
 
-      // Eat food
-      if (snakeX === food.x && snakeY === food.y) {
+    function resetGame(){
+      // grid dimensions derived from canvas and box
+      const cols = Math.floor(canvas.width/box);
+      const rows = Math.floor(canvas.height/box);
+      snake = [{ x: Math.floor(cols/2)*box, y: Math.floor(rows/2)*box }];
+      // initial direction to right
+      dir = 'RIGHT';
+      score = 0;
+      savedThisRound = false;
+      document.getElementById('score').innerText = 'Score: 0';
+      document.getElementById('gameOverScreen').style.display = 'none';
+      placeFood();
+      draw(); // initial draw
+    }
+
+    function placeFood(){
+      const cols = Math.floor(canvas.width/box);
+      const rows = Math.floor(canvas.height/box);
+      // ensure food not placed on snake
+      while(true){
+        const fx = Math.floor(Math.random()*cols)*box;
+        const fy = Math.floor(Math.random()*rows)*box;
+        const coll = snake.some(p => p.x === fx && p.y === fy);
+        if(!coll){ food = { x: fx, y: fy }; break; }
+      }
+    }
+
+    function gameTick(){
+      update();
+      draw();
+    }
+
+    function update(){
+      if(!dir) return;
+      const head = { x: snake[0].x, y: snake[0].y };
+      if(dir === 'LEFT') head.x -= box;
+      if(dir === 'RIGHT') head.x += box;
+      if(dir === 'UP') head.y -= box;
+      if(dir === 'DOWN') head.y += box;
+
+      // wrap-around
+      if(head.x < 0) head.x = canvas.width - box;
+      if(head.x >= canvas.width) head.x = 0;
+      if(head.y < 0) head.y = canvas.height - box;
+      if(head.y >= canvas.height) head.y = 0;
+
+      // check self collision
+      if(snake.some(seg => seg.x === head.x && seg.y === head.y)) {
+        endGame();
+        return;
+      }
+
+      snake.unshift(head);
+
+      // eat food?
+      if(head.x === food.x && head.y === food.y){
         score++;
-        scoreDisplay.innerText = "Score: " + score;
-        food = {
-          x: Math.floor(Math.random()*20) * box,
-          y: Math.floor(Math.random()*20) * box
-        };
+        document.getElementById('score').innerText = 'Score: ' + score;
+        placeFood();
       } else {
         snake.pop();
       }
+    }
 
-      let newHead = {x: snakeX, y: snakeY};
+    function draw(){
+      // clear
+      ctx.fillStyle = '#000';
+      ctx.fillRect(0,0,canvas.width,canvas.height);
 
-      // Check self collision
-      for (let i=0; i<snake.length; i++) {
-        if (newHead.x === snake[i].x && newHead.y === snake[i].y) {
-          gameOver();
-          return;
-        }
+      // draw food
+      ctx.fillStyle = '#ff3b3b';
+      ctx.fillRect(food.x, food.y, box, box);
+
+      // draw snake
+      for(let i=0;i<snake.length;i++){
+        ctx.fillStyle = (i===0) ? '#fff200' : '#00ff66';
+        ctx.fillRect(snake[i].x, snake[i].y, box, box);
+        ctx.strokeStyle = '#000';
+        ctx.strokeRect(snake[i].x, snake[i].y, box, box);
       }
-      snake.unshift(newHead);
     }
 
-    function gameOver() {
-      clearInterval(gameInterval);
-      finalScoreDisplay.innerText = score;
-      document.getElementById("gameOverScreen").classList.remove("hidden");
-      saveScore(score);
+    function endGame(){
+      stopGame();
+      document.getElementById('finalScore').innerText = score;
+      document.getElementById('gameOverScreen').style.display = 'block';
+      // save best score in firebase (once)
+      if(!savedThisRound){
+        savedThisRound = true;
+        saveBestScore(score);
+      }
     }
-    function restartSnake() { initSnake(); }
 
-    /* Nickname + Leaderboard */
-    function getNickname() {
-  let nickname = localStorage.getItem("snakeNickname");
-  if (!nickname) {
-    nickname = prompt("Enter your nickname:");
-    if (nickname && nickname.trim() !== "") {
-      nickname = nickname.trim();
-      localStorage.setItem("snakeNickname", nickname);
-    } else {
-      nickname = "Player" + Math.floor(Math.random() * 1000);
-      localStorage.setItem("snakeNickname", nickname);
-    }
-  }
-  return nickname;
-}
-    function saveScore(newScore) {
-  const nickname = getNickname();
-  const ref = db.ref("snakeScores/" + nickname);
-  ref.once("value").then(snapshot => {
-    const oldData = snapshot.val();
-    if (!oldData || newScore > oldData.score) {
-      ref.set({ score: newScore });
-    }
-  });
-}
-    function loadLeaderboard() {
-  const list = document.getElementById("leaderboardList");
-  db.ref("snakeScores").once("value").then(snapshot => {
-    const scores = [];
-    snapshot.forEach(child => {
-      const data = child.val();
-      scores.push({ name: child.key, score: data.score });
+    // keyboard controls
+    document.addEventListener('keydown', e=>{
+      if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key)){
+        e.preventDefault();
+      }
+      if(e.key === 'ArrowLeft' && dir !== 'RIGHT') dir = 'LEFT';
+      if(e.key === 'ArrowRight' && dir !== 'LEFT') dir = 'RIGHT';
+      if(e.key === 'ArrowUp' && dir !== 'DOWN') dir = 'UP';
+      if(e.key === 'ArrowDown' && dir !== 'UP') dir = 'DOWN';
     });
-    scores.sort((a, b) => b.score - a.score);
-    list.innerHTML = "";
-    scores.slice(0, 10).forEach(s => {
-      const li = document.createElement("li");
-      li.innerText = `${s.name}: ${s.score}`;
-      list.appendChild(li);
-    });
-  });
+
+    // mobile controls
+    function setDirection(d){
+      if(d === 'LEFT' && dir !== 'RIGHT') dir = 'LEFT';
+      if(d === 'RIGHT' && dir !== 'LEFT') dir = 'RIGHT';
+      if(d === 'UP' && dir !== 'DOWN') dir = 'UP';
+      if(d === 'DOWN' && dir !== 'UP') dir = 'DOWN';
+    }
+
+    // ------------------ Leaderboard logic ------------------
+    // We'll store per-nickname node: snakeScores/{nickname} = { score: NUMBER, ts: TIMESTAMP }
+    function saveBestScore(newScore){
+      // ensure nickname exists
+      const nick = getNickname();
+      if(!nick) return;
+      const ref = db.ref('snakeScores/' + encodeKey(nick));
+      ref.once('value').then(snap=>{
+        const data = snap.val();
+        if(!data || typeof data.score !== 'number' || newScore > data.score){
+          ref.set({ score: newScore, ts: Date.now() });
+        }
+      }).catch(err=>{
+        console.error('save error', err);
+      });
+    }
+
+    function encodeKey(k){
+      // Firebase keys cannot contain . $ # [ ] / so encode simply
+      return k.replace(/\./g,'').replace(/\$/g,'').replace(/\#/g,'').replace(/\[/g,'').replace(/\]/g,'').replace(/\//g,'_');
+    }
+
+    // Real-time leaderboard: attach listener while modal open
+    let leaderboardListener = null;
+    function attachLeaderboardListener(){
+      const listEl = document.getElementById('leaderboardList');
+      if(leaderboardListener) return; // already attached
+      leaderboardListener = db.ref('snakeScores').on('value', snap=>{
+        const arr = [];
+        snap.forEach(child=>{
+          const val = child.val();
+          const key = child.key;
+          if(val && typeof val.score === 'number'){
+            arr.push({ name: decodeKey(key), score: val.score, ts: val.ts || 0 });
+          }
+        });
+        arr.sort((a,b)=>b.score - a.score || a.ts - b.ts);
+        listEl.innerHTML = '';
+        arr.slice(0,15).forEach((row,i)=>{
+          const li = document.createElement('li');
+          li.innerText = `${i+1}. ${row.name}: ${row.score}`;
+          listEl.appendChild(li);
+        });
+      });
+    }
+    function detachLeaderboardListener(){
+      if(leaderboardListener){
+        db.ref('snakeScores').off('value', leaderboardListener);
+        leaderboardListener = null;
+      }
+    }
+    function loadLeaderboardOnce(){ // fallback if needed
+      const listEl = document.getElementById('leaderboardList');
+      db.ref('snakeScores').once('value').then(snap=>{
+        const arr = [];
+        snap.forEach(child=>{
+          const val = child.val();
+          const key = child.key;
+          if(val && typeof val.score === 'number') arr.push({ name: decodeKey(key), score: val.score, ts: val.ts || 0 });
+        });
+        arr.sort((a,b)=>b.score - a.score || a.ts - b.ts);
+        listEl.innerHTML = '';
+        arr.slice(0,15).forEach((row,i)=>{
+          const li = document.createElement('li');
+          li.innerText = `${i+1}. ${row.name}: ${row.score}`;
+          listEl.appendChild(li);
+        });
+      });
+    }
+    function decodeKey(k){
+      // reverse encode if needed; underscores may have replaced slashes; just return as-is mostly
+      return k.replace(/_/g,'/');
+    }
+
+    // init small utilities: ensure leaderboard shows when modal opens
+    // (we attach listener in openSnake)
+    // Also show player's name in modal when it's opened (getNickname already does)
+
+    // ensure canvas fits high DPI nicely
+    (function scaleCanvas(){
+      const dpr = window.devicePixelRatio || 1;
+      const w = canvas.width;
+      const h = canvas.height;
+      canvas.style.width = w + 'px';
+      canvas.style.height = h + 'px';
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      ctx.scale(dpr, dpr);
+    })();
+
+    // small UX: call getNickname if present local so player name shows when opening previously
+    if(localStorage.getItem('snakeNickname')){
+      document.getElementById('playerName').innerText = localStorage.getItem('snakeNickname');
+    }
+
+    // Bonus: Show leaderboard preview under unlocked links (Top 5)
+    // This is optional but helps visitors see top scores without opening game.
+    function showLeaderboardPreview(){
+      const container = document.createElement('div');
+      container.style.marginTop = '12px';
+      container.style.textAlign = 'center';
+      container.style.color = '#fff';
+      container.innerHTML = '<div style="color:#ff0;margin-bottom:6px;">🏆 Top Players</div><ul id="previewList" style="list-style:none;padding:0;margin:0;"></ul>';
+      document.getElementById('links').appendChild(container);
+
+      db.ref('snakeScores').orderByChild('score').limitToLast(5).on('value', snap=>{
+        const tmp = [];
+        snap.forEach(child=>{
+          const v = child.val();
+          tmp.push({ name: decodeKey(child.key), score: v.score });
+        });
+        tmp.sort((a,b)=>b.score - a.score);
+        const ul = document.getElementById('previewList');
+        if(!ul) return;
+        ul.innerHTML = '';
+        tmp.forEach(row=>{
+          const li = document.createElement('li');
+          li.style.padding = '4px 0';
+          li.innerText = `${row.name}: ${row.score}`;
+          ul.appendChild(li);
+        });
+      });
+    }
+
+  
+    showLeaderboardPreview();
 
   </script>
 </body>
