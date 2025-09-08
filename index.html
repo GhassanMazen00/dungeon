@@ -1,605 +1,364 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Unlock Ghassan’s Vault</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-
-    /* ---------- Page theme (kept retro/neon) ---------- */
-    :root {
-      --accent: #00ffea;
-      --accent-2: #ff0080;
-      --panel: rgba(0,0,0,0.6);
-      --text: #fff;
-      --muted: #111;
-    }
-
-    html,body { height:100%; }
-    body {
-      margin:0;
-      min-height:100vh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-family:'Press Start 2P', cursive;
+    body { 
+      font-family: 'Press Start 2P', cursive; 
       background: linear-gradient(135deg, #ff0080, #7928ca, #2afadf, #ff8c00);
-      background-size: 400% 400%;
-      animation: gradientShift 8s ease infinite;
-      color: var(--text);
-      text-align:center;
+      background-size: 400% 400%; 
+      animation: gradientShift 8s ease infinite; 
+      color: #fff;
+      display: flex; 
+      flex-direction: column; 
+      align-items: center; 
+      justify-content: center;
+      min-height: 100vh; 
+      margin: 0; 
+      text-align: center; 
     }
-    @keyframes gradientShift { 0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%} }
-
-    /* Top banner - dungeon title (always visible) */
-    .top-banner {
-      position: fixed;
-      top:0;
-      width:100%;
-      background: rgba(0,0,0,0.7);
-      color: var(--accent);
-      padding:10px;
-      font-size:12px;
-      border-bottom:2px solid #ff0;
-      text-shadow:2px 2px #000;
-      z-index:1000;
+    @keyframes gradientShift { 
+      0% {background-position: 0% 50%;} 
+      50% {background-position: 100% 50%;} 
+      100% {background-position: 0% 50%;} 
     }
-
-    /* Admin banner appears only when admin */
-    #adminBanner {
-      display:none;
-      position: fixed;
-      top:44px;
-      left:50%;
-      transform:translateX(-50%);
-      background:#ff1744;
-      color:#fff;
-      padding:8px 12px;
-      border-radius:6px;
-      z-index:1000;
-      font-size:12px;
-      box-shadow:0 4px 12px rgba(0,0,0,0.6);
+    .banner { 
+      position: fixed; top: 0; width: 100%; 
+      background: rgba(0,0,0,0.7); 
+      color: #00ffea; 
+      padding: 10px;
+      font-size: 12px; 
+      border-bottom: 2px solid #ff0; 
+      text-shadow: 2px 2px #000; 
+      z-index: 1000; 
     }
-
-    /* Main card container */
-    .card {
-      width: 940px;
-      max-width: 94%;
-      background: linear-gradient(180deg, rgba(0,0,0,0.45), rgba(0,0,0,0.65));
-      border: 3px solid var(--accent);
-      border-radius: 14px;
-      padding: 26px;
-      box-shadow: 10px 10px 0 rgba(0,0,0,0.6);
-      backdrop-filter: blur(4px);
+    h1 { 
+      font-size: 22px; 
+      margin: 70px 0 20px; 
+      text-shadow: 3px 3px #000; 
     }
-
-    h1 { font-size:20px; margin: 16px 0 10px; text-shadow:3px 3px #000; }
-
-    .entry-row { display:flex; flex-direction:column; align-items:center; gap:12px; }
-
-    /* Pixel character container */
-    .character-wrap {
-      position: relative;
-      display:flex;
-      justify-content:center;
-      margin-bottom:6px;
+    .input-box { 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      gap: 8px; 
+      margin-bottom: 10px; 
+      flex-wrap: wrap; 
     }
-    canvas#pixelChar {
-      width:128px;
-      height:128px;
-      image-rendering: pixelated;
-      background: #111;
-      border:3px solid #000;
-      border-radius:8px;
-      cursor:pointer;
-      transition: transform 0.08s ease;
-      box-shadow: 6px 6px 0 rgba(0,0,0,0.6);
+    input, button, textarea { 
+      padding: 12px; 
+      margin: 4px; 
+      border: 3px solid #000; 
+      border-radius: 0;
+      font-size: 14px; 
+      font-family: 'Press Start 2P', cursive; 
+      outline: none; 
     }
-
-    /* Shake animation class for wrong password */
-    .shake {
-      animation: shakeAnim 0.5s;
+    input, textarea { 
+      width: 220px; 
+      background: #111; 
+      color: #0f0; 
     }
-    @keyframes shakeAnim {
-      0% { transform: translateX(0); }
-      25% { transform: translateX(-6px); }
-      50% { transform: translateX(6px); }
-      75% { transform: translateX(-4px); }
-      100% { transform: translateX(0); }
+    button { 
+      background: #ff0080; 
+      color: #fff; 
+      cursor: pointer; 
+      transition: 0.2s; 
     }
-
-    /* Chat bubble */
-    .chat-bubble {
-      position:absolute;
-      bottom: 140px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #fff;
+    button:hover { 
+      background: #00ffea; 
+      color: #000; 
+    }
+    .hidden { display: none; }
+    .links { 
+      display: flex; 
+      flex-direction: column; 
+      align-items: center; 
+      gap: 12px; 
+      margin-top: 20px; 
+    }
+    .links a, .links button { 
+      width: 220px; 
+      text-align: center; 
+      color: #00ffea; 
+      text-decoration: none; 
+      font-size: 14px; 
+      text-shadow: 2px 2px #000; 
+    }
+    .links a:hover { color: #ff0; }
+    .badge { 
+      display: inline-block; 
+      margin-left: 10px; 
+      padding: 6px 8px; 
+      background: #00ffea; 
       color: #000;
-      padding: 8px 10px;
-      border-radius: 10px;
-      border:4px solid var(--accent);
-      font-family: 'Press Start 2P', cursive;
-      font-size:12px;
-      display:none;
-      max-width: 260px;
-      z-index: 80;
+      border: 3px solid #000; 
+      box-shadow: 3px 3px #000; 
+      font-size: 10px; 
+      vertical-align: middle; 
     }
-    .chat-bubble::after {
-      content: "";
-      position:absolute;
-      left:50%;
-      transform: translateX(-50%);
-      bottom:-12px;
-      border-width: 8px 8px 0 8px;
-      border-style: solid;
-      border-color: var(--accent) transparent transparent transparent;
+    .modal { 
+      display: none; 
+      position: fixed; 
+      z-index: 999; 
+      left: 0; top: 0; 
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.9); 
+      justify-content: center; 
+      align-items: center; 
     }
-
-    .controls { display:flex; gap:10px; align-items:center; justify-content:center; flex-wrap:wrap; margin-bottom:6px; }
-
-    input[type="password"] {
-      padding:12px;
-      width:220px;
-      background:#111;
-      color:#0f0;
-      border:3px solid #000;
-      font-family:'Press Start 2P', cursive;
-      outline:none;
-      text-align:center;
+    .modal-content { 
+      background: #111; 
+      padding: 20px; 
+      border: 4px solid #00ffea; 
+      border-radius: 10px; 
+      max-width: 700px;
+      display: flex; 
+      flex-wrap: wrap; 
+      gap: 20px; 
+      justify-content: center; 
     }
-
-    button.btn {
-      padding:12px 14px;
-      width:220px;
-      background: var(--accent-2);
-      color:#fff;
-      border:3px solid #000;
-      cursor:pointer;
-      font-family:'Press Start 2P', cursive;
-      transition: 0.15s;
+    .pixel-character { 
+      cursor: pointer; 
+      transition: transform 0.2s ease; 
     }
-    button.btn:hover { background: var(--accent); color:#000; }
-
-    /* Links area (centered column) */
-    .links {
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      gap:12px;
-      margin-top: 16px;
+    .pixel-character:hover { transform: scale(1.2); }
+    .close-btn { 
+      margin-top: 20px; 
+      padding: 10px 16px; 
+      background: #ff0080; 
+      border: 3px solid #000;
+      color: #fff; 
+      font-family: 'Press Start 2P', cursive; 
+      cursor: pointer; 
     }
-    .links button, .links a { width:220px; text-align:center; text-decoration:none; color:var(--accent); font-size:14px; text-shadow:2px 2px #000; background:transparent; border:none; cursor:pointer; }
-
-    /* Notes wall */
-    #notesSection { margin-top:20px; padding:18px; background:var(--panel); border:3px solid var(--accent); border-radius:12px; max-width:900px; margin-left:auto; margin-right:auto;}
-    #notesSection h2 { color:#ff0; font-size:14px; margin-bottom:12px; text-shadow:1px 1px #000; }
-    .note-form { display:flex; flex-direction:column; align-items:center; gap:8px; margin-bottom:14px; }
-    .note-form input, .note-form textarea { width:100%; max-width:520px; background:#111; color:#0f0; border:2px solid var(--accent); padding:10px; font-size:12px; }
-    .notes-wall { display:grid; grid-template-columns: repeat(auto-fill,minmax(220px,1fr)); gap:12px; }
-
-    .note { background:#222; border:3px solid var(--accent-2); padding:12px; box-shadow:3px 3px #000; font-size:12px; text-align:left; min-height:76px; position:relative; transform: rotate(-1deg); }
-    .note:nth-child(odd) { background:#333; border-color:var(--accent); transform:rotate(1deg); }
-    .note .nickname { color:#ff0; display:block; margin-bottom:6px; font-weight:bold; }
-
-    .delete-btn { display:inline-block; margin-top:8px; background:#e60026; border:3px solid #000; color:#fff; padding:6px 8px; font-size:10px; cursor:pointer; box-shadow:2px 2px #000; }
-
-    /* Modal (pixel friends) */
-    .modal { display:none; position:fixed; left:0; top:0; width:100%; height:100%; background: rgba(0,0,0,0.9); justify-content:center; align-items:center; z-index:900; }
-    .modal .modal-content { background:#111; padding:20px; border:4px solid var(--accent); border-radius:10px; display:flex; gap:14px; flex-wrap:wrap; justify-content:center; max-width:900px; }
-
-    /* small responsive */
-    @media (max-width:640px) {
-      .card{ padding:14px;}
-      canvas#pixelChar{ width:96px; height:96px;}
-      .chat-bubble{ bottom:110px; font-size:11px;}
-      button.btn, input[type="password"]{ width:180px;}
+    .close-btn:hover { background: #00ffea; color: #000; }
+    #notesSection { 
+      margin-top: 30px; 
+      padding: 20px; 
+      background: rgba(0,0,0,0.6); 
+      border: 3px solid #00ffea;
+      border-radius: 12px; 
+      max-width: 900px; 
     }
+    #notesSection h2 { 
+      color: #ff0; 
+      text-shadow: 2px 2px #000; 
+      margin-bottom: 20px; 
+      font-size: 16px; 
+    }
+    .note-form { 
+      display: flex; 
+      flex-direction: column; 
+      gap: 10px; 
+      margin-bottom: 20px; 
+      align-items: center; 
+    }
+    .note-form input, .note-form textarea { 
+      background: #111; 
+      color: #0f0; 
+      border: 2px solid #00ffea;
+      padding: 10px; 
+      font-size: 12px; 
+      width: 100%; 
+      max-width: 520px; 
+    }
+    .note-form button { 
+      background: #ff0080; 
+      border: 2px solid #000; 
+      padding: 10px 14px; 
+      cursor: pointer; 
+    }
+    .note-form button:hover { background: #00ffea; color: #000; }
+    .notes-wall { 
+      display: grid; 
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); 
+      gap: 15px; 
+    }
+    .note { 
+      padding: 15px; 
+      background: #222; 
+      border: 3px solid #ff0080; 
+      box-shadow: 3px 3px #000; 
+      font-size: 12px;
+      word-wrap: break-word; 
+      transform: rotate(-1deg); 
+      text-align: left; 
+      position: relative; 
+      min-height: 84px; 
+    }
+    .note:nth-child(odd) { 
+      background: #333; 
+      border-color: #00ffea; 
+      transform: rotate(1deg); 
+    }
+    .note .nickname { 
+      font-weight: bold; 
+      color: #ff0; 
+      margin-bottom: 8px; 
+      display: block; 
+    }
+    .delete-btn { 
+      display: inline-block; 
+      margin-top: 8px; 
+      background: #e60026; 
+      border: 3px solid #000;
+      color: #fff; 
+      padding: 6px 8px; 
+      font-size: 10px; 
+      font-family: 'Press Start 2P', cursive; 
+      cursor: pointer; 
+      box-shadow: 2px 2px #000; 
+    }
+    .delete-btn:hover { background: #ff8c00; color: #000; }
   </style>
 </head>
 <body>
-  <div class="top-banner">Abo Mazen's dungeon</div>
-  <div id="adminBanner">ADMIN MODE ACTIVE</div>
+  <div class="banner">Abo Mazen's dungeon</div>
+  <h1>🕹️ ENTER THE KEY</h1>
+  <div class="input-box">
+    <input type="password" id="keyInput" placeholder="Type here..." onkeydown="if(event.key==='Enter')unlock()">
+    <button onclick="showHint()">💡 Hint</button>
+  </div>
+  <button onclick="unlock()">UNLOCK</button>
 
-  <div class="card">
-    <h1>🕹️ ENTER THE KEY</h1>
+  <div id="links" class="hidden">
+    <h2> 🎉 ACCESS GRANTED <span id="roleBadge" class="badge hidden">ADMIN MODE</span> </h2>
+    <div class="links">
+      <button onclick="window.open('https://github.com/GhassanMazen00/GhassanMazen00','_blank')">💻 GitHub</button>
+      <button onclick="window.open('https://t.snapchat.com/p3KLzoLR','_blank')">👻 Snapchat</button>
+      <button onclick="window.open('mailto:ghassanmazen@zohomail.com','_blank')">📧 Email</button>
+      <button onclick="openModal()">💃 My Bitches</button>
+      <button onclick="trap()">🔞 +18 Pics of Ghassan</button>
+    </div>
 
-    <!-- Character -->
-    <div class="entry-row">
-      <div class="character-wrap">
-        <canvas id="pixelChar" width="128" height="128" title="Ghassan's Pixel"></canvas>
-        <div id="chatBubble" class="chat-bubble"></div>
+    <!-- Visitor Notes Wall -->
+    <div id="notesSection">
+      <h2>📝 Visitor Wall</h2>
+      <div class="note-form">
+        <input type="text" id="nickname" placeholder="Your nickname...">
+        <textarea id="noteText" rows="3" placeholder="Leave a note..."></textarea>
+        <button onclick="addNote()">Post Note</button>
       </div>
-
-      <!-- Input & controls -->
-      <div class="controls">
-        <input id="keyInput" type="password" placeholder="Type here..." onkeydown="if(event.key==='Enter') unlock()">
-        <button class="btn" onclick="showHint()">💡 Hint</button>
-      </div>
-      <div style="margin-top:6px;">
-        <button class="btn" onclick="unlock()">UNLOCK</button>
-      </div>
-
-      <!-- Links (will show after unlock) -->
-      <div id="links" class="hidden">
-        <h2> 🎉 ACCESS GRANTED <span id="roleBadge" class="badge" style="display:none; margin-left:10px; background:var(--accent); color:#000; padding:6px 8px; border:3px solid #000;">ADMIN MODE</span> </h2>
-        <div class="links">
-          <button onclick="window.open('https://github.com/GhassanMazen00/GhassanMazen00','_blank')">💻 GitHub</button>
-          <button onclick="window.open('https://t.snapchat.com/p3KLzoLR','_blank')">👻 Snapchat</button>
-          <button onclick="window.open('mailto:ghassanmazen@zohomail.com','_blank')">📧 Email</button>
-          <button onclick="openModal()">💃 My Bitches</button>
-          <button onclick="trap()">🔞 +18 Pics of Ghassan</button>
-        </div>
-
-        <!-- Visitor Notes Wall -->
-        <div id="notesSection">
-          <h2>📝 Visitor Wall</h2>
-          <div class="note-form">
-            <input type="text" id="nickname" placeholder="Your nickname...">
-            <textarea id="noteText" rows="3" placeholder="Leave a note..."></textarea>
-            <button class="btn" onclick="addNote()">Post Note</button>
-          </div>
-          <div class="notes-wall" id="notesWall"></div>
-        </div>
-      </div>
+      <div class="notes-wall" id="notesWall"></div>
     </div>
   </div>
 
-  <!-- Modal with pixel characters -->
-  <div id="myModal" class="modal" onclick="closeModal(event)">
-    <div class="modal-content" onclick="event.stopPropagation()">
-      <a href="https://www.instagram.com/loai_abb/" target="_blank"><img src="https://i.postimg.cc/XqLnjRMS/20250819-2117-Pixel-Ginger-Character-simple-compose-01k31rss70fmktq7sny215zh9h.png" width="80" class="pixel-character"></a>
-      <a href="https://www.instagram.com/osaidjano/" target="_blank"><img src="https://i.postimg.cc/JhH7NYXZ/20250819-2129-Pixel-Man-with-T-Shirt-simple-compose-01k31scc2efvfbt02vce5hkp5r.png" width="80" class="pixel-character"></a>
-      <a href="https://www.instagram.com/loai_kashkash/" target="_blank"><img src="https://i.postimg.cc/76gxcCmL/20250819-2136-Pixel-Fat-Man-simple-compose-01k31sw-dygemgba9w7vm7tmpq5.png" width="80" class="pixel-character"></a>
-      <a href="https://www.instagram.com/khalid.alfares1/" target="_blank"><img src="https://i.postimg.cc/d1Ms4RRX/20250819-2140-Pixel-Man-with-Flag-simple-compose-01k31t39ykee6bbh3fcc1xfhjv-removebg-preview.png" width="80" class="pixel-character"></a>
-      <a href="https://www.instagram.com/badr_sanoufi/" target="_blank"><img src="https://i.postimg.cc/j2tsrsF4/assets-task-01k31taeamf6tavtp3htwn6b2h-1755629076-img-0.webp" width="80" class="pixel-character"></a>
-      <button class="btn" style="width:auto;" onclick="closeModal(event)">CLOSE</button>
-    </div>
+  <!-- Modal -->
+<div class="modal" id="myModal">
+  <div class="modal-content">
+    <a href="https://www.instagram.com/loai_abb/" target="_blank">
+      <img src="https://i.postimg.cc/XqLnjRMS/20250819-2117-Pixel-Ginger-Character-simple-compose-01k31rss70fmktq7sny215zh9h.png" width="80" class="pixel-character">
+    </a>
+    <a href="https://www.instagram.com/osaidjano/" target="_blank">
+      <img src="https://i.postimg.cc/JhH7NYXZ/20250819-2129-Pixel-Man-with-T-Shirt-simple-compose-01k31scc2efvfbt02vce5hkp5r.png" width="80" class="pixel-character">
+    </a>
+    <a href="https://www.instagram.com/loai_kashkash/" target="_blank">
+      <img src="https://i.postimg.cc/76gxcCmL/20250819-2136-Pixel-Fat-Man-simple-compose-01k31sw-dygemgba9w7vm7tmpq5.png" width="80" class="pixel-character">
+    </a>
+    <a href="https://www.instagram.com/khalid.alfares1/" target="_blank">
+      <img src="https://i.postimg.cc/d1Ms4RRX/20250819-2140-Pixel-Man-with-Flag-simple-compose-01k31t39ykee6bbh3fcc1xfhjv-removebg-preview.png" width="80" class="pixel-character">
+    </a>
+    <a href="https://www.instagram.com/badr_sanoufi/" target="_blank">
+      <img src="https://i.postimg.cc/j2tsrsF4/assets-task-01k31taeamf6tavtp3htwn6b2h-1755629076-img-0.webp" width="80" class="pixel-character">
+    </a>
+    <button class="close-btn" onclick="closeModal()">CLOSE</button>
   </div>
+</div>
 
-  <!-- Firebase (kept original libs) -->
+  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 
   <script>
-  /* ===========================
-     Firebase & Notes (unchanged logic)
-     =========================== */
-  const firebaseConfig = { databaseURL: "https://dungeon-data-base-default-rtdb.firebaseio.com/" };
-  const app = firebase.initializeApp(firebaseConfig);
-  const db = firebase.database();
+    let mode = 'locked';
+    let isAdmin = false;
+    const VISITOR_PASS = "10101999";
+    const ADMIN_PASS = "ananke";
 
-  let mode = 'locked';
-  let isAdmin = false;
+    const firebaseConfig = {
+      databaseURL: "https://dungeon-data-base-default-rtdb.firebaseio.com/"
+    };
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
 
-  function addNote() {
-    const nickname = document.getElementById('nickname').value.trim();
-    const noteText = document.getElementById('noteText').value.trim();
-    if (!nickname || !noteText) { showBubble("Enter name & note"); return; }
-    db.ref("notes").push({ nickname, noteText });
-    document.getElementById('nickname').value = "";
-    document.getElementById('noteText').value = "";
-  }
+    function unlock() {
+      const key = document.getElementById('keyInput').value.trim();
+      if (key === VISITOR_PASS) {
+        mode = 'visitor'; isAdmin = false; enterVault();
+      } else if (key === ADMIN_PASS) {
+        mode = 'admin'; isAdmin = true; enterVault();
+      } else {
+        alert("❌ WRONG KEY. TRY AGAIN!");
+      }
+    }
 
-  function displayNotes() {
-    const notesWall = document.getElementById('notesWall');
-    notesWall.innerHTML = "";
-    db.ref("notes").on("value", snapshot => {
+    function enterVault() {
+      document.getElementById('links').classList.remove('hidden');
+      document.getElementById('roleBadge').classList.toggle('hidden', !isAdmin);
+      displayNotes();
+      setTimeout(() => document.getElementById('links').scrollIntoView({behavior:'smooth'}), 50);
+    }
+
+    function showHint() { 
+      alert("When was the greatest human on earth born? (type numbers only, format: daymonthyear)"); 
+    }
+    function trap() { 
+      alert("⚠️ Ghassan got notified that you tried to see him naked, shame on you!"); 
+    }
+    function openModal() { 
+      document.getElementById("myModal").style.display = "flex"; 
+    }
+    function closeModal() { 
+      document.getElementById("myModal").style.display = "none"; 
+    }
+
+    function escapeHTML(str) {
+      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+
+    function addNote() {
+      const nickname = document.getElementById('nickname').value.trim();
+      const noteText = document.getElementById('noteText').value.trim();
+      if (!nickname || !noteText) { 
+        alert("⚠️ Please enter a nickname and a note!"); 
+        return; 
+      }
+      const newNote = { nickname, noteText };
+      db.ref("notes").push(newNote);
+      document.getElementById('nickname').value = "";
+      document.getElementById('noteText').value = "";
+    }
+
+    function displayNotes() {
+      const notesWall = document.getElementById('notesWall');
       notesWall.innerHTML = "";
-      snapshot.forEach(child => {
-        const n = child.val();
-        const noteDiv = document.createElement('div');
-        noteDiv.className = 'note';
-        const safeNick = escapeHTML(n.nickname);
-        const safeText = escapeHTML(n.noteText).replace(/\n/g, "<br>");
-        noteDiv.innerHTML = `<span class="nickname">${safeNick}</span><div>${safeText}</div>`;
-        if (isAdmin) {
-          const del = document.createElement('button');
-          del.className = 'delete-btn';
-          del.textContent = '❌ Delete';
-          del.onclick = () => { db.ref("notes/" + child.key).remove(); };
-          noteDiv.appendChild(del);
-        }
-        notesWall.appendChild(noteDiv);
+      db.ref("notes").on("value", snapshot => {
+        notesWall.innerHTML = "";
+        snapshot.forEach(child => {
+          const n = child.val();
+          const noteDiv = document.createElement('div');
+          noteDiv.classList.add('note');
+          const safeNick = escapeHTML(n.nickname);
+          const safeText = escapeHTML(n.noteText).replace(/\n/g, "<br>");
+          noteDiv.innerHTML = `
+            <span class="nickname">${safeNick}</span>
+            <div>${safeText}</div>
+            ${isAdmin ? `<button class="delete-btn" onclick="deleteNote('${child.key}')">❌ Delete</button>` : ""}
+          `;
+          notesWall.appendChild(noteDiv);
+        });
       });
-    });
-  }
-
-  function escapeHTML(str) {
-    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  }
-
-  /* ===========================
-     Modal & trap
-     =========================== */
-  function openModal(){ document.getElementById('myModal').style.display='flex'; }
-  function closeModal(e){ if(e) e.stopPropagation(); document.getElementById('myModal').style.display='none'; }
-  function trap(){ showBubble("⚠️ Ghassan got notified that you tried to see him naked, shame on you!"); }
-
-  /* ===========================
-     Character drawing & animation
-     - programmatically draws a simple pixel avatar
-     - supports idle/blink, wave, hater mode
-     =========================== */
-
-  const canvas = document.getElementById('pixelChar');
-  const ctx = canvas.getContext('2d', {alpha: true});
-  const chatBubble = document.getElementById('chatBubble');
-  const wrapper = document.querySelector('.character-wrap');
-
-  // Character properties (from your description)
-  const COLORS = {
-    skin: '#D3A57A',        // light-middle-eastern tone
-    hair: '#2E1E0F',        // dark brown
-    beard: '#2E1E0F',
-    tshirt: '#222',         // base, we'll overlay symbol
-    tshirtAccent: '#fff',
-    haterTint: '#8b0000'
-  };
-
-  let idleFrame = 0; // for blinking
-  let waveFrame = 0;
-  let blinkTimer = 0;
-  let inWave = false;
-  let vShake = false;
-  let haterMode = false;
-  let clickCount = 0;
-  let lastClickTime = 0;
-
-  // draw one frame variant depending on state
-  function drawCharacter(frameVariant = {blink:false, wave:false, hater:false}) {
-    // clear at logical pixel scale (use 32x32 grid scaled to canvas)
-    const grid = 32;
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    ctx.save();
-    // optional shake translation when wrong password
-    if (vShake) {
-      const dx = (Math.random()*6 - 3);
-      ctx.translate(dx, 0);
     }
 
-    // scale factor: canvas 128 => each "pixel" is 4x4 (32x32 grid)
-    const px = canvas.width / grid;
-
-    // helper to draw a pixel block
-    function p(x,y,color) {
-      ctx.fillStyle = color;
-      ctx.fillRect(Math.round(x*px), Math.round(y*px), Math.ceil(px), Math.ceil(px));
+    function deleteNote(id) {
+      if (!isAdmin) return;
+      db.ref("notes/" + id).remove();
     }
-
-    // Colors chosen per mode
-    const skin = frameVariant.hater ? shade(COLORS.skin, -0.15) : COLORS.skin;
-    const hair = frameVariant.hater ? shade(COLORS.hair, 0.15) : COLORS.hair;
-    const beard = frameVariant.hater ? shade(COLORS.beard, 0.15) : COLORS.beard;
-    const tsh = frameVariant.hater ? shade(COLORS.tshirt, -0.25) : COLORS.tshirt;
-    const tshAcc = frameVariant.hater ? COLORS.haterTint : COLORS.tshirtAccent;
-
-    // Simple pixel body layout (head, hair, beard, eyes, body, arm)
-    // Head (6x6 area) centered
-    const hx = 12, hy = 4;
-
-    // hair (top)
-    for(let sx=0;sx<8;sx++) {
-      p(hx - 1 + sx, hy - 1, hair);
-      if (sx===0 || sx===7) p(hx - 1 + sx, hy, hair);
-    }
-    // head skin
-    for(let yy=0; yy<6; yy++){
-      for(let xx=0; xx<8; xx++){
-        p(hx - 1 + xx, hy + yy, skin);
-      }
-    }
-    // beard (short beard along jaw)
-    for(let xx=0; xx<8; xx++){
-      p(hx - 1 + xx, hy + 6, beard);
-    }
-    // eyes (blink or open)
-    if (frameVariant.blink) {
-      // closed eyes (single line)
-      p(hx + 1, hy + 2, '#111');
-      p(hx + 4, hy + 2, '#111');
-    } else {
-      // open eyes
-      p(hx + 1, hy + 2, '#000');
-      p(hx + 4, hy + 2, '#000');
-      p(hx + 1, hy + 3, '#fff');
-      p(hx + 4, hy + 3, '#fff');
-    }
-
-    // Body (t-shirt)
-    for(let yy=0; yy<8; yy++){
-      for(let xx=0; xx<10; xx++){
-        p(hx - 2 + xx, hy + 8 + yy, tsh);
-      }
-    }
-    // draw Deathly Hallows symbol on chest (triangle, circle, line)
-    // triangle (approx)
-    const triX = hx + 2, triY = hy + 10;
-    p(triX, triY, tshAcc);
-    p(triX-1, triY+1, tshAcc); p(triX, triY+1, tshAcc); p(triX+1, triY+1, tshAcc);
-    p(triX-2, triY+2, tshAcc); p(triX-1, triY+2, tshAcc); p(triX, triY+2, tshAcc); p(triX+1, triY+2, tshAcc); p(triX+2, triY+2, tshAcc);
-
-    // circle: use ring pixels
-    p(triX, triY+1, '#000'); // inner to simulate circle hole
-    // vertical line (inside triangle)
-    for(let l=0; l<5; l++) p(triX, triY + l, tshAcc);
-
-    // Arms: left static, right moves for wave
-    // left arm (down)
-    for(let a=0;a<4;a++){ p(hx - 4 + a, hy + 10 + a, tsh); }
-
-    // right arm: wave if wave==true
-    if (frameVariant.wave) {
-      // raised arm (wave)
-      p(hx + 9, hy + 6, tsh); p(hx + 10, hy + 6, tsh);
-      p(hx + 9, hy + 7, tsh); p(hx + 8, hy + 8, tsh);
-    } else {
-      // down arm
-      p(hx + 10, hy + 12, tsh); p(hx + 10, hy + 13, tsh); p(hx + 9, hy + 14, tsh);
-    }
-
-    // small eyes brow or hater glare (if hater)
-    if (frameVariant.hater) {
-      p(hx + 1, hy + 1, '#111'); p(hx + 4, hy + 1, '#111'); // angry brow
-    }
-
-    ctx.restore();
-  }
-
-  // utility to darken/lighten color
-  function shade(hex, percent) {
-    const f = hex.slice(1);
-    const t = percent < 0 ? 0 : 255;
-    const p = Math.abs(percent);
-    const R = parseInt(f.substring(0,2),16);
-    const G = parseInt(f.substring(2,4),16);
-    const B = parseInt(f.substring(4,6),16);
-    const newR = Math.round((t - R) * p) + R;
-    const newG = Math.round((t - G) * p) + G;
-    const newB = Math.round((t - B) * p) + B;
-    return '#' + ( (1<<24) + (newR<<16) + (newG<<8) + newB ).toString(16).slice(1);
-  }
-
-  // animation loop
-  function animLoop() {
-    // blinking logic
-    blinkTimer++;
-    const shouldBlink = (blinkTimer % 80 === 0) || (blinkTimer % 200 === 0 && Math.random() > 0.6);
-    const blink = shouldBlink && (Math.floor((blinkTimer%160)/40) !== 0);
-    // wave toggling
-    if (inWave) {
-      waveFrame++;
-      if (waveFrame > 8) { inWave = false; waveFrame = 0; }
-    }
-    // draw with current flags
-    drawCharacter({ blink: blink, wave: inWave, hater: haterMode });
-    requestAnimationFrame(animLoop);
-  }
-  requestAnimationFrame(animLoop);
-
-  // interactions
-  canvas.addEventListener('mouseover', () => {
-    inWave = true;
-    showBubble("Hey, careful with the vault!");
-  });
-  canvas.addEventListener('mouseout', () => {
-    // no persistent bubble
-  });
-
-  canvas.addEventListener('click', () => {
-    const now = Date.now();
-    if (now - lastClickTime < 800) {
-      clickCount++;
-    } else {
-      clickCount = 1;
-    }
-    lastClickTime = now;
-    if (clickCount >= 5) {
-      clickCount = 0;
-      haterMode = true;
-      showBubble("I’m the hater boss now 😈");
-      // small visual cue
-      setTimeout(()=>{ haterMode = false; }, 6000);
-    } else {
-      showBubble(["Yo.","Sup.","Try the key.","Nice shirt."][Math.floor(Math.random()*4)]);
-    }
-  });
-
-  // show chat bubble
-  let bubbleTimeout = null;
-  function showBubble(text, ms = 1800) {
-    if (bubbleTimeout) clearTimeout(bubbleTimeout);
-    chatBubble.style.display = 'block';
-    chatBubble.textContent = text;
-    bubbleTimeout = setTimeout(()=>{ chatBubble.style.display='none'; bubbleTimeout = null; }, ms);
-  }
-
-  /* ===========================
-     Password logic & UI sync
-     =========================== */
-
-  const VISITOR_PASS = "10101999";
-  const ADMIN_PASS = "ananke";
-
-  function unlock() {
-    const key = document.getElementById('keyInput').value.trim();
-    checkPassword(key);
-  }
-
-  function checkPassword(key) {
-    const links = document.getElementById('links');
-    const roleBadge = document.getElementById('roleBadge');
-    const adminBanner = document.getElementById('adminBanner');
-
-    if (key === VISITOR_PASS) {
-      mode = 'visitor';
-      isAdmin = false;
-      links.classList.remove('hidden');
-      roleBadge.style.display = 'none';
-      adminBanner.style.display = 'none';
-      displayNotes();
-      showBubble("Alright, get in.");
-      // ensure no shake
-      triggerShake(false);
-    } else if (key === ADMIN_PASS) {
-      mode = 'admin';
-      isAdmin = true;
-      links.classList.remove('hidden');
-      roleBadge.style.display = 'inline-block';
-      adminBanner.style.display = 'block';
-      displayNotes();
-      showBubble("Respect, boss 😏");
-      triggerShake(false);
-    } else {
-      // wrong
-      showBubble("Bruh… wrong again.");
-      triggerShake(true);
-    }
-  }
-
-  // shaking effect
-  function triggerShake(flag) {
-    vShake = flag;
-    if (flag) {
-      // quick shake then reset
-      canvas.classList.add('shake');
-      setTimeout(()=>{ canvas.classList.remove('shake'); vShake = false; }, 520);
-    }
-  }
-
-  function showHint() {
-    showBubble("When was the greatest human on earth born? (type numbers only: ddmmyyyy)");
-  }
-
-  /* ===========================
-     Admin banner fix note:
-     - adminBanner only shown on admin pass
-     - top-banner stays as dungeon title always
-     =========================== */
-
-  /* ===========================
-     Small helpers for page (modal/trap already above)
-     =========================== */
-
-  // keep original trap already defined
-
-  /* ===========================
-     Ensure Firebase notes loaded after unlock
-     =========================== */
-
-  // Display notes is already implemented above (displayNotes)
-  // It uses isAdmin variable for delete button rendering
-
-  // Safety: attach displayNotes real quick to keep subscription after page load (no unlock)
-  // We'll only show the notes UI after unlock; subscription is inside displayNotes call.
-
-  /* ===========================
-     Extra: preserve previous firebase functions names for compatibility
-     =========================== */
-
-  // (deleteNote handled via inline callback in displayNotes)
-
   </script>
 </body>
 </html>
