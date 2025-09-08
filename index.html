@@ -6,50 +6,213 @@
   <title>Unlock Ghassan’s Vault</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-    /* 🔥 your CSS unchanged */
-    body { font-family: 'Press Start 2P', cursive; background: linear-gradient(135deg, #ff0080, #7928ca, #2afadf, #ff8c00);
-      background-size: 400% 400%; animation: gradientShift 8s ease infinite; color: #fff;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      min-height: 100vh; margin: 0; text-align: center; }
-    @keyframes gradientShift { 0% {background-position: 0% 50%;} 50% {background-position: 100% 50%;} 100% {background-position: 0% 50%;} }
-    .banner { position: fixed; top: 0; width: 100%; background: rgba(0,0,0,0.7); color: #00ffea; padding: 10px;
-      font-size: 12px; border-bottom: 2px solid #ff0; text-shadow: 2px 2px #000; z-index: 1000; }
-    h1 { font-size: 22px; margin: 70px 0 20px; text-shadow: 3px 3px #000; }
-    .input-box { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
-    input, button, textarea { padding: 12px; margin: 4px; border: 3px solid #000; border-radius: 0;
-      font-size: 14px; font-family: 'Press Start 2P', cursive; outline: none; }
-    input, textarea { width: 220px; background: #111; color: #0f0; }
-    button { background: #ff0080; color: #fff; cursor: pointer; transition: 0.2s; }
-    button:hover { background: #00ffea; color: #000; }
+    body { 
+      font-family: 'Press Start 2P', cursive; 
+      background: linear-gradient(135deg, #ff0080, #7928ca, #2afadf, #ff8c00);
+      background-size: 400% 400%; 
+      animation: gradientShift 8s ease infinite; 
+      color: #fff;
+      display: flex; 
+      flex-direction: column; 
+      align-items: center; 
+      justify-content: center;
+      min-height: 100vh; 
+      margin: 0; 
+      text-align: center; 
+    }
+    @keyframes gradientShift { 
+      0% {background-position: 0% 50%;} 
+      50% {background-position: 100% 50%;} 
+      100% {background-position: 0% 50%;} 
+    }
+    .banner { 
+      position: fixed; top: 0; width: 100%; 
+      background: rgba(0,0,0,0.7); 
+      color: #00ffea; 
+      padding: 10px;
+      font-size: 12px; 
+      border-bottom: 2px solid #ff0; 
+      text-shadow: 2px 2px #000; 
+      z-index: 1000; 
+    }
+    h1 { 
+      font-size: 22px; 
+      margin: 70px 0 20px; 
+      text-shadow: 3px 3px #000; 
+    }
+    .input-box { 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      gap: 8px; 
+      margin-bottom: 10px; 
+      flex-wrap: wrap; 
+    }
+    input, button, textarea { 
+      padding: 12px; 
+      margin: 4px; 
+      border: 3px solid #000; 
+      border-radius: 0;
+      font-size: 14px; 
+      font-family: 'Press Start 2P', cursive; 
+      outline: none; 
+    }
+    input, textarea { 
+      width: 220px; 
+      background: #111; 
+      color: #0f0; 
+    }
+    button { 
+      background: #ff0080; 
+      color: #fff; 
+      cursor: pointer; 
+      transition: 0.2s; 
+    }
+    button:hover { 
+      background: #00ffea; 
+      color: #000; 
+    }
     .hidden { display: none; }
-    .links a, .links button { display: block; margin: 12px 0; color: #00ffea; text-decoration: none; font-size: 14px; text-shadow: 2px 2px #000; }
+    .links { 
+      display: flex; 
+      flex-direction: column; 
+      align-items: center; 
+      gap: 12px; 
+      margin-top: 20px; 
+    }
+    .links a, .links button { 
+      width: 220px; 
+      text-align: center; 
+      color: #00ffea; 
+      text-decoration: none; 
+      font-size: 14px; 
+      text-shadow: 2px 2px #000; 
+    }
     .links a:hover { color: #ff0; }
-    .badge { display: inline-block; margin-left: 10px; padding: 6px 8px; background: #00ffea; color: #000;
-      border: 3px solid #000; box-shadow: 3px 3px #000; font-size: 10px; vertical-align: middle; }
-    .modal { display: none; position: fixed; z-index: 999; left: 0; top: 0; width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.9); justify-content: center; align-items: center; }
-    .modal-content { background: #111; padding: 20px; border: 4px solid #00ffea; border-radius: 10px; max-width: 700px;
-      display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
-    .pixel-character { cursor: pointer; transition: transform 0.2s ease; }
+    .badge { 
+      display: inline-block; 
+      margin-left: 10px; 
+      padding: 6px 8px; 
+      background: #00ffea; 
+      color: #000;
+      border: 3px solid #000; 
+      box-shadow: 3px 3px #000; 
+      font-size: 10px; 
+      vertical-align: middle; 
+    }
+    .modal { 
+      display: none; 
+      position: fixed; 
+      z-index: 999; 
+      left: 0; top: 0; 
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.9); 
+      justify-content: center; 
+      align-items: center; 
+    }
+    .modal-content { 
+      background: #111; 
+      padding: 20px; 
+      border: 4px solid #00ffea; 
+      border-radius: 10px; 
+      max-width: 700px;
+      display: flex; 
+      flex-wrap: wrap; 
+      gap: 20px; 
+      justify-content: center; 
+    }
+    .pixel-character { 
+      cursor: pointer; 
+      transition: transform 0.2s ease; 
+    }
     .pixel-character:hover { transform: scale(1.2); }
-    .close-btn { margin-top: 20px; padding: 10px 16px; background: #ff0080; border: 3px solid #000;
-      color: #fff; font-family: 'Press Start 2P', cursive; cursor: pointer; }
+    .close-btn { 
+      margin-top: 20px; 
+      padding: 10px 16px; 
+      background: #ff0080; 
+      border: 3px solid #000;
+      color: #fff; 
+      font-family: 'Press Start 2P', cursive; 
+      cursor: pointer; 
+    }
     .close-btn:hover { background: #00ffea; color: #000; }
-    #notesSection { margin-top: 30px; padding: 20px; background: rgba(0,0,0,0.6); border: 3px solid #00ffea;
-      border-radius: 12px; max-width: 900px; }
-    #notesSection h2 { color: #ff0; text-shadow: 2px 2px #000; margin-bottom: 20px; font-size: 16px; }
-    .note-form { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; align-items: center; }
-    .note-form input, .note-form textarea { background: #111; color: #0f0; border: 2px solid #00ffea;
-      padding: 10px; font-size: 12px; width: 100%; max-width: 520px; }
-    .note-form button { background: #ff0080; border: 2px solid #000; padding: 10px 14px; cursor: pointer; }
+    #notesSection { 
+      margin-top: 30px; 
+      padding: 20px; 
+      background: rgba(0,0,0,0.6); 
+      border: 3px solid #00ffea;
+      border-radius: 12px; 
+      max-width: 900px; 
+    }
+    #notesSection h2 { 
+      color: #ff0; 
+      text-shadow: 2px 2px #000; 
+      margin-bottom: 20px; 
+      font-size: 16px; 
+    }
+    .note-form { 
+      display: flex; 
+      flex-direction: column; 
+      gap: 10px; 
+      margin-bottom: 20px; 
+      align-items: center; 
+    }
+    .note-form input, .note-form textarea { 
+      background: #111; 
+      color: #0f0; 
+      border: 2px solid #00ffea;
+      padding: 10px; 
+      font-size: 12px; 
+      width: 100%; 
+      max-width: 520px; 
+    }
+    .note-form button { 
+      background: #ff0080; 
+      border: 2px solid #000; 
+      padding: 10px 14px; 
+      cursor: pointer; 
+    }
     .note-form button:hover { background: #00ffea; color: #000; }
-    .notes-wall { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 15px; }
-    .note { padding: 15px; background: #222; border: 3px solid #ff0080; box-shadow: 3px 3px #000; font-size: 12px;
-      word-wrap: break-word; transform: rotate(-1deg); text-align: left; position: relative; min-height: 84px; }
-    .note:nth-child(odd) { background: #333; border-color: #00ffea; transform: rotate(1deg); }
-    .note .nickname { font-weight: bold; color: #ff0; margin-bottom: 8px; display: block; }
-    .delete-btn { display: inline-block; margin-top: 8px; background: #e60026; border: 3px solid #000;
-      color: #fff; padding: 6px 8px; font-size: 10px; font-family: 'Press Start 2P', cursive; cursor: pointer; box-shadow: 2px 2px #000; }
+    .notes-wall { 
+      display: grid; 
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); 
+      gap: 15px; 
+    }
+    .note { 
+      padding: 15px; 
+      background: #222; 
+      border: 3px solid #ff0080; 
+      box-shadow: 3px 3px #000; 
+      font-size: 12px;
+      word-wrap: break-word; 
+      transform: rotate(-1deg); 
+      text-align: left; 
+      position: relative; 
+      min-height: 84px; 
+    }
+    .note:nth-child(odd) { 
+      background: #333; 
+      border-color: #00ffea; 
+      transform: rotate(1deg); 
+    }
+    .note .nickname { 
+      font-weight: bold; 
+      color: #ff0; 
+      margin-bottom: 8px; 
+      display: block; 
+    }
+    .delete-btn { 
+      display: inline-block; 
+      margin-top: 8px; 
+      background: #e60026; 
+      border: 3px solid #000;
+      color: #fff; 
+      padding: 6px 8px; 
+      font-size: 10px; 
+      font-family: 'Press Start 2P', cursive; 
+      cursor: pointer; 
+      box-shadow: 2px 2px #000; 
+    }
     .delete-btn:hover { background: #ff8c00; color: #000; }
   </style>
 </head>
@@ -65,9 +228,9 @@
   <div id="links" class="hidden">
     <h2> 🎉 ACCESS GRANTED <span id="roleBadge" class="badge hidden">ADMIN MODE</span> </h2>
     <div class="links">
-      <a href="https://github.com/GhassanMazen00/GhassanMazen00" target="_blank">💻 GitHub</a>
-      <a href="https://t.snapchat.com/p3KLzoLR" target="_blank">👻 Snapchat</a>
-      <a href="mailto:ghassanmazen@zohomail.com">📧 Email</a>
+      <button onclick="window.open('https://github.com/GhassanMazen00/GhassanMazen00','_blank')">💻 GitHub</button>
+      <button onclick="window.open('https://t.snapchat.com/p3KLzoLR','_blank')">👻 Snapchat</button>
+      <button onclick="window.open('mailto:ghassanmazen@zohomail.com','_blank')">📧 Email</button>
       <button onclick="openModal()">💃 My Bitches</button>
       <button onclick="trap()">🔞 +18 Pics of Ghassan</button>
     </div>
@@ -106,19 +269,16 @@
   </div>
 </div>
 
-
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 
   <script>
-    // Modes
     let mode = 'locked';
     let isAdmin = false;
     const VISITOR_PASS = "10101999";
     const ADMIN_PASS = "ananke";
 
-    // Firebase config
     const firebaseConfig = {
       databaseURL: "https://dungeon-data-base-default-rtdb.firebaseio.com/"
     };
@@ -143,10 +303,18 @@
       setTimeout(() => document.getElementById('links').scrollIntoView({behavior:'smooth'}), 50);
     }
 
-    function showHint() { alert("When was the greatest human on earth born? ( type numbers only no ( . / - _ or space etc.) and use a day-month-year format"); }
-    function trap() { alert("⚠️ Ghassan got notified that you tried to see him naked, shame on you!"); }
-    function openModal() { document.getElementById("myModal").style.display = "flex"; }
-    function closeModal() { document.getElementById("myModal").style.display = "none"; }
+    function showHint() { 
+      alert("When was the greatest human on earth born? (type numbers only, format: daymonthyear)"); 
+    }
+    function trap() { 
+      alert("⚠️ Ghassan got notified that you tried to see him naked, shame on you!"); 
+    }
+    function openModal() { 
+      document.getElementById("myModal").style.display = "flex"; 
+    }
+    function closeModal() { 
+      document.getElementById("myModal").style.display = "none"; 
+    }
 
     function escapeHTML(str) {
       return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -155,7 +323,10 @@
     function addNote() {
       const nickname = document.getElementById('nickname').value.trim();
       const noteText = document.getElementById('noteText').value.trim();
-      if (!nickname || !noteText) { alert("⚠️ Please enter a nickname and a note!"); return; }
+      if (!nickname || !noteText) { 
+        alert("⚠️ Please enter a nickname and a note!"); 
+        return; 
+      }
       const newNote = { nickname, noteText };
       db.ref("notes").push(newNote);
       document.getElementById('nickname').value = "";
