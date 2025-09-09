@@ -260,6 +260,69 @@
       box-shadow: 2px 2px #000; 
     }
     .delete-btn:hover { background: #ff8c00; color: #000; }
+
+    /* Chatbot */
+    #chatBotBubble {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #ff0080;
+      color: #fff;
+      border: 3px solid #000;
+      padding: 12px;
+      border-radius: 50%;
+      font-family: 'Press Start 2P', cursive;
+      font-size: 12px;
+      cursor: pointer;
+      box-shadow: 3px 3px #000;
+      z-index: 2000;
+    }
+    #chatWindow {
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      width: 280px;
+      background: #111;
+      border: 3px solid #00ffea;
+      border-radius: 12px;
+      font-family: 'Press Start 2P', cursive;
+      font-size: 12px;
+      color: #0f0;
+      display: none;
+      flex-direction: column;
+      box-shadow: 4px 4px #000;
+      z-index: 2000;
+    }
+    #chatMessages {
+      padding: 10px;
+      height: 200px;
+      overflow-y: auto;
+      border-bottom: 2px solid #00ffea;
+    }
+    #chatInput {
+      display: flex;
+    }
+    #chatInput input {
+      flex: 1;
+      background: #111;
+      color: #0f0;
+      border: none;
+      padding: 8px;
+      font-size: 12px;
+      font-family: 'Press Start 2P', cursive;
+    }
+    #chatInput button {
+      background: #ff0080;
+      border: none;
+      padding: 8px;
+      cursor: pointer;
+      font-family: 'Press Start 2P', cursive;
+      color: #fff;
+    }
+    #chatInput button:hover {
+      background: #00ffea;
+      color: #000;
+    }
   </style>
 </head>
 <body>
@@ -306,26 +369,36 @@
   </div>
 
   <!-- Modal -->
-<div class="modal" id="myModal">
-  <div class="modal-content">
-    <a href="https://www.instagram.com/loai_abb/" target="_blank">
-      <img src="https://i.postimg.cc/XqLnjRMS/20250819-2117-Pixel-Ginger-Character-simple-compose-01k31rss70fmktq7sny215zh9h.png" width="80" class="pixel-character">
-    </a>
-    <a href="https://www.instagram.com/osaidjano/" target="_blank">
-      <img src="https://i.postimg.cc/JhH7NYXZ/20250819-2129-Pixel-Man-with-T-Shirt-simple-compose-01k31scc2efvfbt02vce5hkp5r.png" width="80" class="pixel-character">
-    </a>
-    <a href="https://www.instagram.com/loai_kashkash/" target="_blank">
-      <img src="https://i.postimg.cc/76gxcCmL/20250819-2136-Pixel-Fat-Man-simple-compose-01k31sw-dygemgba9w7vm7tmpq5.png" width="80" class="pixel-character">
-    </a>
-    <a href="https://www.instagram.com/khalid.alfares1/" target="_blank">
-      <img src="https://i.postimg.cc/d1Ms4RRX/20250819-2140-Pixel-Man-with-Flag-simple-compose-01k31t39ykee6bbh3fcc1xfhjv-removebg-preview.png" width="80" class="pixel-character">
-    </a>
-    <a href="https://www.instagram.com/badr_sanoufi/" target="_blank">
-      <img src="https://i.postimg.cc/j2tsrsF4/assets-task-01k31taeamf6tavtp3htwn6b2h-1755629076-img-0.webp" width="80" class="pixel-character">
-    </a>
-    <button class="close-btn" onclick="closeModal()">CLOSE</button>
+  <div class="modal" id="myModal">
+    <div class="modal-content">
+      <a href="https://www.instagram.com/loai_abb/" target="_blank">
+        <img src="https://i.postimg.cc/XqLnjRMS/20250819-2117-Pixel-Ginger-Character-simple-compose-01k31rss70fmktq7sny215zh9h.png" width="80" class="pixel-character">
+      </a>
+      <a href="https://www.instagram.com/osaidjano/" target="_blank">
+        <img src="https://i.postimg.cc/JhH7NYXZ/20250819-2129-Pixel-Man-with-T-Shirt-simple-compose-01k31scc2efvfbt02vce5hkp5r.png" width="80" class="pixel-character">
+      </a>
+      <a href="https://www.instagram.com/loai_kashkash/" target="_blank">
+        <img src="https://i.postimg.cc/76gxcCmL/20250819-2136-Pixel-Fat-Man-simple-compose-01k31sw-dygemgba9w7vm7tmpq5.png" width="80" class="pixel-character">
+      </a>
+      <a href="https://www.instagram.com/khalid.alfares1/" target="_blank">
+        <img src="https://i.postimg.cc/d1Ms4RRX/20250819-2140-Pixel-Man-with-Flag-simple-compose-01k31t39ykee6bbh3fcc1xfhjv-removebg-preview.png" width="80" class="pixel-character">
+      </a>
+      <a href="https://www.instagram.com/badr_sanoufi/" target="_blank">
+        <img src="https://i.postimg.cc/j2tsrsF4/assets-task-01k31taeamf6tavtp3htwn6b2h-1755629076-img-0.webp" width="80" class="pixel-character">
+      </a>
+      <button class="close-btn" onclick="closeModal()">CLOSE</button>
+    </div>
   </div>
-</div>
+
+  <!-- Chatbot -->
+  <div id="chatBotBubble">💬</div>
+  <div id="chatWindow">
+    <div id="chatMessages"></div>
+    <div id="chatInput">
+      <input type="text" id="userMessage" placeholder="Type...">
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
 
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
@@ -379,64 +452,91 @@
     }
 
     function addNote() {
-      const nickname = document.getElementById('nickname').value.trim();
-      const noteText = document.getElementById('noteText').value.trim();
-      if (!nickname || !noteText) { 
-        alert("⚠️ Please enter a nickname and a note!"); 
-        return; 
+      const nickname = document.getElementById("nickname").value.trim();
+      const noteText = document.getElementById("noteText").value.trim();
+      if (nickname && noteText) {
+        const newNote = { nickname: escapeHTML(nickname), text: escapeHTML(noteText), timestamp: Date.now() };
+        db.ref("notes").push(newNote);
+        document.getElementById("nickname").value = "";
+        document.getElementById("noteText").value = "";
       }
-      const newNote = { nickname, noteText };
-      db.ref("notes").push(newNote);
-      document.getElementById('nickname').value = "";
-      document.getElementById('noteText').value = "";
     }
 
     function displayNotes() {
-      const notesWall = document.getElementById('notesWall');
-      notesWall.innerHTML = "";
-      db.ref("notes").on("value", snapshot => {
+      db.ref("notes").on("value", (snapshot) => {
+        const notesWall = document.getElementById("notesWall");
         notesWall.innerHTML = "";
-        snapshot.forEach(child => {
-          const n = child.val();
-          const noteDiv = document.createElement('div');
-          noteDiv.classList.add('note');
-          const safeNick = escapeHTML(n.nickname);
-          const safeText = escapeHTML(n.noteText).replace(/\n/g, "<br>");
-          noteDiv.innerHTML = `
-            <span class="nickname">${safeNick}</span>
-            <div>${safeText}</div>
-            ${isAdmin ? `<button class="delete-btn" onclick="deleteNote('${child.key}')">❌ Delete</button>` : ""}
-          `;
+        snapshot.forEach((child) => {
+          const note = child.val();
+          const noteDiv = document.createElement("div");
+          noteDiv.className = "note";
+          noteDiv.innerHTML = \`
+            <span class="nickname">\${note.nickname}</span>
+            \${note.text}
+            \${isAdmin ? '<button class="delete-btn" onclick="deleteNote(\\\\''+child.key+'\\\\')">DELETE</button>' : ''}
+          \`;
           notesWall.appendChild(noteDiv);
         });
       });
     }
 
     function deleteNote(id) {
-      if (!isAdmin) return;
-      db.ref("notes/" + id).remove();
+      if (isAdmin) db.ref("notes/"+id).remove();
     }
 
-    // Pixel character dialogue
-    let characterClicks = 0;
-    document.getElementById("pixelCharacter").addEventListener("click", () => {
-      const bubble = document.getElementById("speechBubble");
-      const speech = document.getElementById("characterSpeech");
-      characterClicks++;
-
+    // Pixel Character Speech
+    const speechLines = [
+      "Welcome, traveler! 🧙‍♂️",
+      "Do you have the key?",
+      "Secrets await inside...",
+      "Ghassan is watching...",
+      "Click me again, mortal."
+    ];
+    const pixelChar = document.getElementById("pixelCharacter");
+    const bubble = document.getElementById("speechBubble");
+    const speechText = document.getElementById("characterSpeech");
+    pixelChar.addEventListener("click", () => {
+      speechText.innerText = speechLines[Math.floor(Math.random() * speechLines.length)];
       bubble.classList.remove("hidden");
-
-      if (characterClicks === 1) {
-        speech.textContent = "Hmmm... you seek the secret key?";
-      } else if (characterClicks === 2) {
-        speech.textContent = "Let me think... it’s a date...";
-      } else if (characterClicks === 3) {
-        speech.textContent = "The greatest human’s birthday... 10101999.";
-      } else if (characterClicks === 4) {
-        speech.textContent = "Congrats, genius. Even YOU can’t mess this up, stupid.";
-      }
     });
-      </script>
-  <script src="//code.tidio.co/umnvmlp13juskuni75hrk1usn0kvurgy.js" async></script>
+
+    // Chatbot Insult Machine
+    const insults = [
+      "You're as sharp as a marble.",
+      "I’d agree with you, but then we’d both be wrong.",
+      "Your secrets are safe with me. I never even listen.",
+      "You bring everyone so much joy... when you leave the room.",
+      "You have something on your chin. No, the third one down.",
+      "I'd explain it to you, but I left my crayons at home.",
+      "You're proof that even evolution makes mistakes.",
+      "Brains aren’t everything. In your case, they’re nothing."
+    ];
+
+    const chatBubble = document.getElementById("chatBotBubble");
+    const chatWindow = document.getElementById("chatWindow");
+    const chatMessages = document.getElementById("chatMessages");
+    const userMessageInput = document.getElementById("userMessage");
+
+    chatBubble.addEventListener("click", () => {
+      chatWindow.style.display = chatWindow.style.display === "none" ? "flex" : "none";
+    });
+
+    function sendMessage() {
+      const msg = userMessageInput.value.trim();
+      if (!msg) return;
+      addChatMessage("You", msg, "user");
+      const insult = insults[Math.floor(Math.random() * insults.length)];
+      setTimeout(() => addChatMessage("Bot", insult, "bot"), 500);
+      userMessageInput.value = "";
+    }
+
+    function addChatMessage(sender, text, cls) {
+      const div = document.createElement("div");
+      div.className = cls;
+      div.textContent = sender + ": " + text;
+      chatMessages.appendChild(div);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+  </script>
 </body>
 </html>
