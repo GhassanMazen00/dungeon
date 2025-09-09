@@ -1,44 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Unlock Ghassan’s Vault</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-    body { 
-      font-family: 'Press Start 2P', cursive; 
+    body {
+      font-family: 'Press Start 2P', cursive;
       background: linear-gradient(135deg, #ff0080, #7928ca, #2afadf, #ff8c00);
-      background-size: 400% 400%; 
-      animation: gradientShift 8s ease infinite; 
+      background-size: 400% 400%;
+      animation: gradientShift 8s ease infinite;
       color: #fff;
-      display: flex; 
-      flex-direction: column; 
-      align-items: center; 
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       justify-content: center;
-      min-height: 100vh; 
-      margin: 0; 
-      text-align: center; 
+      min-height: 100vh;
+      margin: 0;
+      text-align: center;
     }
-    @keyframes gradientShift { 
-      0% {background-position: 0% 50%;} 
-      50% {background-position: 100% 50%;} 
-      100% {background-position: 0% 50%;} 
+    @keyframes gradientShift {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
     }
-    .banner { 
-      position: fixed; top: 0; width: 100%; 
-      background: rgba(0,0,0,0.7); 
-      color: #00ffea; 
+
+    .banner {
+      position: fixed; top: 0; width: 100%;
+      background: rgba(0,0,0,0.7);
+      color: #00ffea;
       padding: 10px;
-      font-size: 12px; 
-      border-bottom: 2px solid #ff0; 
-      text-shadow: 2px 2px #000; 
-      z-index: 1000; 
+      font-size: 12px;
+      border-bottom: 2px solid #ff0;
+      text-shadow: 2px 2px #000;
+      z-index: 1000;
     }
-    h1 { 
-      font-size: 22px; 
-      margin: 70px 0 20px; 
-      text-shadow: 3px 3px #000; 
+    h1 {
+      font-size: 22px;
+      margin: 70px 0 20px;
+      text-shadow: 3px 3px #000;
     }
 
     /* Pixel character + speech bubble */
@@ -54,9 +55,7 @@
       transition: transform 0.2s ease;
       image-rendering: pixelated;
     }
-    #pixelCharacter:hover {
-      transform: scale(1.2);
-    }
+    #pixelCharacter:hover { transform: scale(1.2); }
     #speechBubble {
       background: #fff;
       color: #000;
@@ -87,204 +86,209 @@
     }
     .hidden { display: none; }
 
-    .input-box { 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      gap: 8px; 
-      margin-bottom: 10px; 
-      flex-wrap: wrap; 
+    .input-box {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
     }
-    input, button, textarea { 
-      padding: 12px; 
-      margin: 4px; 
-      border: 3px solid #000; 
+    input, button, textarea {
+      padding: 12px;
+      margin: 4px;
+      border: 3px solid #000;
       border-radius: 0;
-      font-size: 14px; 
-      font-family: 'Press Start 2P', cursive; 
-      outline: none; 
+      font-size: 14px;
+      font-family: 'Press Start 2P', cursive;
+      outline: none;
     }
-    input, textarea { 
-      width: 220px; 
-      background: #111; 
-      color: #0f0; 
+    input, textarea {
+      width: 220px;
+      background: #111;
+      color: #0f0;
     }
-    button { 
-      background: #ff0080; 
-      color: #fff; 
-      cursor: pointer; 
-      transition: 0.2s; 
+    button {
+      background: #ff0080;
+      color: #fff;
+      cursor: pointer;
+      transition: 0.2s;
     }
-    button:hover { 
-      background: #00ffea; 
-      color: #000; 
+    button:hover {
+      background: #00ffea;
+      color: #000;
     }
-    .links { 
-      display: flex; 
-      flex-direction: column; 
-      align-items: center; 
-      gap: 12px; 
-      margin-top: 20px; 
+
+    .links {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      margin-top: 20px;
     }
-    .links a, .links button { 
-      width: 220px; 
-      text-align: center; 
-      color: #00ffea; 
-      text-decoration: none; 
-      font-size: 14px; 
-      text-shadow: 2px 2px #000; 
+    .links a, .links button {
+      width: 220px;
+      text-align: center;
+      color: #00ffea;
+      text-decoration: none;
+      font-size: 14px;
+      text-shadow: 2px 2px #000;
     }
     .links a:hover { color: #ff0; }
-    .badge { 
-      display: inline-block; 
-      margin-left: 10px; 
-      padding: 6px 8px; 
-      background: #00ffea; 
+    .badge {
+      display: inline-block;
+      margin-left: 10px;
+      padding: 6px 8px;
+      background: #00ffea;
       color: #000;
-      border: 3px solid #000; 
-      box-shadow: 3px 3px #000; 
-      font-size: 10px; 
-      vertical-align: middle; 
-    }
-    .modal { 
-      display: none; 
-      position: fixed; 
-      z-index: 999; 
-      left: 0; top: 0; 
-      width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.9); 
-      justify-content: center; 
-      align-items: center; 
-    }
-    .modal-content { 
-      background: #111; 
-      padding: 20px; 
-      border: 4px solid #00ffea; 
-      border-radius: 10px; 
-      max-width: 700px;
-      display: flex; 
-      flex-wrap: wrap; 
-      gap: 20px; 
-      justify-content: center; 
-    }
-    .pixel-character { 
-      cursor: pointer; 
-      transition: transform 0.2s ease; 
-    }
-    .pixel-character:hover { transform: scale(1.2); }
-    .close-btn { 
-      margin-top: 20px; 
-      padding: 10px 16px; 
-      background: #ff0080; 
       border: 3px solid #000;
-      color: #fff; 
-      font-family: 'Press Start 2P', cursive; 
-      cursor: pointer; 
+      box-shadow: 3px 3px #000;
+      font-size: 10px;
+      vertical-align: middle;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-content {
+      background: #111;
+      padding: 20px;
+      border: 4px solid #00ffea;
+      border-radius: 10px;
+      max-width: 700px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+    .pixel-character { cursor: pointer; transition: transform 0.2s ease; }
+    .pixel-character:hover { transform: scale(1.2); }
+    .close-btn {
+      margin-top: 20px;
+      padding: 10px 16px;
+      background: #ff0080;
+      border: 3px solid #000;
+      color: #fff;
+      font-family: 'Press Start 2P', cursive;
+      cursor: pointer;
     }
     .close-btn:hover { background: #00ffea; color: #000; }
-    #notesSection { 
-      margin-top: 30px; 
-      padding: 20px; 
-      background: rgba(0,0,0,0.6); 
+
+    #notesSection {
+      margin-top: 30px;
+      padding: 20px;
+      background: rgba(0,0,0,0.6);
       border: 3px solid #00ffea;
-      border-radius: 12px; 
-      max-width: 900px; 
+      border-radius: 12px;
+      max-width: 900px;
     }
-    #notesSection h2 { 
-      color: #ff0; 
-      text-shadow: 2px 2px #000; 
-      margin-bottom: 20px; 
-      font-size: 16px; 
+    #notesSection h2 {
+      color: #ff0;
+      text-shadow: 2px 2px #000;
+      margin-bottom: 20px;
+      font-size: 16px;
     }
-    .note-form { 
-      display: flex; 
-      flex-direction: column; 
-      gap: 10px; 
-      margin-bottom: 20px; 
-      align-items: center; 
+    .note-form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+      align-items: center;
     }
-    .note-form input, .note-form textarea { 
-      background: #111; 
-      color: #0f0; 
+    .note-form input, .note-form textarea {
+      background: #111;
+      color: #0f0;
       border: 2px solid #00ffea;
-      padding: 10px; 
-      font-size: 12px; 
-      width: 100%; 
-      max-width: 520px; 
+      padding: 10px;
+      font-size: 12px;
+      width: 100%;
+      max-width: 520px;
     }
-    .note-form button { 
-      background: #ff0080; 
-      border: 2px solid #000; 
-      padding: 10px 14px; 
-      cursor: pointer; 
+    .note-form button {
+      background: #ff0080;
+      border: 2px solid #000;
+      padding: 10px 14px;
+      cursor: pointer;
     }
     .note-form button:hover { background: #00ffea; color: #000; }
-    .notes-wall { 
-      display: grid; 
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); 
-      gap: 15px; 
+    .notes-wall {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 15px;
     }
-    .note { 
-      padding: 15px; 
-      background: #222; 
-      border: 3px solid #ff0080; 
-      box-shadow: 3px 3px #000; 
+    .note {
+      padding: 15px;
+      background: #222;
+      border: 3px solid #ff0080;
+      box-shadow: 3px 3px #000;
       font-size: 12px;
-      word-wrap: break-word; 
-      transform: rotate(-1deg); 
-      text-align: left; 
-      position: relative; 
-      min-height: 84px; 
+      word-wrap: break-word;
+      transform: rotate(-1deg);
+      text-align: left;
+      position: relative;
+      min-height: 84px;
     }
-    .note:nth-child(odd) { 
-      background: #333; 
-      border-color: #00ffea; 
-      transform: rotate(1deg); 
+    .note:nth-child(odd) {
+      background: #333;
+      border-color: #00ffea;
+      transform: rotate(1deg);
     }
-    .note .nickname { 
-      font-weight: bold; 
-      color: #ff0; 
-      margin-bottom: 8px; 
-      display: block; 
+    .note .nickname {
+      font-weight: bold;
+      color: #ff0;
+      margin-bottom: 8px;
+      display: block;
     }
-    .delete-btn { 
-      display: inline-block; 
-      margin-top: 8px; 
-      background: #e60026; 
+    .delete-btn {
+      display: inline-block;
+      margin-top: 8px;
+      background: #e60026;
       border: 3px solid #000;
-      color: #fff; 
-      padding: 6px 8px; 
-      font-size: 10px; 
-      font-family: 'Press Start 2P', cursive; 
-      cursor: pointer; 
-      box-shadow: 2px 2px #000; 
+      color: #fff;
+      padding: 6px 8px;
+      font-size: 10px;
+      font-family: 'Press Start 2P', cursive;
+      cursor: pointer;
+      box-shadow: 2px 2px #000;
     }
     .delete-btn:hover { background: #ff8c00; color: #000; }
 
-    /* Chatbot */
+    /* Chatbot - pixel style */
     #chatBotBubble {
       position: fixed;
       bottom: 20px;
       right: 20px;
+      width: 52px;
+      height: 52px;
       background: #ff0080;
       color: #fff;
-      border: 3px solid #000;
-      padding: 12px;
-      border-radius: 50%;
+      border: 4px solid #000;
+      padding: 8px;
+      border-radius: 8px;
       font-family: 'Press Start 2P', cursive;
-      font-size: 12px;
+      font-size: 18px;
       cursor: pointer;
       box-shadow: 3px 3px #000;
       z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     #chatWindow {
       position: fixed;
-      bottom: 80px;
+      bottom: 84px;
       right: 20px;
-      width: 280px;
+      width: 300px;
       background: #111;
-      border: 3px solid #00ffea;
-      border-radius: 12px;
+      border: 4px solid #00ffea;
+      border-radius: 8px;
       font-family: 'Press Start 2P', cursive;
       font-size: 12px;
       color: #0f0;
@@ -292,13 +296,21 @@
       flex-direction: column;
       box-shadow: 4px 4px #000;
       z-index: 2000;
+      overflow: hidden;
     }
     #chatMessages {
       padding: 10px;
-      height: 200px;
+      height: 220px;
       overflow-y: auto;
       border-bottom: 2px solid #00ffea;
     }
+    .msg {
+      margin-bottom: 8px;
+      line-height: 1.2;
+      word-break: break-word;
+    }
+    .msg.user { color: #0ff; text-align: right; }
+    .msg.bot { color: #f55; text-align: left; font-weight: bold; }
     #chatInput {
       display: flex;
     }
@@ -314,15 +326,12 @@
     #chatInput button {
       background: #ff0080;
       border: none;
-      padding: 8px;
+      padding: 8px 10px;
       cursor: pointer;
       font-family: 'Press Start 2P', cursive;
       color: #fff;
     }
-    #chatInput button:hover {
-      background: #00ffea;
-      color: #000;
-    }
+    #chatInput button:hover { background: #00ffea; color: #000; }
   </style>
 </head>
 <body>
@@ -331,9 +340,9 @@
 
   <!-- Pixel character + speech bubble -->
   <div id="pixelCharacterContainer">
-    <img src="https://i.postimg.cc/9Xvbc3sw-/7eed46e2-854a-46dd-a073-c66409387f95.png" 
-         id="pixelCharacter" 
-         alt="Pixel Character" 
+    <img src="https://i.postimg.cc/9Xvbc3sw-/7eed46e2-854a-46dd-a073-c66409387f95.png"
+         id="pixelCharacter"
+         alt="Pixel Character"
          width="120">
     <div id="speechBubble" class="hidden">
       <span id="characterSpeech">💬 ...</span>
@@ -391,20 +400,21 @@
   </div>
 
   <!-- Chatbot -->
-  <div id="chatBotBubble">💬</div>
-  <div id="chatWindow">
-    <div id="chatMessages"></div>
+  <div id="chatBotBubble" title="Chat for help">💬</div>
+  <div id="chatWindow" aria-hidden="true">
+    <div id="chatMessages" aria-live="polite"></div>
     <div id="chatInput">
-      <input type="text" id="userMessage" placeholder="Type...">
-      <button onclick="sendMessage()">Send</button>
+      <input type="text" id="userMessage" placeholder="Type..." />
+      <button id="sendBtn">Send</button>
     </div>
   </div>
 
-  <!-- Firebase -->
+  <!-- Firebase (compat) -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 
   <script>
+    // ----- Config & state -----
     let mode = 'locked';
     let isAdmin = false;
     const VISITOR_PASS = "10101999";
@@ -416,6 +426,16 @@
     const app = firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
+    // ----- Utilities -----
+    function escapeHTML(str) {
+      if (str === null || str === undefined) return '';
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+    }
+
+    // ----- Vault functions -----
     function unlock() {
       const key = document.getElementById('keyInput').value.trim();
       if (key === VISITOR_PASS) {
@@ -434,73 +454,100 @@
       setTimeout(() => document.getElementById('links').scrollIntoView({behavior:'smooth'}), 50);
     }
 
-    function showHint() { 
-      alert("When was the greatest human on earth born? (type numbers only, format: daymonthyear)"); 
+    function showHint() {
+      alert("When was the greatest human on earth born? (type numbers only, format: daymonthyear)");
     }
-    function trap() { 
-      alert("⚠️ Ghassan got notified that you tried to see him naked, shame on you!"); 
+    function trap() {
+      alert("⚠️ Ghassan got notified that you tried to see him naked, shame on you!");
     }
-    function openModal() { 
-      document.getElementById("myModal").style.display = "flex"; 
+    function openModal() {
+      document.getElementById("myModal").style.display = "flex";
     }
-    function closeModal() { 
-      document.getElementById("myModal").style.display = "none"; 
-    }
-
-    function escapeHTML(str) {
-      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    function closeModal() {
+      document.getElementById("myModal").style.display = "none";
     }
 
+    // ----- Notes (Firebase) -----
     function addNote() {
       const nickname = document.getElementById("nickname").value.trim();
       const noteText = document.getElementById("noteText").value.trim();
-      if (nickname && noteText) {
-        const newNote = { nickname: escapeHTML(nickname), text: escapeHTML(noteText), timestamp: Date.now() };
-        db.ref("notes").push(newNote);
-        document.getElementById("nickname").value = "";
-        document.getElementById("noteText").value = "";
+      if (!nickname || !noteText) {
+        alert("⚠️ Please enter a nickname and a note!");
+        return;
       }
+      const safeNote = {
+        nickname: escapeHTML(nickname),
+        text: escapeHTML(noteText),
+        timestamp: Date.now()
+      };
+      db.ref("notes").push(safeNote);
+      document.getElementById("nickname").value = "";
+      document.getElementById("noteText").value = "";
     }
 
     function displayNotes() {
+      const notesWall = document.getElementById("notesWall");
+      notesWall.innerHTML = "";
       db.ref("notes").on("value", (snapshot) => {
-        const notesWall = document.getElementById("notesWall");
         notesWall.innerHTML = "";
         snapshot.forEach((child) => {
           const note = child.val();
           const noteDiv = document.createElement("div");
           noteDiv.className = "note";
-          noteDiv.innerHTML = \`
-            <span class="nickname">\${note.nickname}</span>
-            \${note.text}
-            \${isAdmin ? '<button class="delete-btn" onclick="deleteNote(\\\\''+child.key+'\\\\')">DELETE</button>' : ''}
-          \`;
+
+          const nickSpan = document.createElement("span");
+          nickSpan.className = "nickname";
+          nickSpan.textContent = note.nickname || "Anon";
+
+          const textDiv = document.createElement("div");
+          textDiv.innerHTML = (note.text || "").replace(/\n/g, "<br>");
+
+          noteDiv.appendChild(nickSpan);
+          noteDiv.appendChild(textDiv);
+
+          if (isAdmin) {
+            const delBtn = document.createElement("button");
+            delBtn.className = "delete-btn";
+            delBtn.textContent = "❌ Delete";
+            delBtn.onclick = () => deleteNote(child.key);
+            noteDiv.appendChild(delBtn);
+          }
+
           notesWall.appendChild(noteDiv);
         });
       });
     }
 
     function deleteNote(id) {
-      if (isAdmin) db.ref("notes/"+id).remove();
+      if (!isAdmin) return;
+      db.ref("notes/" + id).remove();
     }
 
-    // Pixel Character Speech
+    // ----- Pixel Character speech -----
     const speechLines = [
-      "Welcome, traveler! 🧙‍♂️",
-      "Do you have the key?",
-      "Secrets await inside...",
-      "Ghassan is watching...",
-      "Click me again, mortal."
+      "Hmmm... you seek the secret key?",
+      "Let me think... it’s a date...",
+      "The greatest human’s birthday... 10101999.",
+      "Congrats, genius. Even YOU can’t mess this up, stupid.",
+      "Ghassan is watching..."
     ];
     const pixelChar = document.getElementById("pixelCharacter");
     const bubble = document.getElementById("speechBubble");
     const speechText = document.getElementById("characterSpeech");
-    pixelChar.addEventListener("click", () => {
-      speechText.innerText = speechLines[Math.floor(Math.random() * speechLines.length)];
-      bubble.classList.remove("hidden");
-    });
+    let characterClicks = 0;
+    if (pixelChar) {
+      pixelChar.addEventListener("click", () => {
+        characterClicks++;
+        bubble.classList.remove("hidden");
+        if (characterClicks <= speechLines.length) {
+          speechText.textContent = speechLines[(characterClicks - 1) % speechLines.length];
+        } else {
+          speechText.textContent = speechLines[Math.floor(Math.random() * speechLines.length)];
+        }
+      });
+    }
 
-    // Chatbot Insult Machine
+    // ----- Chatbot Insult Machine -----
     const insults = [
       "You're as sharp as a marble.",
       "I’d agree with you, but then we’d both be wrong.",
@@ -509,34 +556,61 @@
       "You have something on your chin. No, the third one down.",
       "I'd explain it to you, but I left my crayons at home.",
       "You're proof that even evolution makes mistakes.",
-      "Brains aren’t everything. In your case, they’re nothing."
+      "Brains aren’t everything. In your case, they’re nothing.",
+      "Wow, that idea deserves a participation trophy.",
+      "You're like a software bug that hides behind a smile.",
+      "Keep typing — maybe one day you'll surprise us all.",
+      "You managed to be wrong in a very impressive fashion."
     ];
 
     const chatBubble = document.getElementById("chatBotBubble");
     const chatWindow = document.getElementById("chatWindow");
     const chatMessages = document.getElementById("chatMessages");
     const userMessageInput = document.getElementById("userMessage");
+    const sendBtn = document.getElementById("sendBtn");
 
-    chatBubble.addEventListener("click", () => {
-      chatWindow.style.display = chatWindow.style.display === "none" ? "flex" : "none";
-    });
-
-    function sendMessage() {
-      const msg = userMessageInput.value.trim();
-      if (!msg) return;
-      addChatMessage("You", msg, "user");
-      const insult = insults[Math.floor(Math.random() * insults.length)];
-      setTimeout(() => addChatMessage("Bot", insult, "bot"), 500);
-      userMessageInput.value = "";
-    }
-
-    function addChatMessage(sender, text, cls) {
+    function appendMessage(text, who) {
       const div = document.createElement("div");
-      div.className = cls;
-      div.textContent = sender + ": " + text;
+      div.className = "msg " + (who === "user" ? "user" : "bot");
+      div.innerText = text;
       chatMessages.appendChild(div);
       chatMessages.scrollTop = chatMessages.scrollHeight;
     }
+
+    // toggle chat window
+    chatBubble.addEventListener("click", () => {
+      if (chatWindow.style.display === "flex") {
+        chatWindow.style.display = "none";
+        chatWindow.setAttribute("aria-hidden","true");
+      } else {
+        chatWindow.style.display = "flex";
+        chatWindow.setAttribute("aria-hidden","false");
+        userMessageInput.focus();
+      }
+    });
+
+    // send message (and bot replies with a random insult)
+    function sendMessage() {
+      const txt = userMessageInput.value.trim();
+      if (!txt) return;
+      appendMessage("You: " + txt, "user");
+      userMessageInput.value = "";
+      // small delay then insult
+      setTimeout(() => {
+        const insult = insults[Math.floor(Math.random() * insults.length)];
+        appendMessage("Bot: " + insult, "bot");
+      }, 350);
+    }
+
+    sendBtn.addEventListener("click", sendMessage);
+    userMessageInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") sendMessage();
+    });
+
+    // Optional: pre-warm with a greeting so chat isn't empty
+    appendMessage("Bot: Ask me anything (I will roast you).", "bot");
+
+    // End of script
   </script>
 </body>
 </html>
