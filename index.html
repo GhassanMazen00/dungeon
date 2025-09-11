@@ -3,12 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Unlock Ghassan’s Vault</title>
+  <title>Unlock Ghassan's Vault</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+    
+    :root {
+      --primary: #ff0080;
+      --secondary: #7928ca;
+      --accent: #00ffea;
+      --dark: #1d2144;
+      --light: #f8f9fa;
+    }
+    
     body { 
       font-family: 'Press Start 2P', cursive; 
-      background: linear-gradient(135deg, #ff0080, #7928ca, #2afadf, #ff8c00);
+      background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent), #ff8c00);
       background-size: 400% 400%; 
       animation: gradientShift 8s ease infinite; 
       color: #fff;
@@ -19,26 +28,173 @@
       min-height: 100vh; 
       margin: 0; 
       text-align: center; 
+      overflow-x: hidden;
+      cursor: none;
     }
+    
+    /* Custom cursor */
+    .cursor {
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--accent);
+      border-radius: 50%;
+      position: absolute;
+      pointer-events: none;
+      z-index: 9999;
+      transition: transform 0.2s ease;
+      mix-blend-mode: difference;
+    }
+    
+    .cursor-follower {
+      width: 8px;
+      height: 8px;
+      background-color: var(--accent);
+      border-radius: 50%;
+      position: absolute;
+      pointer-events: none;
+      z-index: 9998;
+      transition: transform 0.6s ease;
+    }
+    
+    .cursor.click {
+      transform: scale(0.8);
+      background-color: var(--accent);
+    }
+    
+    .cursor.hover {
+      transform: scale(1.5);
+      border-color: var(--primary);
+    }
+    
     @keyframes gradientShift { 
       0% {background-position: 0% 50%;} 
       50% {background-position: 100% 50%;} 
       100% {background-position: 0% 50%;} 
     }
+    
     .banner { 
-      position: fixed; top: 0; width: 100%; 
+      position: fixed; 
+      top: 0; 
+      width: 100%; 
       background: rgba(0,0,0,0.7); 
-      color: #00ffea; 
+      color: var(--accent); 
       padding: 10px;
       font-size: 12px; 
       border-bottom: 2px solid #ff0; 
       text-shadow: 2px 2px #000; 
       z-index: 1000; 
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
+    
+    .banner-controls {
+      display: flex;
+      gap: 10px;
+      margin-right: 20px;
+    }
+    
+    .banner-btn {
+      background: transparent;
+      border: 2px solid var(--accent);
+      color: var(--accent);
+      padding: 4px 8px;
+      font-size: 10px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .banner-btn:hover {
+      background: var(--accent);
+      color: #000;
+    }
+    
     h1 { 
       font-size: 22px; 
       margin: 70px 0 20px; 
       text-shadow: 3px 3px #000; 
+      position: relative;
+    }
+    
+    .glitch-wrapper {
+      position: relative;
+    }
+    
+    .glitch {
+      position: relative;
+      display: inline-block;
+    }
+    
+    .glitch::before,
+    .glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    
+    .glitch::before {
+      left: 2px;
+      text-shadow: -2px 0 var(--primary);
+      clip: rect(44px, 450px, 56px, 0);
+      animation: glitch-anim 5s infinite linear alternate-reverse;
+    }
+    
+    .glitch::after {
+      left: -2px;
+      text-shadow: -2px 0 var(--accent);
+      clip: rect(44px, 450px, 56px, 0);
+      animation: glitch-anim2 5s infinite linear alternate-reverse;
+    }
+    
+    @keyframes glitch-anim {
+      0% { clip: rect(42px, 9999px, 44px, 0); }
+      5% { clip: rect(12px, 9999px, 59px, 0); }
+      10% { clip: rect(48px, 9999px, 29px, 0); }
+      15% { clip: rect(42px, 9999px, 73px, 0); }
+      20% { clip: rect(63px, 9999px, 27px, 0); }
+      25% { clip: rect(34px, 9999px, 55px, 0); }
+      30% { clip: rect(86px, 9999px, 73px, 0); }
+      35% { clip: rect(20px, 9999px, 20px, 0); }
+      40% { clip: rect(26px, 9999px, 60px, 0); }
+      45% { clip: rect(25px, 9999px, 66px, 0); }
+      50% { clip: rect(57px, 9999px, 98px, 0); }
+      55% { clip: rect(5px, 9999px, 46px, 0); }
+      60% { clip: rect(82px, 9999px, 31px, 0); }
+      65% { clip: rect(54px, 9999px, 27px, 0); }
+      70% { clip: rect(28px, 9999px, 99px, 0); }
+      75% { clip: rect(45px, 9999px, 69px, 0); }
+      80% { clip: rect(23px, 9999px, 85px, 0); }
+      85% { clip: rect(54px, 9999px, 84px, 0); }
+      90% { clip: rect(45px, 9999px, 47px, 0); }
+      95% { clip: rect(24px, 9999px, 23px, 0); }
+      100% { clip: rect(32px, 9999px, 92px, 0); }
+    }
+    
+    @keyframes glitch-anim2 {
+      0% { clip: rect(65px, 9999px, 100px, 0); }
+      5% { clip: rect(52px, 9999px, 74px, 0); }
+      10% { clip: rect(79px, 9999px, 85px, 0); }
+      15% { clip: rect(75px, 9999px, 5px, 0); }
+      20% { clip: rect(67px, 9999px, 61px, 0); }
+      25% { clip: rect(14px, 9999px, 79px, 0); }
+      30% { clip: rect(1px, 9999px, 66px, 0); }
+      35% { clip: rect(86px, 9999px, 30px, 0); }
+      40% { clip: rect(23px, 9999px, 98px, 0); }
+      45% { clip: rect(85px, 9999px, 72px, 0); }
+      50% { clip: rect(71px, 9999px, 75px, 0); }
+      55% { clip: rect(2px, 9999px, 48px, 0); }
+      60% { clip: rect(30px, 9999px, 16px, 0); }
+      65% { clip: rect(59px, 9999px, 50px, 0); }
+      70% { clip: rect(41px, 9999px, 62px, 0); }
+      75% { clip: rect(2px, 9999px, 82px, 0); }
+      80% { clip: rect(47px, 9999px, 73px, 0); }
+      85% { clip: rect(3px, 9999px, 27px, 0); }
+      90% { clip: rect(26px, 9999px, 55px, 0); }
+      95% { clip: rect(42px, 9999px, 97px, 0); }
+      100% { clip: rect(38px, 9999px, 49px, 0); }
     }
 
     /* Pixel character + speech bubble */
@@ -48,15 +204,26 @@
       align-items: center;
       margin-bottom: 20px;
       position: relative;
+      z-index: 10;
     }
+    
     #pixelCharacter {
-      cursor: pointer;
+      cursor: none;
       transition: transform 0.2s ease;
       image-rendering: pixelated;
+      filter: drop-shadow(0 0 5px rgba(0, 255, 234, 0.5));
     }
+    
     #pixelCharacter:hover {
       transform: scale(1.2);
+      animation: float 3s ease-in-out infinite;
     }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0) scale(1.2); }
+      50% { transform: translateY(-10px) scale(1.2); }
+    }
+    
     #speechBubble {
       background: #fff;
       color: #000;
@@ -73,7 +240,15 @@
       left: 50%;
       transform: translateX(-50%);
       box-shadow: 3px 3px #000;
+      z-index: 11;
+      opacity: 0;
+      transition: opacity 0.3s ease;
     }
+    
+    #speechBubble.show {
+      opacity: 1;
+    }
+    
     #speechBubble::after {
       content: "";
       position: absolute;
@@ -85,8 +260,11 @@
       border-color: #fff transparent transparent transparent;
       filter: drop-shadow(2px 2px 0 #000);
     }
-    .hidden { display: none; }
-
+    
+    .hidden { 
+      display: none; 
+    }
+    
     .input-box { 
       display: flex; 
       align-items: center; 
@@ -94,7 +272,10 @@
       gap: 8px; 
       margin-bottom: 10px; 
       flex-wrap: wrap; 
+      position: relative;
+      z-index: 10;
     }
+    
     input, button, textarea { 
       padding: 12px; 
       margin: 4px; 
@@ -103,22 +284,67 @@
       font-size: 14px; 
       font-family: 'Press Start 2P', cursive; 
       outline: none; 
+      cursor: none;
     }
+    
     input, textarea { 
       width: 220px; 
       background: #111; 
       color: #0f0; 
     }
-    button { 
-      background: #ff0080; 
-      color: #fff; 
-      cursor: pointer; 
-      transition: 0.2s; 
+    
+    input::placeholder, textarea::placeholder {
+      color: #0f0;
+      opacity: 0.7;
     }
+    
+    button { 
+      background: var(--primary); 
+      color: #fff; 
+      cursor: none; 
+      transition: 0.2s; 
+      position: relative;
+      overflow: hidden;
+    }
+    
+    button::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 5px;
+      height: 5px;
+      background: rgba(255, 255, 255, 0.5);
+      opacity: 0;
+      border-radius: 100%;
+      transform: scale(1, 1) translate(-50%);
+      transform-origin: 50% 50%;
+    }
+    
+    button:focus:not(:active)::after {
+      animation: ripple 1s ease-out;
+    }
+    
+    @keyframes ripple {
+      0% {
+        transform: scale(0, 0);
+        opacity: 1;
+      }
+      20% {
+        transform: scale(20, 20);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(50, 50);
+        opacity: 0;
+      }
+    }
+    
     button:hover { 
-      background: #00ffea; 
+      background: var(--accent); 
       color: #000; 
     }
+    
     .links { 
       display: flex; 
       flex-direction: column; 
@@ -126,26 +352,39 @@
       gap: 12px; 
       margin-top: 20px; 
     }
+    
     .links a, .links button { 
       width: 220px; 
       text-align: center; 
-      color: #00ffea; 
+      color: var(--accent); 
       text-decoration: none; 
       font-size: 14px; 
       text-shadow: 2px 2px #000; 
     }
-    .links a:hover { color: #ff0; }
+    
+    .links a:hover { 
+      color: #ff0; 
+    }
+    
     .badge { 
       display: inline-block; 
       margin-left: 10px; 
       padding: 6px 8px; 
-      background: #00ffea; 
+      background: var(--accent); 
       color: #000;
       border: 3px solid #000; 
       box-shadow: 3px 3px #000; 
       font-size: 10px; 
       vertical-align: middle; 
+      animation: pulse 2s infinite;
     }
+    
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+    
     .modal { 
       display: none; 
       position: fixed; 
@@ -155,47 +394,78 @@
       background: rgba(0, 0, 0, 0.9); 
       justify-content: center; 
       align-items: center; 
+      backdrop-filter: blur(5px);
     }
+    
     .modal-content { 
       background: #111; 
       padding: 20px; 
-      border: 4px solid #00ffea; 
+      border: 4px solid var(--accent); 
       border-radius: 10px; 
       max-width: 700px;
       display: flex; 
       flex-wrap: wrap; 
       gap: 20px; 
       justify-content: center; 
+      position: relative;
+      animation: modalAppear 0.5s ease;
     }
+    
+    @keyframes modalAppear {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    
     .pixel-character { 
-      cursor: pointer; 
+      cursor: none; 
       transition: transform 0.2s ease; 
+      image-rendering: pixelated;
+      filter: drop-shadow(0 0 5px rgba(255, 0, 128, 0.5));
     }
-    .pixel-character:hover { transform: scale(1.2); }
+    
+    .pixel-character:hover { 
+      transform: scale(1.2); 
+      animation: shake 0.5s ease infinite;
+    }
+    
+    @keyframes shake {
+      0%, 100% { transform: translateX(0) scale(1.2); }
+      25% { transform: translateX(-5px) scale(1.2); }
+      75% { transform: translateX(5px) scale(1.2); }
+    }
+    
     .close-btn { 
       margin-top: 20px; 
       padding: 10px 16px; 
-      background: #ff0080; 
+      background: var(--primary); 
       border: 3px solid #000;
       color: #fff; 
       font-family: 'Press Start 2P', cursive; 
-      cursor: pointer; 
+      cursor: none; 
     }
-    .close-btn:hover { background: #00ffea; color: #000; }
+    
+    .close-btn:hover { 
+      background: var(--accent); 
+      color: #000; 
+    }
+    
     #notesSection { 
       margin-top: 30px; 
       padding: 20px; 
       background: rgba(0,0,0,0.6); 
-      border: 3px solid #00ffea;
+      border: 3px solid var(--accent);
       border-radius: 12px; 
       max-width: 900px; 
+      backdrop-filter: blur(5px);
     }
+    
     #notesSection h2 { 
       color: #ff0; 
       text-shadow: 2px 2px #000; 
       margin-bottom: 20px; 
       font-size: 16px; 
     }
+    
     .note-form { 
       display: flex; 
       flex-direction: column; 
@@ -203,31 +473,39 @@
       margin-bottom: 20px; 
       align-items: center; 
     }
+    
     .note-form input, .note-form textarea { 
       background: #111; 
       color: #0f0; 
-      border: 2px solid #00ffea;
+      border: 2px solid var(--accent);
       padding: 10px; 
       font-size: 12px; 
       width: 100%; 
       max-width: 520px; 
     }
+    
     .note-form button { 
-      background: #ff0080; 
+      background: var(--primary); 
       border: 2px solid #000; 
       padding: 10px 14px; 
-      cursor: pointer; 
+      cursor: none; 
     }
-    .note-form button:hover { background: #00ffea; color: #000; }
+    
+    .note-form button:hover { 
+      background: var(--accent); 
+      color: #000; 
+    }
+    
     .notes-wall { 
       display: grid; 
       grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); 
       gap: 15px; 
     }
+    
     .note { 
       padding: 15px; 
       background: #222; 
-      border: 3px solid #ff0080; 
+      border: 3px solid var(--primary); 
       box-shadow: 3px 3px #000; 
       font-size: 12px;
       word-wrap: break-word; 
@@ -235,18 +513,31 @@
       text-align: left; 
       position: relative; 
       min-height: 84px; 
+      transition: transform 0.3s ease;
     }
+    
+    .note:hover {
+      transform: rotate(0deg) scale(1.05);
+      z-index: 5;
+    }
+    
     .note:nth-child(odd) { 
       background: #333; 
-      border-color: #00ffea; 
+      border-color: var(--accent); 
       transform: rotate(1deg); 
     }
+    
+    .note:nth-child(odd):hover {
+      transform: rotate(0deg) scale(1.05);
+    }
+    
     .note .nickname { 
       font-weight: bold; 
       color: #ff0; 
       margin-bottom: 8px; 
       display: block; 
     }
+    
     .delete-btn { 
       display: inline-block; 
       margin-top: 8px; 
@@ -256,15 +547,128 @@
       padding: 6px 8px; 
       font-size: 10px; 
       font-family: 'Press Start 2P', cursive; 
-      cursor: pointer; 
+      cursor: none; 
       box-shadow: 2px 2px #000; 
     }
-    .delete-btn:hover { background: #ff8c00; color: #000; }
+    
+    .delete-btn:hover { 
+      background: #ff8c00; 
+      color: #000; 
+    }
+    
+    /* Particle container */
+    #particles-js {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      top: 0;
+      left: 0;
+    }
+    
+    /* Terminal typing effect */
+    .terminal-text {
+      overflow: hidden;
+      border-right: 3px solid var(--accent);
+      white-space: nowrap;
+      margin: 0 auto;
+      animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+    }
+    
+    @keyframes typing {
+      from { width: 0 }
+      to { width: 100% }
+    }
+    
+    @keyframes blink-caret {
+      from, to { border-color: transparent }
+      50% { border-color: var(--accent) }
+    }
+    
+    /* Audio controls */
+    .audio-controls {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1000;
+    }
+    
+    .audio-btn {
+      background: rgba(0,0,0,0.7);
+      border: 2px solid var(--accent);
+      color: var(--accent);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: none;
+      transition: all 0.3s;
+    }
+    
+    .audio-btn:hover {
+      background: var(--accent);
+      color: #000;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      h1 { font-size: 18px; }
+      .input-box { flex-direction: column; }
+      input, button { width: 90%; max-width: 300px; }
+      .links a, .links button { width: 90%; max-width: 300px; }
+      .modal-content { width: 90%; }
+      .notes-wall { grid-template-columns: 1fr; }
+    }
+    
+    /* Easter egg */
+    .konami {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 24px;
+      color: var(--accent);
+      text-shadow: 0 0 10px var(--primary);
+      z-index: 10000;
+      background: rgba(0,0,0,0.9);
+      padding: 20px;
+      border: 3px solid var(--accent);
+      display: none;
+    }
+    
+    /* Secret mode */
+    .secret-mode {
+      animation: secretBackground 10s infinite linear;
+    }
+    
+    @keyframes secretBackground {
+      0% { filter: hue-rotate(0deg) invert(0); }
+      50% { filter: hue-rotate(180deg) invert(0.8); }
+      100% { filter: hue-rotate(360deg) invert(0); }
+    }
   </style>
 </head>
 <body>
-  <div class="banner">Abo Mazen's dungeon</div>
-  <h1>🕹️ ENTER THE KEY</h1>
+  <!-- Custom cursor elements -->
+  <div class="cursor"></div>
+  <div class="cursor-follower"></div>
+  
+  <!-- Particle container -->
+  <div id="particles-js"></div>
+  
+  <div class="banner">
+    <div>Abo Mazen's dungeon</div>
+    <div class="banner-controls">
+      <button class="banner-btn" onclick="toggleSound()">🔊</button>
+      <button class="banner-btn" onclick="toggleSecretMode()">👁️</button>
+    </div>
+  </div>
+  
+  <div class="glitch-wrapper">
+    <h1 class="glitch" data-text="🕹️ ENTER THE KEY">🕹️ ENTER THE KEY</h1>
+  </div>
 
   <!-- Pixel character + speech bubble -->
   <div id="pixelCharacterContainer">
@@ -272,7 +676,7 @@
          id="pixelCharacter" 
          alt="Pixel Character" 
          width="120">
-    <div id="speechBubble" class="hidden">
+    <div id="speechBubble">
       <span id="characterSpeech">💬 ...</span>
     </div>
   </div>
@@ -284,7 +688,10 @@
   <button onclick="unlock()">UNLOCK</button>
 
   <div id="links" class="hidden">
-    <h2> 🎉 ACCESS GRANTED <span id="roleBadge" class="badge hidden">ADMIN MODE</span> </h2>
+    <h2> 
+      <span class="terminal-text">🎉 ACCESS GRANTED</span> 
+      <span id="roleBadge" class="badge hidden">ADMIN MODE</span> 
+    </h2>
     <div class="links">
       <button onclick="window.open('https://github.com/GhassanMazen00/GhassanMazen00','_blank')">💻 GitHub</button>
       <button onclick="window.open('https://t.snapchat.com/p3KLzoLR','_blank')">👻 Snapchat</button>
@@ -306,36 +713,58 @@
   </div>
 
   <!-- Modal -->
-<div class="modal" id="myModal">
-  <div class="modal-content">
-    <a href="https://www.instagram.com/loai_abb/" target="_blank">
-      <img src="https://i.postimg.cc/XqLnjRMS/20250819-2117-Pixel-Ginger-Character-simple-compose-01k31rss70fmktq7sny215zh9h.png" width="80" class="pixel-character">
-    </a>
-    <a href="https://www.instagram.com/osaidjano/" target="_blank">
-      <img src="https://i.postimg.cc/JhH7NYXZ/20250819-2129-Pixel-Man-with-T-Shirt-simple-compose-01k31scc2efvfbt02vce5hkp5r.png" width="80" class="pixel-character">
-    </a>
-    <a href="https://www.instagram.com/loai_kashkash/" target="_blank">
-      <img src="https://i.postimg.cc/76gxcCmL/20250819-2136-Pixel-Fat-Man-simple-compose-01k31sw-dygemgba9w7vm7tmpq5.png" width="80" class="pixel-character">
-    </a>
-    <a href="https://www.instagram.com/khalid.alfares1/" target="_blank">
-      <img src="https://i.postimg.cc/d1Ms4RRX/20250819-2140-Pixel-Man-with-Flag-simple-compose-01k31t39ykee6bbh3fcc1xfhjv-removebg-preview.png" width="80" class="pixel-character">
-    </a>
-    <a href="https://www.instagram.com/badr_sanoufi/" target="_blank">
-      <img src="https://i.postimg.cc/j2tsrsF4/assets-task-01k31taeamf6tavtp3htwn6b2h-1755629076-img-0.webp" width="80" class="pixel-character">
-    </a>
-    <button class="close-btn" onclick="closeModal()">CLOSE</button>
+  <div class="modal" id="myModal">
+    <div class="modal-content">
+      <a href="https://www.instagram.com/loai_abb/" target="_blank">
+        <img src="https://i.postimg.cc/XqLnjRMS/20250819-2117-Pixel-Ginger-Character-simple-compose-01k31rss70fmktq7sny215zh9h.png" width="80" class="pixel-character">
+      </a>
+      <a href="https://www.instagram.com/osaidjano/" target="_blank">
+        <img src="https://i.postimg.cc/JhH7NYXZ/20250819-2129-Pixel-Man-with-T-Shirt-simple-compose-01k31scc2efvfbt02vce5hkp5r.png" width="80" class="pixel-character">
+      </a>
+      <a href="https://www.instagram.com/loai_kashkash/" target="_blank">
+        <img src="https://i.postimg.cc/76gxcCmL/20250819-2136-Pixel-Fat-Man-simple-compose-01k31sw-dygemgba9w7vm7tmpq5.png" width="80" class="pixel-character">
+      </a>
+      <a href="https://www.instagram.com/khalid.alfares1/" target="_blank">
+        <img src="https://i.postimg.cc/d1Ms4RRX/20250819-2140-Pixel-Man-with-Flag-simple-compose-01k31t39ykee6bbh3fcc1xfhjv-removebg-preview.png" width="80" class="pixel-character">
+      </a>
+      <a href="https://www.instagram.com/badr_sanoufi/" target="_blank">
+        <img src="https://i.postimg.cc/j2tsrsF4/assets-task-01k31taeamf6tavtp3htwn6b2h-1755629076-img-0.webp" width="80" class="pixel-character">
+      </a>
+      <button class="close-btn" onclick="closeModal()">CLOSE</button>
+    </div>
   </div>
-</div>
+  
+  <!-- Easter egg message -->
+  <div class="konami" id="konamiMessage">
+    🎮 KONAMI CODE ACTIVATED! 🎮<br>
+    You found the secret!
+  </div>
+
+  <!-- Audio elements -->
+  <audio id="clickSound" src="https://assets.mixkit.co/sfx/preview/mixkit-select-click-1109.mp3"></audio>
+  <audio id="unlockSound" src="https://assets.mixkit.co/sfx/preview/mixkit-unlock-game-notification-253.mp3"></audio>
+  <audio id="hintSound" src="https://assets.mixkit.co/sfx/preview/mixkit-arcade-game-jump-coin-216.mp3"></audio>
+  <audio id="bgMusic" loop src="https://assets.mixkit.co/music/preview/mixkit-game-show-suspense-waiting-667.mp3"></audio>
 
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+  <!-- Particles.js -->
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 
   <script>
     let mode = 'locked';
     let isAdmin = false;
     const VISITOR_PASS = "10101999";
     const ADMIN_PASS = "ananke";
+    let soundEnabled = true;
+    let secretMode = false;
+    let konamiIndex = 0;
+    const konamiCode = [
+      'ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown',
+      'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight',
+      'KeyB', 'KeyA'
+    ];
 
     const firebaseConfig = {
       databaseURL: "https://dungeon-data-base-default-rtdb.firebaseio.com/"
@@ -343,7 +772,117 @@
     const app = firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
+    // Initialize particles
+    particlesJS('particles-js', {
+      particles: {
+        number: { value: 80, density: { enable: true, value_area: 800 } },
+        color: { value: "#00ffea" },
+        shape: { type: "circle" },
+        opacity: { value: 0.5, random: true },
+        size: { value: 3, random: true },
+        line_linked: {
+          enable: true,
+          distance: 150,
+          color: "#ff0080",
+          opacity: 0.4,
+          width: 1
+        },
+        move: {
+          enable: true,
+          speed: 2,
+          direction: "none",
+          random: true,
+          straight: false,
+          out_mode: "out",
+          bounce: false
+        }
+      },
+      interactivity: {
+        detect_on: "canvas",
+        events: {
+          onhover: { enable: true, mode: "repulse" },
+          onclick: { enable: true, mode: "push" },
+          resize: true
+        }
+      }
+    });
+
+    // Custom cursor
+    const cursor = document.querySelector('.cursor');
+    const cursorFollower = document.querySelector('.cursor-follower');
+    
+    document.addEventListener('mousemove', (e) => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top = e.clientY + 'px';
+      
+      setTimeout(() => {
+        cursorFollower.style.left = e.clientX + 'px';
+        cursorFollower.style.top = e.clientY + 'px';
+      }, 100);
+    });
+    
+    // Add hover effect to interactive elements
+    const interactiveElements = document.querySelectorAll('button, a, .pixel-character, #pixelCharacter');
+    interactiveElements.forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        cursor.classList.add('hover');
+      });
+      el.addEventListener('mouseleave', () => {
+        cursor.classList.remove('hover');
+      });
+    });
+    
+    // Click effect
+    document.addEventListener('mousedown', () => {
+      cursor.classList.add('click');
+    });
+    
+    document.addEventListener('mouseup', () => {
+      cursor.classList.remove('click');
+    });
+
+    // Play sound function
+    function playSound(soundId) {
+      if (!soundEnabled) return;
+      const sound = document.getElementById(soundId);
+      sound.currentTime = 0;
+      sound.play().catch(e => console.log("Audio play failed:", e));
+    }
+
+    // Toggle sound
+    function toggleSound() {
+      soundEnabled = !soundEnabled;
+      const btn = document.querySelector('.banner-controls .banner-btn');
+      btn.textContent = soundEnabled ? '🔊' : '🔇';
+      playSound('clickSound');
+    }
+
+    // Toggle secret mode
+    function toggleSecretMode() {
+      secretMode = !secretMode;
+      document.body.classList.toggle('secret-mode', secretMode);
+      playSound('clickSound');
+    }
+
+    // Konami code easter egg
+    document.addEventListener('keydown', (e) => {
+      if (e.code === konamiCode[konamiIndex]) {
+        konamiIndex++;
+        if (konamiIndex === konamiCode.length) {
+          document.getElementById('konamiMessage').style.display = 'block';
+          setTimeout(() => {
+            document.getElementById('konamiMessage').style.display = 'none';
+          }, 3000);
+          konamiIndex = 0;
+          playSound('unlockSound');
+        }
+      } else {
+        konamiIndex = 0;
+      }
+    });
+
     function unlock() {
+      playSound('clickSound');
       const key = document.getElementById('keyInput').value.trim();
       if (key === VISITOR_PASS) {
         mode = 'visitor'; isAdmin = false; enterVault();
@@ -355,22 +894,37 @@
     }
 
     function enterVault() {
+      playSound('unlockSound');
       document.getElementById('links').classList.remove('hidden');
       document.getElementById('roleBadge').classList.toggle('hidden', !isAdmin);
       displayNotes();
       setTimeout(() => document.getElementById('links').scrollIntoView({behavior:'smooth'}), 50);
+      
+      // Start background music if sound is enabled
+      if (soundEnabled) {
+        const bgMusic = document.getElementById('bgMusic');
+        bgMusic.volume = 0.3;
+        bgMusic.play().catch(e => console.log("Background music play failed:", e));
+      }
     }
 
     function showHint() { 
+      playSound('hintSound');
       alert("When was the greatest human on earth born? (type numbers only, format: daymonthyear)"); 
     }
+    
     function trap() { 
+      playSound('clickSound');
       alert("⚠️ Ghassan got notified that you tried to see him naked, shame on you!"); 
     }
+    
     function openModal() { 
+      playSound('clickSound');
       document.getElementById("myModal").style.display = "flex"; 
     }
+    
     function closeModal() { 
+      playSound('clickSound');
       document.getElementById("myModal").style.display = "none"; 
     }
 
@@ -379,6 +933,7 @@
     }
 
     function addNote() {
+      playSound('clickSound');
       const nickname = document.getElementById('nickname').value.trim();
       const noteText = document.getElementById('noteText').value.trim();
       if (!nickname || !noteText) { 
@@ -413,6 +968,7 @@
     }
 
     function deleteNote(id) {
+      playSound('clickSound');
       if (!isAdmin) return;
       db.ref("notes/" + id).remove();
     }
@@ -420,21 +976,29 @@
     // Pixel character dialogue
     let characterClicks = 0;
     document.getElementById("pixelCharacter").addEventListener("click", () => {
+      playSound('clickSound');
       const bubble = document.getElementById("speechBubble");
       const speech = document.getElementById("characterSpeech");
       characterClicks++;
 
-      bubble.classList.remove("hidden");
+      bubble.classList.add("show");
 
       if (characterClicks === 1) {
         speech.textContent = "Hmmm... you seek the secret key?";
       } else if (characterClicks === 2) {
-        speech.textContent = "Let me think... it’s a date...";
+        speech.textContent = "Let me think... it's a date...";
       } else if (characterClicks === 3) {
-        speech.textContent = "The greatest human’s birthday... 10101999.";
+        speech.textContent = "The greatest human's birthday... 10101999.";
       } else if (characterClicks === 4) {
-        speech.textContent = "Congrats, genius. Even YOU can’t mess this up, stupid.";
+        speech.textContent = "Congrats, genius. Even YOU can't mess this up, stupid.";
+      } else if (characterClicks === 5) {
+        speech.textContent = "Stop clicking me, you weirdo!";
       }
+      
+      // Hide bubble after 5 seconds
+      setTimeout(() => {
+        bubble.classList.remove("show");
+      }, 5000);
     });
   </script>
 </body>
