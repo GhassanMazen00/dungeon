@@ -29,41 +29,6 @@
       margin: 0; 
       text-align: center; 
       overflow-x: hidden;
-      cursor: none;
-    }
-    
-    /* Custom cursor */
-    .cursor {
-      width: 20px;
-      height: 20px;
-      border: 2px solid var(--accent);
-      border-radius: 50%;
-      position: absolute;
-      pointer-events: none;
-      z-index: 9999;
-      transition: transform 0.2s ease;
-      mix-blend-mode: difference;
-    }
-    
-    .cursor-follower {
-      width: 8px;
-      height: 8px;
-      background-color: var(--accent);
-      border-radius: 50%;
-      position: absolute;
-      pointer-events: none;
-      z-index: 9998;
-      transition: transform 0.6s ease;
-    }
-    
-    .cursor.click {
-      transform: scale(0.8);
-      background-color: var(--accent);
-    }
-    
-    .cursor.hover {
-      transform: scale(1.5);
-      border-color: var(--primary);
     }
     
     @keyframes gradientShift { 
@@ -84,29 +49,8 @@
       text-shadow: 2px 2px #000; 
       z-index: 1000; 
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
-    }
-    
-    .banner-controls {
-      display: flex;
-      gap: 10px;
-      margin-right: 20px;
-    }
-    
-    .banner-btn {
-      background: transparent;
-      border: 2px solid var(--accent);
-      color: var(--accent);
-      padding: 4px 8px;
-      font-size: 10px;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-    
-    .banner-btn:hover {
-      background: var(--accent);
-      color: #000;
     }
     
     h1 { 
@@ -208,7 +152,7 @@
     }
     
     #pixelCharacter {
-      cursor: none;
+      cursor: pointer;
       transition: transform 0.2s ease;
       image-rendering: pixelated;
       filter: drop-shadow(0 0 5px rgba(0, 255, 234, 0.5));
@@ -284,7 +228,6 @@
       font-size: 14px; 
       font-family: 'Press Start 2P', cursive; 
       outline: none; 
-      cursor: none;
     }
     
     input, textarea { 
@@ -301,7 +244,7 @@
     button { 
       background: var(--primary); 
       color: #fff; 
-      cursor: none; 
+      cursor: pointer; 
       transition: 0.2s; 
       position: relative;
       overflow: hidden;
@@ -366,23 +309,12 @@
       color: #ff0; 
     }
     
-    .badge { 
-      display: inline-block; 
-      margin-left: 10px; 
-      padding: 6px 8px; 
-      background: var(--accent); 
-      color: #000;
-      border: 3px solid #000; 
-      box-shadow: 3px 3px #000; 
-      font-size: 10px; 
-      vertical-align: middle; 
-      animation: pulse 2s infinite;
-    }
-    
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.1); }
-      100% { transform: scale(1); }
+    .access-granted {
+      text-align: center;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
     
     .modal { 
@@ -417,7 +349,7 @@
     }
     
     .pixel-character { 
-      cursor: none; 
+      cursor: pointer; 
       transition: transform 0.2s ease; 
       image-rendering: pixelated;
       filter: drop-shadow(0 0 5px rgba(255, 0, 128, 0.5));
@@ -441,7 +373,7 @@
       border: 3px solid #000;
       color: #fff; 
       font-family: 'Press Start 2P', cursive; 
-      cursor: none; 
+      cursor: pointer; 
     }
     
     .close-btn:hover { 
@@ -488,7 +420,7 @@
       background: var(--primary); 
       border: 2px solid #000; 
       padding: 10px 14px; 
-      cursor: none; 
+      cursor: pointer; 
     }
     
     .note-form button:hover { 
@@ -547,7 +479,7 @@
       padding: 6px 8px; 
       font-size: 10px; 
       font-family: 'Press Start 2P', cursive; 
-      cursor: none; 
+      cursor: pointer; 
       box-shadow: 2px 2px #000; 
     }
     
@@ -603,7 +535,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      cursor: none;
+      cursor: pointer;
       transition: all 0.3s;
     }
     
@@ -651,19 +583,11 @@
   </style>
 </head>
 <body>
-  <!-- Custom cursor elements -->
-  <div class="cursor"></div>
-  <div class="cursor-follower"></div>
-  
   <!-- Particle container -->
   <div id="particles-js"></div>
   
   <div class="banner">
     <div>Abo Mazen's dungeon</div>
-    <div class="banner-controls">
-      <button class="banner-btn" onclick="toggleSound()">🔊</button>
-      <button class="banner-btn" onclick="toggleSecretMode()">👁️</button>
-    </div>
   </div>
   
   <div class="glitch-wrapper">
@@ -688,10 +612,9 @@
   <button onclick="unlock()">UNLOCK</button>
 
   <div id="links" class="hidden">
-    <h2> 
-      <span class="terminal-text">🎉 ACCESS GRANTED</span> 
-      <span id="roleBadge" class="badge hidden">ADMIN MODE</span> 
-    </h2>
+    <div class="access-granted">
+      <h2 class="terminal-text">🎉 ACCESS GRANTED</h2>
+    </div>
     <div class="links">
       <button onclick="window.open('https://github.com/GhassanMazen00/GhassanMazen00','_blank')">💻 GitHub</button>
       <button onclick="window.open('https://t.snapchat.com/p3KLzoLR','_blank')">👻 Snapchat</button>
@@ -740,7 +663,7 @@
     You found the secret!
   </div>
 
-  <!-- Audio elements -->
+  <!-- Audio elements with working sources -->
   <audio id="clickSound" src="https://assets.mixkit.co/sfx/preview/mixkit-select-click-1109.mp3"></audio>
   <audio id="unlockSound" src="https://assets.mixkit.co/sfx/preview/mixkit-unlock-game-notification-253.mp3"></audio>
   <audio id="hintSound" src="https://assets.mixkit.co/sfx/preview/mixkit-arcade-game-jump-coin-216.mp3"></audio>
@@ -807,40 +730,6 @@
       }
     });
 
-    // Custom cursor
-    const cursor = document.querySelector('.cursor');
-    const cursorFollower = document.querySelector('.cursor-follower');
-    
-    document.addEventListener('mousemove', (e) => {
-      cursor.style.left = e.clientX + 'px';
-      cursor.style.top = e.clientY + 'px';
-      
-      setTimeout(() => {
-        cursorFollower.style.left = e.clientX + 'px';
-        cursorFollower.style.top = e.clientY + 'px';
-      }, 100);
-    });
-    
-    // Add hover effect to interactive elements
-    const interactiveElements = document.querySelectorAll('button, a, .pixel-character, #pixelCharacter');
-    interactiveElements.forEach(el => {
-      el.addEventListener('mouseenter', () => {
-        cursor.classList.add('hover');
-      });
-      el.addEventListener('mouseleave', () => {
-        cursor.classList.remove('hover');
-      });
-    });
-    
-    // Click effect
-    document.addEventListener('mousedown', () => {
-      cursor.classList.add('click');
-    });
-    
-    document.addEventListener('mouseup', () => {
-      cursor.classList.remove('click');
-    });
-
     // Play sound function
     function playSound(soundId) {
       if (!soundEnabled) return;
@@ -852,16 +741,17 @@
     // Toggle sound
     function toggleSound() {
       soundEnabled = !soundEnabled;
-      const btn = document.querySelector('.banner-controls .banner-btn');
+      const btn = document.querySelector('.audio-btn');
       btn.textContent = soundEnabled ? '🔊' : '🔇';
       playSound('clickSound');
-    }
-
-    // Toggle secret mode
-    function toggleSecretMode() {
-      secretMode = !secretMode;
-      document.body.classList.toggle('secret-mode', secretMode);
-      playSound('clickSound');
+      
+      // Pause or play background music based on toggle
+      const bgMusic = document.getElementById('bgMusic');
+      if (soundEnabled) {
+        bgMusic.play().catch(e => console.log("Background music play failed:", e));
+      } else {
+        bgMusic.pause();
+      }
     }
 
     // Konami code easter egg
@@ -896,9 +786,6 @@
     function enterVault() {
       playSound('unlockSound');
       document.getElementById('links').classList.remove('hidden');
-      document.getElementById('roleBadge').classList.toggle('hidden', !isAdmin);
-      displayNotes();
-      setTimeout(() => document.getElementById('links').scrollIntoView({behavior:'smooth'}), 50);
       
       // Start background music if sound is enabled
       if (soundEnabled) {
@@ -906,6 +793,9 @@
         bgMusic.volume = 0.3;
         bgMusic.play().catch(e => console.log("Background music play failed:", e));
       }
+      
+      displayNotes();
+      setTimeout(() => document.getElementById('links').scrollIntoView({behavior:'smooth'}), 50);
     }
 
     function showHint() { 
@@ -1000,6 +890,12 @@
         bubble.classList.remove("show");
       }, 5000);
     });
+    
+    // Add audio controls to the page
+    const audioControls = document.createElement('div');
+    audioControls.className = 'audio-controls';
+    audioControls.innerHTML = '<button class="audio-btn" onclick="toggleSound()">🔊</button>';
+    document.body.appendChild(audioControls);
   </script>
 </body>
 </html>
