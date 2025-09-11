@@ -21,11 +21,6 @@
       background-size: 400% 400%; 
       animation: gradientShift 8s ease infinite; 
       color: #fff;
-      display: flex; 
-      flex-direction: column; 
-      align-items: center; 
-      justify-content: center;
-      min-height: 100vh; 
       margin: 0; 
       text-align: center; 
       overflow-x: hidden;
@@ -288,25 +283,86 @@
       color: #000; 
     }
     
-    .links { 
-      display: flex; 
-      flex-direction: column; 
-      align-items: center; 
-      gap: 12px; 
-      margin-top: 20px; 
+    /* NEW: Full-page scrolling sections */
+    .fullpage-section {
+      min-height: 100vh;
+      width: 100%;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border-bottom: 4px solid #000;
     }
     
-    .links a, .links button { 
-      width: 220px; 
-      text-align: center; 
-      color: var(--accent); 
-      text-decoration: none; 
-      font-size: 14px; 
-      text-shadow: 2px 2px #000; 
+    .fullpage-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 1;
     }
     
-    .links a:hover { 
-      color: #ff0; 
+    .fullpage-section:hover::before {
+      background: rgba(0, 0, 0, 0.4);
+    }
+    
+    .section-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 20px;
+      max-width: 800px;
+    }
+    
+    .section-label {
+      color: #fff;
+      font-size: 24px;
+      text-shadow: 3px 3px 0 #000;
+      margin-bottom: 20px;
+      padding: 15px 25px;
+      background: rgba(0, 0, 0, 0.7);
+      border: 3px solid var(--accent);
+      display: inline-block;
+    }
+    
+    .section-description {
+      color: #fff;
+      font-size: 14px;
+      text-shadow: 2px 2px 0 #000;
+      line-height: 1.6;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 15px;
+      border: 2px solid var(--primary);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    .section-github { 
+      background-image: url('https://i.postimg.cc/gj8Fmk12/20250911-1448-Pixel-Coding-Cave-simple-compose-01k4w9jgwcfqev0vrmk0gftbf1.png'); 
+    }
+    
+    .section-snapchat { 
+      background-image: url('https://i.postimg.cc/5yFKL7m7/20250911-1431-Ghosts-Over-Cityscape-remix-01k4w8mctpesr9vghxnv1yjmj9-1.png'); 
+    }
+    
+    .section-email { 
+      background-image: url('https://i.postimg.cc/4NgjpGrp/20250911-1441-Envelopes-Above-Clouds-remix-01k4w96gcve8w9mnm18gak3a1n.png'); 
+    }
+    
+    .section-bitches { 
+      background-image: url('https://i.postimg.cc/BZxVSyXb/20250911-1504-Pixel-Grass-Ground-remix-01k4waeg2tfhrtbfkm19m67r7q.png'); 
+    }
+    
+    .section-pics { 
+      background-image: url('https://i.postimg.cc/9frkcQ7H/20250911-1517-Retro-Arcade-Warning-simple-compose-01k4wb8d6sf4s8phdpg3awvy4s.png'); 
     }
     
     .access-granted {
@@ -315,6 +371,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      padding: 40px 20px;
     }
     
     .modal { 
@@ -531,7 +588,7 @@
       color: var(--accent);
       width: 40px;
       height: 40px;
-      border-radius: 50%;
+      borderRadius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -544,12 +601,35 @@
       color: #000;
     }
     
+    /* Scroll indicator */
+    .scroll-indicator {
+      position: fixed;
+      bottom: 70px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: var(--accent);
+      text-shadow: 2px 2px #000;
+      font-size: 12px;
+      z-index: 100;
+      animation: bounce 2s infinite;
+      background: rgba(0,0,0,0.7);
+      padding: 8px 15px;
+      border: 2px solid var(--accent);
+    }
+    
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% {transform: translateY(0) translateX(-50%);}
+      40% {transform: translateY(-20px) translateX(-50%);}
+      60% {transform: translateY(-10px) translateX(-50%);}
+    }
+    
     /* Responsive adjustments */
     @media (max-width: 768px) {
       h1 { font-size: 18px; }
       .input-box { flex-direction: column; }
       input, button { width: 90%; max-width: 300px; }
-      .links a, .links button { width: 90%; max-width: 300px; }
+      .section-label { font-size: 18px; }
+      .section-description { font-size: 12px; }
       .modal-content { width: 90%; }
       .notes-wall { grid-template-columns: 1fr; }
     }
@@ -614,13 +694,43 @@
   <div id="links" class="hidden">
     <div class="access-granted">
       <h2 class="terminal-text">🎉 ACCESS GRANTED</h2>
+      <div class="scroll-indicator">▼ SCROLL DOWN ▼</div>
     </div>
-    <div class="links">
-      <button onclick="window.open('https://github.com/GhassanMazen00/GhassanMazen00','_blank')">💻 GitHub</button>
-      <button onclick="window.open('https://t.snapchat.com/p3KLzoLR','_blank')">👻 Snapchat</button>
-      <button onclick="window.open('mailto:ghassanmazen@zohomail.com','_blank')">📧 Email</button>
-      <button onclick="openModal()">💃 My Bitches</button>
-      <button onclick="trap()">🔞 +18 Pics of Ghassan</button>
+    
+    <!-- NEW: Full-page scrolling sections -->
+    <div class="fullpage-section section-github" onclick="window.open('https://github.com/GhassanMazen00/GhassanMazen00','_blank')">
+      <div class="section-content">
+        <div class="section-label">💻 GitHub</div>
+        <div class="section-description">Check out my coding projects and contributions to the developer community</div>
+      </div>
+    </div>
+    
+    <div class="fullpage-section section-snapchat" onclick="window.open('https://t.snapchat.com/p3KLzoLR','_blank')">
+      <div class="section-content">
+        <div class="section-label">👻 Snapchat</div>
+        <div class="section-description">Follow me for daily stories and behind-the-scenes moments</div>
+      </div>
+    </div>
+    
+    <div class="fullpage-section section-email" onclick="window.open('mailto:ghassanmazen@zohomail.com','_blank')">
+      <div class="section-content">
+        <div class="section-label">📧 Email</div>
+        <div class="section-description">Get in touch for collaborations, questions, or just to say hello</div>
+      </div>
+    </div>
+    
+    <div class="fullpage-section section-bitches" onclick="openModal()">
+      <div class="section-content">
+        <div class="section-label">💃 My Bitches</div>
+        <div class="section-description">Meet the crew - my awesome friends and partners in crime</div>
+      </div>
+    </div>
+    
+    <div class="fullpage-section section-pics" onclick="trap()">
+      <div class="section-content">
+        <div class="section-label">🔞 +18 Pics of Ghassan</div>
+        <div class="section-description">Warning: Content may be too hot to handle. Enter at your own risk!</div>
+      </div>
     </div>
 
     <!-- Visitor Notes Wall -->
