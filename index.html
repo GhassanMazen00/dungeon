@@ -125,10 +125,10 @@
       20% { clip: rect(67px, 9999px, 61px, 0); }
       25% { clip: rect(14px, 9999px, 79px, 0); }
       30% { clip: rect(1px, 9999px, 66px, 0); }
-      35% { clip: rect(86px, 9999px, 30px, 极); }
+      35% { clip: rect(86px, 9999px, 30px, 0); }
       40% { clip: rect(23px, 9999px, 98px, 0); }
       45% { clip: rect(85px, 9999px, 72px, 0); }
-      50% {极 clip: rect(71px, 9999px, 75px, 0); }
+      50% { clip: rect(71px, 9999px, 75px, 0); }
       55% { clip: rect(2px, 9999px, 48px, 0); }
       60% { clip: rect(30px, 9999px, 16px, 0); }
       65% { clip: rect(59px, 9999px, 50px, 0); }
@@ -225,7 +225,7 @@
       margin: 4px; 
       border: 3px solid #000; 
       border-radius: 0;
-     极 font-size: 14px; 
+      font-size: 14px; 
       font-family: 'Press Start 2P', cursive; 
       outline: none; 
     }
@@ -260,11 +260,11 @@
       background: rgba(255, 255, 255, 0.5);
       opacity: 0;
       border-radius: 100%;
-      transform: scale(极1, 1) translate(-50%);
+      transform: scale(1, 1) translate(-50%);
       transform-origin: 50% 50%;
     }
     
-    button:focus:not(:active极)::after {
+    button:focus:not(:active)::after {
       animation: ripple 1s ease-out;
     }
     
@@ -368,7 +368,7 @@
     
     .close-btn { 
       margin-top: 20px; 
-      padding: 10极px 16px; 
+      padding: 10px 16px; 
       background: var(--primary); 
       border: 3px solid #000;
       color: #fff; 
@@ -388,13 +388,13 @@
       border: 3px solid var(--accent);
       border-radius: 12px; 
       max-width: 900px; 
-      backdrop-filter: blur极(5px);
+      backdrop-filter: blur(5px);
     }
     
     #notesSection h2 { 
       color: #ff0; 
       text-shadow: 2px 2px #000; 
-     极 margin-bottom: 20px; 
+      margin-bottom: 20px; 
       font-size: 16px; 
     }
     
@@ -512,7 +512,7 @@
       to { width: 100% }
     }
     
-    @极keyframes blink-caret {
+    @keyframes blink-caret {
       from, to { border-color: transparent }
       50% { border-color: var(--accent) }
     }
@@ -551,7 +551,7 @@
       input, button { width: 90%; max-width: 300px; }
       .links a, .links button { width: 90%; max-width: 300px; }
       .modal-content { width: 90%; }
-      .notes-wall { grid-template-columns: 1极fr; }
+      .notes-wall { grid-template-columns: 1fr; }
     }
     
     /* Easter egg */
@@ -613,7 +613,7 @@
 
   <div id="links" class="hidden">
     <div class="access-granted">
-      <h2 class极="terminal-text">🎉 ACCESS GRANTED</h2>
+      <h2 class="terminal-text">🎉 ACCESS GRANTED</h2>
     </div>
     <div class="links">
       <button onclick="window.open('https://github.com/GhassanMazen00/GhassanMazen00','_blank')">💻 GitHub</button>
@@ -639,7 +639,7 @@
   <div class="modal" id="myModal">
     <div class="modal-content">
       <a href="https://www.instagram.com/loai_abb/" target="_blank">
-        <img src="https://i.postimg.cc/Xq极LnjRMS/20250819-2117-Pixel-Ginger-Character-simple-compose-01k31极rss70fmktq7sny215zh9h.png" width="80" class="pixel-character">
+        <img src="https://i.postimg.cc/XqLnjRMS/20250819-2117-Pixel-Ginger-Character-simple-compose-01k31rss70fmktq7sny215zh9h.png" width="80" class="pixel-character">
       </a>
       <a href="https://www.instagram.com/osaidjano/" target="_blank">
         <img src="https://i.postimg.cc/JhH7NYXZ/20250819-2129-Pixel-Man-with-T-Shirt-simple-compose-01k31scc2efvfbt02vce5hkp5r.png" width="80" class="pixel-character">
@@ -652,7 +652,7 @@
       </a>
       <a href="https://www.instagram.com/badr_sanoufi/" target="_blank">
         <img src="https://i.postimg.cc/j2tsrsF4/assets-task-01k31taeamf6tavtp3htwn6b2h-1755629076-img-0.webp" width="80" class="pixel-character">
-      </极a>
+      </a>
       <button class="close-btn" onclick="closeModal()">CLOSE</button>
     </div>
   </div>
@@ -666,7 +666,7 @@
   <!-- Audio elements with working sources -->
   <audio id="clickSound" src="https://assets.mixkit.co/sfx/preview/mixkit-select-click-1109.mp3"></audio>
   <audio id="unlockSound" src="https://assets.mixkit.co/sfx/preview/mixkit-unlock-game-notification-253.mp3"></audio>
-  <audio id="h极intSound" src="https://assets.mixkit.co/sfx/preview/mixkit-arcade-game-jump-coin-216.mp3"></audio>
+  <audio id="hintSound" src="https://assets.mixkit.co/sfx/preview/mixkit-arcade-game-jump-coin-216.mp3"></audio>
   <audio id="bgMusic" loop src="https://assets.mixkit.co/music/preview/mixkit-game-show-suspense-waiting-667.mp3"></audio>
 
   <!-- Firebase -->
@@ -688,16 +688,6 @@
       'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight',
       'KeyB', 'KeyA'
     ];
-
-    // Dialogue messages array
-    const characterDialogue = [
-      "Hmmm... you seek the secret key?",
-      "Let me think... it's a date...",
-      "The greatest human's birthday... 10101999.",
-      "Congrats, genius. Even YOU can't mess this up, stupid.",
-      "Stop clicking me, you weirdo!"
-    ];
-    let dialogueIndex = -1; // Start at -1 so first click shows first message
 
     const firebaseConfig = {
       databaseURL: "https://dungeon-data-base-default-rtdb.firebaseio.com/"
@@ -731,7 +721,7 @@
         }
       },
       interactivity: {
-        detect_on极: "canvas",
+        detect_on: "canvas",
         events: {
           onhover: { enable: true, mode: "repulse" },
           onclick: { enable: true, mode: "push" },
@@ -786,7 +776,7 @@
       const key = document.getElementById('keyInput').value.trim();
       if (key === VISITOR_PASS) {
         mode = 'visitor'; isAdmin = false; enterVault();
-      } else if (key === ADMIN极_PASS) {
+      } else if (key === ADMIN_PASS) {
         mode = 'admin'; isAdmin = true; enterVault();
       } else {
         alert("❌ WRONG KEY. TRY AGAIN!");
@@ -873,20 +863,32 @@
       db.ref("notes/" + id).remove();
     }
 
-    // Pixel character dialogue - only shows when clicked and cycles through messages
+    // Pixel character dialogue
+    let characterClicks = 0;
     document.getElementById("pixelCharacter").addEventListener("click", () => {
       playSound('clickSound');
       const bubble = document.getElementById("speechBubble");
       const speech = document.getElementById("characterSpeech");
-      
-      // Show the bubble
+      characterClicks++;
+
       bubble.classList.add("show");
+
+      if (characterClicks === 1) {
+        speech.textContent = "Hmmm... you seek the secret key?";
+      } else if (characterClicks === 2) {
+        speech.textContent = "Let me think... it's a date...";
+      } else if (characterClicks === 3) {
+        speech.textContent = "The greatest human's birthday... 10101999.";
+      } else if (characterClicks === 4) {
+        speech.textContent = "Congrats, genius. Even YOU can't mess this up, stupid.";
+      } else if (characterClicks === 5) {
+        speech.textContent = "Stop clicking me, you weirdo!";
+      }
       
-      // Cycle to next dialogue message
-      dialogueIndex = (dialogueIndex + 1) % characterDialogue.length;
-      speech.textContent = characterDialogue[dialogueIndex];
-      
-      // Keep the bubble visible (no timeout to hide it)
+      // Hide bubble after 5 seconds
+      setTimeout(() => {
+        bubble.classList.remove("show");
+      }, 5000);
     });
     
     // Add audio controls to the page
