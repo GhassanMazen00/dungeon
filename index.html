@@ -3,70 +3,144 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Unlock Ghassan's Vault</title>
+  <title>Ghassan's Digital Hub</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
     
     :root {
-      --primary: #ff0080;
-      --secondary: #7928ca;
-      --accent: #00ffea;
-      --dark: #1d2144;
-      --light: #f8f9fa;
+      --primary: #0088ff;
+      --secondary: #0055aa;
+      --accent: #00ddff;
+      --dark: #0a0a1a;
+      --grid-color: rgba(0, 136, 255, 0.1);
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
     
     body { 
       font-family: 'Press Start 2P', cursive; 
-      background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent), #ff8c00);
-      background-size: 400% 400%; 
-      animation: gradientShift 8s ease infinite; 
+      background: linear-gradient(135deg, #050510 0%, #0a1525 50%, #050510 100%);
       color: #fff;
-      display: flex; 
-      flex-direction: column; 
-      align-items: center; 
-      justify-content: center;
-      min-height: 100vh; 
-      margin: 0; 
-      text-align: center; 
+      min-height: 100vh;
+      position: relative;
       overflow-x: hidden;
     }
     
-    @keyframes gradientShift { 
-      0% {background-position: 0% 50%;} 
-      50% {background-position: 100% 50%;} 
-      100% {background-position: 0% 50%;} 
+    /* 18+ Button */
+    .trap-button {
+      position: fixed;
+      top: 70px;
+      left: 20px;
+      z-index: 1001;
+      background: #ff0000;
+      color: white;
+      border: 3px solid #000;
+      padding: 8px 12px;
+      font-size: 10px;
+      cursor: pointer;
+      transition: all 0.3s;
     }
     
-    .banner { 
-      position: fixed; 
-      top: 0; 
-      width: 100%; 
-      background: rgba(0,0,0,0.7); 
-      color: var(--accent); 
-      padding: 10px;
-      font-size: 12px; 
-      border-bottom: 2px solid #ff0; 
-      text-shadow: 2px 2px #000; 
-      z-index: 1000; 
+    .trap-button:hover {
+      background: #ff5500;
+      transform: scale(1.1);
+    }
+    
+    /* Pixel grid background */
+    .pixel-grid {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(var(--grid-color) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+      background-size: 40px 40px;
+      z-index: -1;
+      opacity: 0.3;
+    }
+    
+    /* Navigation */
+    .pixel-nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(10, 20, 40, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 3px solid var(--accent);
+      z-index: 1000;
+      padding: 15px 20px;
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
       align-items: center;
     }
     
-    h1 { 
-      font-size: 22px; 
-      margin: 70px 0 20px; 
-      text-shadow: 3px 3px #000; 
+    .nav-logo {
+      font-size: 16px;
+      color: var(--accent);
+      text-decoration: none;
+      text-shadow: 2px 2px 0 var(--primary);
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: 20px;
+    }
+    
+    .nav-link {
+      color: #fff;
+      text-decoration: none;
+      font-size: 10px;
+      padding: 8px 12px;
+      border: 2px solid transparent;
+      transition: all 0.3s;
+    }
+    
+    .nav-link:hover {
+      color: var(--accent);
+      border: 2px solid var(--accent);
+      background: rgba(0, 221, 255, 0.1);
+    }
+    
+    /* Hero Section */
+    .hero {
+      padding: 150px 20px 80px;
+      text-align: center;
+      max-width: 1200px;
+      margin: 0 auto;
       position: relative;
+    }
+    
+    .hero-glow {
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
+      filter: blur(60px);
+      opacity: 0.2;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: -1;
     }
     
     .glitch-wrapper {
       position: relative;
+      display: inline-block;
+      margin-bottom: 30px;
     }
     
     .glitch {
+      font-size: 32px;
+      color: #fff;
       position: relative;
       display: inline-block;
+      text-shadow: 3px 3px 0 #000;
     }
     
     .glitch::before,
@@ -81,443 +155,414 @@
     
     .glitch::before {
       left: 2px;
-      text-shadow: -2px 0 var(--primary);
-      clip: rect(44px, 450px, 56px, 0);
-      animation: glitch-anim 5s infinite linear alternate-reverse;
+      color: var(--primary);
+      animation: glitch 3s infinite;
+      clip-path: polygon(0 0, 100% 0, 100% 35%, 0 35%);
     }
     
     .glitch::after {
       left: -2px;
-      text-shadow: -2px 0 var(--accent);
-      clip: rect(44px, 450px, 56px, 0);
-      animation: glitch-anim2 5s infinite linear alternate-reverse;
+      color: var(--accent);
+      animation: glitch 2s infinite reverse;
+      clip-path: polygon(0 65%, 100% 65%, 100% 100%, 0 100%);
     }
     
-    @keyframes glitch-anim {
-      0% { clip: rect(42px, 9999px, 44px, 0); }
-      5% { clip: rect(12px, 9999px, 59px, 0); }
-      10% { clip: rect(48px, 9999px, 29px, 0); }
-      15% { clip: rect(42px, 9999px, 73px, 0); }
-      20% { clip: rect(63px, 9999px, 27px, 0); }
-      25% { clip: rect(34px, 9999px, 55px, 0); }
-      30% { clip: rect(86px, 9999px, 73px, 0); }
-      35% { clip: rect(20px, 9999px, 20px, 0); }
-      40% { clip: rect(26px, 9999px, 60px, 0); }
-      45% { clip: rect(25px, 9999px, 66px, 0); }
-      50% { clip: rect(57px, 9999px, 98px, 0); }
-      55% { clip: rect(5px, 9999px, 46px, 0); }
-      60% { clip: rect(82px, 9999px, 31px, 0); }
-      65% { clip: rect(54px, 9999px, 27px, 0); }
-      70% { clip: rect(28px, 9999px, 99px, 0); }
-      75% { clip: rect(45px, 9999px, 69px, 0); }
-      80% { clip: rect(23px, 9999px, 85px, 0); }
-      85% { clip: rect(54px, 9999px, 84px, 0); }
-      90% { clip: rect(45px, 9999px, 47px, 0); }
-      95% { clip: rect(24px, 9999px, 23px, 0); }
-      100% { clip: rect(32px, 9999px, 92px, 0); }
+    @keyframes glitch {
+      0% { transform: translate(0); }
+      20% { transform: translate(-2px, 2px); }
+      40% { transform: translate(-2px, -2px); }
+      60% { transform: translate(2px, 2px); }
+      80% { transform: translate(2px, -2px); }
+      100% { transform: translate(0); }
     }
     
-    @keyframes glitch-anim2 {
-      0% { clip: rect(65px, 9999px, 100px, 0); }
-      5% { clip: rect(52px, 9999px, 74px, 0); }
-      10% { clip: rect(79px, 9999px, 85px, 0); }
-      15% { clip: rect(75px, 9999px, 5px, 0); }
-      20% { clip: rect(67px, 9999px, 61px, 0); }
-      25% { clip: rect(14px, 9999px, 79px, 0); }
-      30% { clip: rect(1px, 9999px, 66px, 0); }
-      35% { clip: rect(86px, 9999px, 30px, 0); }
-      40% { clip: rect(23px, 9999px, 98px, 0); }
-      45% { clip: rect(85px, 9999px, 72px, 0); }
-      50% { clip: rect(71px, 9999px, 75px, 0); }
-      55% { clip: rect(2px, 9999px, 48px, 0); }
-      60% { clip: rect(30px, 9999px, 16px, 0); }
-      65% { clip: rect(59px, 9999px, 50px, 0); }
-      70% { clip: rect(41px, 9999px, 62px, 0); }
-      75% { clip: rect(2px, 9999px, 82px, 0); }
-      80% { clip: rect(47px, 9999px, 73px, 0); }
-      85% { clip: rect(3px, 9999px, 27px, 0); }
-      90% { clip: rect(26px, 9999px, 55px, 0); }
-      95% { clip: rect(42px, 9999px, 97px, 0); }
-      100% { clip: rect(38px, 9999px, 49px, 0); }
+    .hero-tagline {
+      font-size: 14px;
+      color: var(--accent);
+      margin-bottom: 40px;
+      line-height: 1.6;
     }
-
-    /* Pixel character + speech bubble */
-    #pixelCharacterContainer {
+    
+    /* Pixel Character */
+    .character-container {
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin-bottom: 20px;
+      margin: 40px 0;
       position: relative;
-      z-index: 10;
     }
     
-    #pixelCharacter {
-      cursor: pointer;
-      transition: transform 0.2s ease;
+    .pixel-character {
+      width: 180px;
+      height: 180px;
       image-rendering: pixelated;
-      filter: drop-shadow(0 0 5px rgba(0, 255, 234, 0.5));
+      cursor: pointer;
+      transition: transform 0.3s;
+      filter: drop-shadow(0 0 20px rgba(0, 221, 255, 0.5));
+      border: 4px solid var(--accent);
+      background: rgba(0, 0, 0, 0.5);
+      padding: 10px;
+      border-radius: 10px;
     }
     
-    #pixelCharacter:hover {
-      transform: scale(1.2);
+    .pixel-character:hover {
+      transform: scale(1.1) rotate(5deg);
       animation: float 3s ease-in-out infinite;
     }
     
     @keyframes float {
-      0%, 100% { transform: translateY(0) scale(1.2); }
-      50% { transform: translateY(-10px) scale(1.2); }
+      0%, 100% { transform: translateY(0) scale(1.1) rotate(5deg); }
+      50% { transform: translateY(-15px) scale(1.1) rotate(5deg); }
     }
     
-    #speechBubble {
+    .speech-bubble {
+      position: absolute;
+      top: -100px;
       background: #fff;
       color: #000;
-      padding: 10px 14px;
+      padding: 15px;
       border: 3px solid #000;
-      border-radius: 12px;
-      max-width: 240px;
-      text-align: center;
+      border-radius: 10px;
       font-size: 12px;
-      font-family: 'Press Start 2P', cursive;
-      text-shadow: none;
-      position: absolute;
-      top: -90px;
-      left: 50%;
-      transform: translateX(-50%);
-      box-shadow: 3px 3px #000;
-      z-index: 11;
+      max-width: 250px;
+      box-shadow: 5px 5px 0 #000;
       opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-    
-    #speechBubble.show {
-      opacity: 1;
-    }
-    
-    #speechBubble::after {
-      content: "";
-      position: absolute;
-      bottom: -12px;
-      left: 50%;
-      transform: translateX(-50%);
-      border-width: 12px;
-      border-style: solid;
-      border-color: #fff transparent transparent transparent;
-      filter: drop-shadow(2px 2px 0 #000);
-    }
-    
-    .hidden { 
-      display: none; 
-    }
-    
-    .input-box { 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      gap: 8px; 
-      margin-bottom: 10px; 
-      flex-wrap: wrap; 
-      position: relative;
+      transform: translateY(10px);
+      transition: all 0.3s;
       z-index: 10;
     }
     
-    input, button, textarea { 
-      padding: 12px; 
-      margin: 4px; 
-      border: 3px solid #000; 
-      border-radius: 0;
-      font-size: 14px; 
-      font-family: 'Press Start 2P', cursive; 
-      outline: none; 
+    .speech-bubble.show {
+      opacity: 1;
+      transform: translateY(0);
     }
     
-    input, textarea { 
-      width: 220px; 
-      background: #111; 
-      color: #0f0; 
-    }
-    
-    input::placeholder, textarea::placeholder {
-      color: #0f0;
-      opacity: 0.7;
-    }
-    
-    button { 
-      background: var(--primary); 
-      color: #fff; 
-      cursor: pointer; 
-      transition: 0.2s; 
-      position: relative;
-      overflow: hidden;
-    }
-    
-    button::after {
+    .speech-bubble::after {
       content: '';
       position: absolute;
-      top: 50%;
+      bottom: -15px;
       left: 50%;
-      width: 5px;
-      height: 5px;
-      background: rgba(255, 255, 255, 0.5);
-      opacity: 0;
-      border-radius: 100%;
-      transform: scale(1, 1) translate(-50%);
-      transform-origin: 50% 50%;
+      transform: translateX(-50%);
+      border: 8px solid transparent;
+      border-top-color: #fff;
+      filter: drop-shadow(2px 2px 0 #000);
     }
     
-    button:focus:not(:active)::after {
-      animation: ripple 1s ease-out;
+    /* Social Links */
+    .social-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      max-width: 900px;
+      margin: 60px auto;
+      padding: 0 20px;
     }
     
-    @keyframes ripple {
-      0% {
-        transform: scale(0, 0);
-        opacity: 1;
-      }
-      20% {
-        transform: scale(20, 20);
-        opacity: 1;
-      }
-      100% {
-        transform: scale(50, 50);
-        opacity: 0;
-      }
-    }
-    
-    button:hover { 
-      background: var(--accent); 
-      color: #000; 
-    }
-    
-    .links { 
-      display: flex; 
-      flex-direction: column; 
-      align-items: center; 
-      gap: 12px; 
-      margin-top: 20px; 
-    }
-    
-    .links a, .links button { 
-      width: 220px; 
-      text-align: center; 
-      color: var(--accent); 
-      text-decoration: none; 
-      font-size: 14px; 
-      text-shadow: 2px 2px #000; 
-    }
-    
-    .links a:hover { 
-      color: #ff0; 
-    }
-    
-    .access-granted {
+    .social-card {
+      background: rgba(10, 20, 40, 0.8);
+      border: 3px solid var(--accent);
+      padding: 30px 20px;
       text-align: center;
-      margin: 0 auto;
+      transition: all 0.3s;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+    }
+    
+    .social-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--primary);
+      box-shadow: 0 10px 20px rgba(0, 136, 255, 0.3);
+    }
+    
+    .social-card i {
+      font-size: 40px;
+      margin-bottom: 15px;
+      display: block;
+    }
+    
+    .social-card h3 {
+      color: var(--accent);
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+    
+    /* Pixel Art Creator - FIXED */
+    .pixel-art-section {
+      max-width: 800px;
+      margin: 80px auto;
+      padding: 40px;
+      background: rgba(10, 20, 40, 0.6);
+      border: 3px solid var(--accent);
+      text-align: center;
+    }
+    
+    .pixel-controls {
       display: flex;
-      flex-direction: column;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-bottom: 30px;
+      justify-content: center;
       align-items: center;
     }
     
-    .modal { 
-      display: none; 
-      position: fixed; 
-      z-index: 999; 
-      left: 0; top: 0; 
-      width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.9); 
-      justify-content: center; 
-      align-items: center; 
-      backdrop-filter: blur(5px);
+    .canvas-size-selector {
+      display: flex;
+      gap: 10px;
+      align-items: center;
     }
     
-    .modal-content { 
-      background: #111; 
-      padding: 20px; 
-      border: 4px solid var(--accent); 
-      border-radius: 10px; 
-      max-width: 700px;
-      display: flex; 
-      flex-wrap: wrap; 
-      gap: 20px; 
-      justify-content: center; 
-      position: relative;
-      animation: modalAppear 0.5s ease;
+    .canvas-size-selector select {
+      background: #000;
+      color: white;
+      border: 2px solid var(--primary);
+      padding: 10px;
+      font-family: 'Press Start 2P', cursive;
+      font-size: 10px;
+      cursor: pointer;
     }
     
-    @keyframes modalAppear {
-      from { transform: scale(0.8); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
+    .color-palette {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+      max-width: 300px;
     }
     
-    .pixel-character { 
-      cursor: pointer; 
-      transition: transform 0.2s ease; 
-      image-rendering: pixelated;
-      filter: drop-shadow(0 0 5px rgba(255, 0, 128, 0.5));
+    .color-option {
+      width: 25px;
+      height: 25px;
+      border: 2px solid #fff;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: transform 0.2s;
     }
     
-    .pixel-character:hover { 
-      transform: scale(1.2); 
-      animation: shake 0.5s ease infinite;
-    }
-    
-    @keyframes shake {
-      0%, 100% { transform: translateX(0) scale(1.2); }
-      25% { transform: translateX(-5px) scale(1.2); }
-      75% { transform: translateX(5px) scale(1.2); }
-    }
-    
-    .close-btn { 
-      margin-top: 20px; 
-      padding: 10px 16px; 
-      background: var(--primary); 
-      border: 3px solid #000;
-      color: #fff; 
-      font-family: 'Press Start 2P', cursive; 
-      cursor: pointer; 
-    }
-    
-    .close-btn:hover { 
-      background: var(--accent); 
-      color: #000; 
-    }
-    
-    #notesSection { 
-      margin-top: 30px; 
-      padding: 20px; 
-      background: rgba(0,0,0,0.6); 
+    .color-option.active {
+      transform: scale(1.3);
       border: 3px solid var(--accent);
-      border-radius: 12px; 
-      max-width: 900px; 
-      backdrop-filter: blur(5px);
     }
     
-    #notesSection h2 { 
-      color: #ff0; 
-      text-shadow: 2px 2px #000; 
-      margin-bottom: 20px; 
-      font-size: 16px; 
+    .pixel-art-container {
+      background: #000;
+      border: 4px solid var(--primary);
+      padding: 20px;
+      display: inline-block;
+      margin: 0 auto;
     }
     
-    .note-form { 
-      display: flex; 
-      flex-direction: column; 
-      gap: 10px; 
-      margin-bottom: 20px; 
-      align-items: center; 
+    .pixel-grid-container {
+      display: grid;
+      background: #000;
+      margin: 0 auto;
+      border: 2px solid #333;
     }
     
-    .note-form input, .note-form textarea { 
-      background: #111; 
-      color: #0f0; 
-      border: 2px solid var(--accent);
-      padding: 10px; 
-      font-size: 12px; 
-      width: 100%; 
-      max-width: 520px; 
+    .pixel-cell {
+      border: 1px solid #333;
+      cursor: pointer;
+      transition: all 0.1s;
     }
     
-    .note-form button { 
-      background: var(--primary); 
-      border: 2px solid #000; 
-      padding: 10px 14px; 
-      cursor: pointer; 
+    .pixel-cell:hover {
+      transform: scale(1.1);
+      z-index: 1;
     }
     
-    .note-form button:hover { 
-      background: var(--accent); 
-      color: #000; 
+    .art-controls {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin-top: 30px;
+      flex-wrap: wrap;
     }
     
-    .notes-wall { 
-      display: grid; 
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); 
-      gap: 15px; 
+    /* Students Section */
+    .students-section {
+      max-width: 1000px;
+      margin: 80px auto;
+      padding: 40px;
+      background: rgba(10, 20, 40, 0.6);
+      border: 3px solid var(--primary);
     }
     
-    .note { 
-      padding: 15px; 
-      background: #222; 
-      border: 3px solid var(--primary); 
-      box-shadow: 3px 3px #000; 
+    .students-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 25px;
+      justify-items: center;
+    }
+    
+    .student-card {
+      text-align: center;
+      transition: transform 0.3s;
+    }
+    
+    .student-card:hover {
+      transform: scale(1.1);
+    }
+    
+    .student-avatar {
+      width: 100px;
+      height: 100px;
+      object-fit: contain;
+      border: 3px solid var(--accent);
+      border-radius: 10px;
+      margin-bottom: 10px;
+      image-rendering: pixelated;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 5px;
+    }
+    
+    .student-name {
       font-size: 12px;
-      word-wrap: break-word; 
-      transform: rotate(-1deg); 
-      text-align: left; 
-      position: relative; 
-      min-height: 84px; 
-      transition: transform 0.3s ease;
+      color: #fff;
+    }
+    
+    /* Notes Section */
+    .notes-section {
+      max-width: 1000px;
+      margin: 80px auto;
+      padding: 40px;
+      background: rgba(10, 20, 40, 0.6);
+      border: 3px solid var(--accent);
+    }
+    
+    .note-form {
+      display: grid;
+      gap: 15px;
+      margin-bottom: 40px;
+      max-width: 600px;
+      margin: 0 auto 40px;
+    }
+    
+    .note-form input,
+    .note-form textarea {
+      background: rgba(0, 0, 0, 0.5);
+      border: 2px solid var(--primary);
+      color: #fff;
+      padding: 15px;
+      font-family: 'Press Start 2P', cursive;
+      font-size: 12px;
+    }
+    
+    .note-form textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+    
+    .note-form button {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 15px;
+      font-family: 'Press Start 2P', cursive;
+      font-size: 12px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    
+    .note-form button:hover {
+      background: var(--accent);
+      color: #000;
+    }
+    
+    .notes-wall {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+      margin-top: 40px;
+    }
+    
+    .note {
+      background: rgba(0, 0, 0, 0.5);
+      padding: 20px;
+      border-left: 4px solid var(--accent);
+      position: relative;
+      transform: rotate(-0.5deg);
+      transition: transform 0.3s;
     }
     
     .note:hover {
-      transform: rotate(0deg) scale(1.05);
-      z-index: 5;
+      transform: rotate(0deg) scale(1.02);
     }
     
-    .note:nth-child(odd) { 
-      background: #333; 
-      border-color: var(--accent); 
-      transform: rotate(1deg); 
+    .note:nth-child(even) {
+      transform: rotate(0.5deg);
+      border-left-color: var(--primary);
     }
     
-    .note:nth-child(odd):hover {
-      transform: rotate(0deg) scale(1.05);
+    .note:nth-child(even):hover {
+      transform: rotate(0deg) scale(1.02);
     }
     
-    .note .nickname { 
-      font-weight: bold; 
-      color: #ff0; 
-      margin-bottom: 8px; 
-      display: block; 
+    .note-author {
+      color: var(--accent);
+      font-size: 12px;
+      margin-bottom: 10px;
+      display: block;
     }
     
-    .delete-btn { 
-      display: inline-block; 
-      margin-top: 8px; 
-      background: #e60026; 
-      border: 3px solid #000;
-      color: #fff; 
-      padding: 6px 8px; 
-      font-size: 10px; 
-      font-family: 'Press Start 2P', cursive; 
-      cursor: pointer; 
-      box-shadow: 2px 2px #000; 
+    .note-content {
+      font-size: 10px;
+      line-height: 1.6;
+      word-wrap: break-word;
     }
     
-    .delete-btn:hover { 
-      background: #ff8c00; 
-      color: #000; 
+    .delete-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #ff0000;
+      color: #fff;
+      border: none;
+      padding: 5px 8px;
+      font-size: 8px;
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity 0.3s;
     }
     
-    /* Particle container */
+    .note:hover .delete-btn {
+      opacity: 1;
+    }
+    
+    /* Admin Section */
+    .admin-section {
+      text-align: center;
+      margin: 40px auto;
+      padding: 20px;
+      max-width: 600px;
+      background: rgba(10, 20, 40, 0.6);
+      border: 3px solid var(--primary);
+      border-radius: 10px;
+    }
+    
+    .admin-login {
+      padding: 20px;
+    }
+    
+    .admin-login input {
+      background: #000;
+      color: white;
+      border: 2px solid var(--accent);
+      padding: 12px;
+      font-family: 'Press Start 2P', cursive;
+      margin: 10px 0;
+      width: 200px;
+      text-align: center;
+    }
+    
+    /* Particles Container */
     #particles-js {
       position: fixed;
       width: 100%;
       height: 100%;
-      z-index: 0;
-      top: 0;
-      left: 0;
+      z-index: -2;
     }
     
-    /* Terminal typing effect */
-    .terminal-text {
-      overflow: hidden;
-      border-right: 3px solid var(--accent);
-      white-space: nowrap;
-      margin: 0 auto;
-      animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
-    }
-    
-    @keyframes typing {
-      from { width: 0 }
-      to { width: 100% }
-    }
-    
-    @keyframes blink-caret {
-      from, to { border-color: transparent }
-      50% { border-color: var(--accent) }
-    }
-    
-    /* Audio controls */
+    /* Audio Controls */
     .audio-controls {
       position: fixed;
       bottom: 20px;
@@ -526,15 +571,13 @@
     }
     
     .audio-btn {
-      background: rgba(0,0,0,0.7);
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: rgba(10, 20, 40, 0.9);
       border: 2px solid var(--accent);
       color: var(--accent);
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      font-size: 20px;
       cursor: pointer;
       transition: all 0.3s;
     }
@@ -542,360 +585,796 @@
     .audio-btn:hover {
       background: var(--accent);
       color: #000;
+      transform: scale(1.1);
     }
     
-    /* Responsive adjustments */
-    @media (max-width: 768px) {
-      h1 { font-size: 18px; }
-      .input-box { flex-direction: column; }
-      input, button { width: 90%; max-width: 300px; }
-      .links a, .links button { width: 90%; max-width: 300px; }
-      .modal-content { width: 90%; }
-      .notes-wall { grid-template-columns: 1fr; }
-    }
-    
-    /* Easter egg */
-    .konami {
+    /* Easter Egg */
+    .easter-egg {
       position: fixed;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      font-size: 24px;
-      color: var(--accent);
-      text-shadow: 0 0 10px var(--primary);
+      background: rgba(0, 0, 0, 0.95);
+      padding: 30px;
+      border: 4px solid var(--primary);
       z-index: 10000;
-      background: rgba(0,0,0,0.9);
-      padding: 20px;
-      border: 3px solid var(--accent);
+      text-align: center;
       display: none;
     }
     
-    /* Secret mode */
-    .secret-mode {
-      animation: secretBackground 10s infinite linear;
+    .easter-egg h2 {
+      color: var(--accent);
+      margin-bottom: 20px;
     }
     
-    @keyframes secretBackground {
-      0% { filter: hue-rotate(0deg) invert(0); }
-      50% { filter: hue-rotate(180deg) invert(0.8); }
-      100% { filter: hue-rotate(360deg) invert(0); }
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 40px 20px;
+      background: rgba(10, 20, 40, 0.9);
+      margin-top: 80px;
+      border-top: 3px solid var(--primary);
+    }
+    
+    /* Button Styles */
+    .pixel-button {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-family: 'Press Start 2P', cursive;
+      font-size: 12px;
+      cursor: pointer;
+      border: 2px solid var(--accent);
+      transition: all 0.3s;
+    }
+    
+    .pixel-button:hover {
+      background: var(--accent);
+      color: #000;
+      transform: translateY(-2px);
+    }
+    
+    /* Section Title */
+    .section-title {
+      text-align: center;
+      color: var(--accent);
+      font-size: 18px;
+      margin-bottom: 40px;
+      text-shadow: 2px 2px 0 #000;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+      
+      .glitch {
+        font-size: 24px;
+      }
+      
+      .hero-tagline {
+        font-size: 12px;
+      }
+      
+      .social-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .notes-wall {
+        grid-template-columns: 1fr;
+      }
+      
+      .students-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .trap-button {
+        top: 60px;
+        left: 10px;
+        font-size: 8px;
+        padding: 5px 8px;
+      }
+      
+      .pixel-art-container {
+        padding: 10px;
+      }
+    }
+    
+    /* Secret Mode */
+    .secret-mode {
+      animation: secretColors 10s infinite linear;
+    }
+    
+    @keyframes secretColors {
+      0% { filter: hue-rotate(0deg); }
+      100% { filter: hue-rotate(360deg); }
     }
   </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-  <!-- Particle container -->
+  <!-- Background Elements -->
+  <div class="pixel-grid"></div>
   <div id="particles-js"></div>
   
-  <div class="banner">
-    <div>Abo Mazen's dungeon</div>
-  </div>
+  <!-- 18+ Trap Button -->
+  <button class="trap-button" onclick="showTrap()">🔞 18+ CONTENT OF GHASSAN</button>
   
-  <div class="glitch-wrapper">
-    <h1 class="glitch" data-text="🕹️ ENTER THE KEY">🕹️ ENTER THE KEY</h1>
-  </div>
-
-  <!-- Pixel character + speech bubble -->
-  <div id="pixelCharacterContainer">
-    <img src="https://i.postimg.cc/9Xvbc3sw-/7eed46e2-854a-46dd-a073-c66409387f95.png" 
-         id="pixelCharacter" 
-         alt="Pixel Character" 
-         width="120">
-    <div id="speechBubble">
-      <span id="characterSpeech">💬 ...</span>
+  <!-- Navigation -->
+  <nav class="pixel-nav">
+    <a href="#" class="nav-logo">GHASSAN_MAZEN</a>
+    <div class="nav-links">
+      <a href="#hero" class="nav-link">HOME</a>
+      <a href="#social" class="nav-link">SOCIALS</a>
+      <a href="#pixel-art" class="nav-link">PIXEL ART</a>
+      <a href="#students" class="nav-link">STUDENTS</a>
+      <a href="#notes" class="nav-link">GUESTBOOK</a>
     </div>
-  </div>
-
-  <div class="input-box">
-    <input type="password" id="keyInput" placeholder="Type here..." onkeydown="if(event.key==='Enter')unlock()">
-    <button onclick="showHint()">💡 Hint</button>
-  </div>
-  <button onclick="unlock()">UNLOCK</button>
-
-  <div id="links" class="hidden">
-    <div class="access-granted">
-      <h2 class="terminal-text">🎉 ACCESS GRANTED</h2>
+  </nav>
+  
+  <!-- Hero Section -->
+  <section id="hero" class="hero">
+    <div class="hero-glow"></div>
+    
+    <div class="glitch-wrapper">
+      <h1 class="glitch" data-text="GHASSAN'S DIGITAL HUB">GHASSAN'S DIGITAL HUB</h1>
     </div>
-    <div class="links">
-      <button onclick="window.open('https://github.com/GhassanMazen00/GhassanMazen00','_blank')">💻 GitHub</button>
-      <button onclick="window.open('https://t.snapchat.com/p3KLzoLR','_blank')">👻 Snapchat</button>
-      <button onclick="window.open('mailto:ghassanmazen@zohomail.com','_blank')">📧 Email</button>
-      <button onclick="openModal()">💃 My Bitches</button>
-      <button onclick="trap()">🔞 +18 Pics of Ghassan</button>
-    </div>
-
-    <!-- Visitor Notes Wall -->
-    <div id="notesSection">
-      <h2>📝 Visitor Wall</h2>
-      <div class="note-form">
-        <input type="text" id="nickname" placeholder="Your nickname...">
-        <textarea id="noteText" rows="3" placeholder="Leave a note..."></textarea>
-        <button onclick="addNote()">Post Note</button>
+    
+    <p class="hero-tagline">
+      Developer • Creator • Digital Alchemist<br>
+      Crafting pixels into experiences since 1999
+    </p>
+    
+    <div class="character-container">
+      <div class="speech-bubble" id="speechBubble">
+        <span id="characterSpeech">Welcome to my realm!</span>
       </div>
-      <div class="notes-wall" id="notesWall"></div>
+      <img src="https://i.postimg.cc/9Xvbc3sw-/7eed46e2-854a-46dd-a073-c66409387f95.png" 
+           alt="Ghassan Pixel" 
+           class="pixel-character"
+           id="pixelCharacter">
     </div>
-  </div>
-
-  <!-- Modal -->
-  <div class="modal" id="myModal">
-    <div class="modal-content">
-      <a href="https://www.instagram.com/loai_abb/" target="_blank">
-        <img src="https://i.postimg.cc/XqLnjRMS/20250819-2117-Pixel-Ginger-Character-simple-compose-01k31rss70fmktq7sny215zh9h.png" width="80" class="pixel-character">
-      </a>
-      <a href="https://www.instagram.com/osaidjano/" target="_blank">
-        <img src="https://i.postimg.cc/JhH7NYXZ/20250819-2129-Pixel-Man-with-T-Shirt-simple-compose-01k31scc2efvfbt02vce5hkp5r.png" width="80" class="pixel-character">
-      </a>
-      <a href="https://www.instagram.com/loai_kashkash/" target="_blank">
-        <img src="https://i.postimg.cc/76gxcCmL/20250819-2136-Pixel-Fat-Man-simple-compose-01k31sw-dygemgba9w7vm7tmpq5.png" width="80" class="pixel-character">
-      </a>
-      <a href="https://www.instagram.com/khalid.alfares1/" target="_blank">
-        <img src="https://i.postimg.cc/d1Ms4RRX/20250819-2140-Pixel-Man-with-Flag-simple-compose-01k31t39ykee6bbh3fcc1xfhjv-removebg-preview.png" width="80" class="pixel-character">
-      </a>
-      <a href="https://www.instagram.com/badr_sanoufi/" target="_blank">
-        <img src="https://i.postimg.cc/j2tsrsF4/assets-task-01k31taeamf6tavtp3htwn6b2h-1755629076-img-0.webp" width="80" class="pixel-character">
-      </a>
-      <button class="close-btn" onclick="closeModal()">CLOSE</button>
+  </section>
+  
+  <!-- Social Links Section -->
+  <section id="social" class="social-grid">
+    <a href="https://github.com/GhassanMazen00/GhassanMazen00" target="_blank" class="social-card">
+      <i class="fab fa-github"></i>
+      <h3>GITHUB</h3>
+    </a>
+    
+    <a href="https://t.snapchat.com/p3KLzoLR" target="_blank" class="social-card">
+      <i class="fab fa-snapchat-ghost"></i>
+      <h3>SNAPCHAT</h3>
+    </a>
+    
+    <a href="mailto:ghassanmazen@zohomail.com" class="social-card">
+      <i class="fas fa-envelope"></i>
+      <h3>EMAIL</h3>
+    </a>
+  </section>
+  
+  <!-- Fixed Pixel Art Creator -->
+  <section id="pixel-art" class="pixel-art-section">
+    <h2 class="section-title">🎨 PIXEL ART CREATOR</h2>
+    
+    <div class="pixel-controls">
+      <div class="canvas-size-selector">
+        <span style="font-size: 12px; color: var(--accent);">Canvas Size:</span>
+        <select id="canvasSize" onchange="changeCanvasSize()">
+          <option value="8">8x8 (Tiny)</option>
+          <option value="16">16x16 (Small)</option>
+          <option value="24" selected>24x24 (Medium)</option>
+          <option value="32">32x32 (Large)</option>
+          <option value="48">48x48 (Huge)</option>
+        </select>
+      </div>
+      
+      <div style="font-size: 12px; color: var(--accent);">
+        Selected: <span id="selectedColor" style="color: #0088ff;">#0088ff</span>
+      </div>
     </div>
+    
+    <div class="color-palette" id="colorPalette">
+      <!-- Colors will be generated by JS -->
+    </div>
+    
+    <div style="margin: 20px 0;">
+      <div class="pixel-art-container">
+        <div class="pixel-grid-container" id="pixelGrid">
+          <!-- Pixel grid will be generated by JS -->
+        </div>
+      </div>
+    </div>
+    
+    <div class="art-controls">
+      <button class="pixel-button" onclick="clearGrid()">
+        <i class="fas fa-eraser"></i> CLEAR ALL
+      </button>
+      <button class="pixel-button" onclick="fillRandom()">
+        <i class="fas fa-random"></i> RANDOM ART
+      </button>
+      <button class="pixel-button" onclick="saveArt()">
+        <i class="fas fa-save"></i> SAVE ART
+      </button>
+    </div>
+  </section>
+  
+  <!-- Students Section -->
+  <section id="students" class="students-section">
+    <h2 class="section-title">🎓 MY STUDENTS</h2>
+    <div class="students-grid">
+      <a href="https://www.instagram.com/loai_abb/" target="_blank" class="student-card">
+        <img src="https://i.postimg.cc/XqLnjRMS/20250819-2117-Pixel-Ginger-Character-simple-compose-01k31rss70fmktq7sny215zh9h.png" 
+             alt="Loai" 
+             class="student-avatar">
+        <span class="student-name">LOAI_ABB</span>
+      </a>
+      
+      <a href="https://www.instagram.com/osaidjano/" target="_blank" class="student-card">
+        <img src="https://i.postimg.cc/JhH7NYXZ/20250819-2129-Pixel-Man-with-T-Shirt-simple-compose-01k31scc2efvfbt02vce5hkp5r.png" 
+             alt="Osaid" 
+             class="student-avatar">
+        <span class="student-name">OSAIDJANO</span>
+      </a>
+      
+      <a href="https://www.instagram.com/loai_kashkash/" target="_blank" class="student-card">
+        <img src="https://i.postimg.cc/76gxcCmL/20250819-2136-Pixel-Fat-Man-simple-compose-01k31sw-dygemgba9w7vm7tmpq5.png" 
+             alt="Kashkash" 
+             class="student-avatar">
+        <span class="student-name">LOAI_KASHKASH</span>
+      </a>
+      
+      <a href="https://www.instagram.com/khalid.alfares1/" target="_blank" class="student-card">
+        <img src="https://i.postimg.cc/d1Ms4RRX/20250819-2140-Pixel-Man-with-Flag-simple-compose-01k31t39ykee6bbh3fcc1xfhjv-removebg-preview.png" 
+             alt="Khaled" 
+             class="student-avatar">
+        <span class="student-name">KHALID.ALFARES1</span>
+      </a>
+      
+      <a href="https://www.instagram.com/badr_sanoufi/" target="_blank" class="student-card">
+        <img src="https://i.postimg.cc/j2tsrsF4/assets-task-01k31taeamf6tavtp3htwn6b2h-1755629076-img-0.webp" 
+             alt="Badr" 
+             class="student-avatar">
+        <span class="student-name">BADR_SANOUFI</span>
+      </a>
+    </div>
+  </section>
+  
+  <!-- Notes Section -->
+  <section id="notes" class="notes-section">
+    <h2 class="section-title">📝 GUESTBOOK</h2>
+    <p style="text-align: center; margin-bottom: 30px; font-size: 12px; color: var(--accent);">
+      Leave your mark in my digital realm. Share your thoughts, compliments, or just say hello!
+    </p>
+    
+    <div class="note-form">
+      <input type="text" id="nickname" placeholder="YOUR NICKNAME..." maxlength="30">
+      <textarea id="noteText" placeholder="YOUR MESSAGE... (max 500 characters)" maxlength="500"></textarea>
+      <button onclick="addNote()" class="pixel-button">POST MESSAGE</button>
+    </div>
+    
+    <div class="notes-wall" id="notesWall">
+      <!-- Notes will be loaded here -->
+    </div>
+  </section>
+  
+  <!-- Admin Login Section -->
+  <section id="admin" class="admin-section">
+    <h2 class="section-title">🔐 ADMIN MODE</h2>
+    <div class="admin-login">
+      <p style="font-size: 12px; margin-bottom: 20px; color: var(--accent);">
+        Enter password to enable admin features:
+      </p>
+      <input type="password" id="adminPassword" placeholder="Enter password..." onkeydown="if(event.key==='Enter')activateAdmin()">
+      <br>
+      <button class="pixel-button" onclick="activateAdmin()">ACTIVATE ADMIN</button>
+      <button class="pixel-button" onclick="deactivateAdmin()" style="background: var(--accent); color: #000; margin-left: 10px;">DEACTIVATE</button>
+    </div>
+    <p id="adminStatus" style="font-size: 10px; margin-top: 20px; color: var(--accent);"></p>
+  </section>
+  
+  <!-- Footer -->
+  <footer class="footer">
+    <p style="font-size: 12px; margin-bottom: 20px; color: var(--accent);">
+      CRAFTED WITH PIXELS AND PASSION
+    </p>
+    <p style="font-size: 10px; opacity: 0.7;">
+      © 2024 GHASSAN MAZEN • ALL PIXELS RESERVED
+    </p>
+  </footer>
+  
+  <!-- Easter Egg Modal -->
+  <div class="easter-egg" id="easterEgg">
+    <h2>🎮 SECRET UNLOCKED! 🎮</h2>
+    <p>You found the hidden easter egg!</p>
+    <p style="margin: 20px 0; font-size: 12px;">You are now an honorary member of the pixel realm!</p>
+    <button onclick="closeEasterEgg()" class="pixel-button">CLOSE</button>
   </div>
   
-  <!-- Easter egg message -->
-  <div class="konami" id="konamiMessage">
-    🎮 KONAMI CODE ACTIVATED! 🎮<br>
-    You found the secret!
+  <!-- Audio Controls -->
+  <div class="audio-controls">
+    <button class="audio-btn" id="audioToggle" onclick="toggleSound()">🔊</button>
   </div>
-
-  <!-- Audio elements with working sources -->
+  
+  <!-- Audio Elements -->
   <audio id="clickSound" src="https://assets.mixkit.co/sfx/preview/mixkit-select-click-1109.mp3"></audio>
-  <audio id="unlockSound" src="https://assets.mixkit.co/sfx/preview/mixkit-unlock-game-notification-253.mp3"></audio>
-  <audio id="hintSound" src="https://assets.mixkit.co/sfx/preview/mixkit-arcade-game-jump-coin-216.mp3"></audio>
+  <audio id="hoverSound" src="https://assets.mixkit.co/sfx/preview/mixkit-arcade-game-jump-coin-216.mp3"></audio>
   <audio id="bgMusic" loop src="https://assets.mixkit.co/music/preview/mixkit-game-show-suspense-waiting-667.mp3"></audio>
-
-  <!-- Firebase -->
+  
+  <!-- Firebase & Particles -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
-  <!-- Particles.js -->
   <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-
+  
   <script>
-    let mode = 'locked';
-    let isAdmin = false;
-    const VISITOR_PASS = "10101999";
-    const ADMIN_PASS = "ananke";
+    // Firebase Configuration
+    const firebaseConfig = {
+      databaseURL: "https://dungeon-data-base-default-rtdb.firebaseio.com/"
+    };
+    
+    // Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    
+    // Global Variables
     let soundEnabled = true;
-    let secretMode = false;
+    let isAdmin = false;
     let konamiIndex = 0;
+    let currentColor = '#0088ff';
+    let gridSize = 24; // Default to medium
+    const ADMIN_PASSWORD = "ananke";
     const konamiCode = [
       'ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown',
       'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight',
       'KeyB', 'KeyA'
     ];
-
-    const firebaseConfig = {
-      databaseURL: "https://dungeon-data-base-default-rtdb.firebaseio.com/"
-    };
-    const app = firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
-
-    // Initialize particles
-    particlesJS('particles-js', {
-      particles: {
-        number: { value: 80, density: { enable: true, value_area: 800 } },
-        color: { value: "#00ffea" },
-        shape: { type: "circle" },
-        opacity: { value: 0.5, random: true },
-        size: { value: 3, random: true },
-        line_linked: {
-          enable: true,
-          distance: 150,
-          color: "#ff0080",
-          opacity: 0.4,
-          width: 1
-        },
-        move: {
-          enable: true,
-          speed: 2,
-          direction: "none",
-          random: true,
-          straight: false,
-          out_mode: "out",
-          bounce: false
-        }
-      },
-      interactivity: {
-        detect_on: "canvas",
-        events: {
-          onhover: { enable: true, mode: "repulse" },
-          onclick: { enable: true, mode: "push" },
-          resize: true
-        }
-      }
+    
+    // Color palette for pixel art
+    const colors = [
+      '#0088ff', '#00ddff', '#0055aa', '#00aa00',
+      '#ff5500', '#ff0080', '#aa00ff', '#ffff00',
+      '#ffffff', '#000000', '#888888', '#ffaa00',
+      '#ff00ff', '#00ffff', '#8800ff', '#ff8800'
+    ];
+    
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      initParticles();
+      initCharacterInteraction();
+      loadNotes();
+      startBackgroundMusic();
+      initKonamiCode();
+      initHoverSounds();
+      initPixelArtCreator();
+      updateAdminStatus();
     });
-
-    // Play sound function
+    
+    // 18+ Trap Function
+    function showTrap() {
+      playSound('clickSound');
+      alert("⚠️ Ghassan was alerted that you tried to see him nude, shame on you!");
+    }
+    
+    // Initialize Pixel Art Creator
+    function initPixelArtCreator() {
+      createColorPalette();
+      createPixelGrid(gridSize);
+    }
+    
+    function createColorPalette() {
+      const colorPalette = document.getElementById('colorPalette');
+      colorPalette.innerHTML = '';
+      
+      colors.forEach(color => {
+        const colorOption = document.createElement('div');
+        colorOption.className = 'color-option';
+        colorOption.style.backgroundColor = color;
+        colorOption.dataset.color = color;
+        
+        if (color === currentColor) {
+          colorOption.classList.add('active');
+        }
+        
+        colorOption.addEventListener('click', function() {
+          currentColor = this.dataset.color;
+          document.getElementById('selectedColor').textContent = currentColor;
+          document.getElementById('selectedColor').style.color = currentColor;
+          
+          document.querySelectorAll('.color-option').forEach(opt => {
+            opt.classList.remove('active');
+          });
+          this.classList.add('active');
+          
+          playSound('clickSound');
+        });
+        
+        colorPalette.appendChild(colorOption);
+      });
+    }
+    
+    function createPixelGrid(size) {
+      const pixelGrid = document.getElementById('pixelGrid');
+      pixelGrid.innerHTML = '';
+      
+      // Calculate cell size based on grid size
+      let cellSize;
+      if (size <= 16) cellSize = 20;
+      else if (size <= 32) cellSize = 15;
+      else cellSize = 10;
+      
+      pixelGrid.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
+      pixelGrid.style.width = `${size * cellSize}px`;
+      pixelGrid.style.height = `${size * cellSize}px`;
+      
+      for (let i = 0; i < size * size; i++) {
+        const cell = document.createElement('div');
+        cell.className = 'pixel-cell';
+        cell.style.backgroundColor = '#000000';
+        cell.style.width = `${cellSize}px`;
+        cell.style.height = `${cellSize}px`;
+        
+        cell.addEventListener('click', function() {
+          this.style.backgroundColor = currentColor;
+          playSound('clickSound');
+        });
+        
+        cell.addEventListener('mouseenter', function(e) {
+          if (e.buttons === 1) {
+            this.style.backgroundColor = currentColor;
+          }
+        });
+        
+        pixelGrid.appendChild(cell);
+      }
+      
+      pixelGrid.addEventListener('mousedown', function(e) {
+        if (e.target.classList.contains('pixel-cell')) {
+          e.target.style.backgroundColor = currentColor;
+        }
+      });
+    }
+    
+    // Change Canvas Size
+    function changeCanvasSize() {
+      playSound('clickSound');
+      gridSize = parseInt(document.getElementById('canvasSize').value);
+      createPixelGrid(gridSize);
+    }
+    
+    // Clear Grid
+    function clearGrid() {
+      playSound('clickSound');
+      const cells = document.querySelectorAll('.pixel-cell');
+      cells.forEach(cell => {
+        cell.style.backgroundColor = '#000000';
+      });
+    }
+    
+    // Fill Random
+    function fillRandom() {
+      playSound('clickSound');
+      const cells = document.querySelectorAll('.pixel-cell');
+      cells.forEach(cell => {
+        const randomColor = colors[Math.floor(Math.random() * colors.length)];
+        cell.style.backgroundColor = randomColor;
+      });
+    }
+    
+    // Save Art
+    function saveArt() {
+      playSound('clickSound');
+      alert("🎨 Art saved to browser memory!");
+      
+      const gridData = [];
+      const cells = document.querySelectorAll('.pixel-cell');
+      cells.forEach(cell => {
+        gridData.push(cell.style.backgroundColor || '#000000');
+      });
+      
+      localStorage.setItem('pixelArt', JSON.stringify({
+        size: gridSize,
+        colors: gridData,
+        timestamp: Date.now()
+      }));
+    }
+    
+    // Admin Mode Functions
+    function activateAdmin() {
+      const password = document.getElementById('adminPassword').value;
+      
+      if (password === ADMIN_PASSWORD) {
+        isAdmin = true;
+        playSound('clickSound');
+        document.getElementById('adminPassword').value = "";
+        updateAdminStatus();
+        loadNotes();
+        
+        const status = document.getElementById('adminStatus');
+        status.textContent = "✅ ADMIN MODE ACTIVATED! You can now delete notes.";
+        status.style.color = "#00ff00";
+        
+        if (!document.querySelector('.admin-indicator')) {
+          const indicator = document.createElement('div');
+          indicator.className = 'admin-indicator';
+          indicator.style.position = 'fixed';
+          indicator.style.top = '10px';
+          indicator.style.right = '10px';
+          indicator.style.background = '#ff0000';
+          indicator.style.color = '#fff';
+          indicator.style.padding = '5px 10px';
+          indicator.style.fontSize = '10px';
+          indicator.style.zIndex = '1001';
+          indicator.textContent = 'ADMIN MODE';
+          document.body.appendChild(indicator);
+        }
+      } else {
+        playSound('clickSound');
+        const status = document.getElementById('adminStatus');
+        status.textContent = "❌ Wrong password! Try again.";
+        status.style.color = "#ff0000";
+      }
+    }
+    
+    function deactivateAdmin() {
+      playSound('clickSound');
+      isAdmin = false;
+      updateAdminStatus();
+      loadNotes();
+      
+      const indicator = document.querySelector('.admin-indicator');
+      if (indicator) {
+        indicator.remove();
+      }
+    }
+    
+    function updateAdminStatus() {
+      const status = document.getElementById('adminStatus');
+      if (isAdmin) {
+        status.textContent = "🛡️ Admin mode is ACTIVE. You can delete notes.";
+        status.style.color = "#00ff00";
+      } else {
+        status.textContent = "🔒 Admin mode is INACTIVE. Enter password to enable.";
+        status.style.color = "var(--accent)";
+      }
+    }
+    
+    // Particles.js Configuration
+    function initParticles() {
+      particlesJS('particles-js', {
+        particles: {
+          number: { value: 100, density: { enable: true, value_area: 800 } },
+          color: { value: ["#0088ff", "#00ddff", "#0055aa"] },
+          shape: { type: "circle" },
+          opacity: { value: 0.5, random: true },
+          size: { value: 3, random: true, anim: { enable: true, speed: 3 } },
+          line_linked: {
+            enable: true,
+            distance: 150,
+            color: "#00ddff",
+            opacity: 0.4,
+            width: 1
+          },
+          move: {
+            enable: true,
+            speed: 2,
+            direction: "none",
+            random: true,
+            straight: false,
+            out_mode: "out",
+            bounce: false
+          }
+        },
+        interactivity: {
+          detect_on: "canvas",
+          events: {
+            onhover: { enable: true, mode: "repulse" },
+            onclick: { enable: true, mode: "push" },
+            resize: true
+          }
+        }
+      });
+    }
+    
+    // Character Interaction
+    function initCharacterInteraction() {
+      const character = document.getElementById('pixelCharacter');
+      const bubble = document.getElementById('speechBubble');
+      const speech = document.getElementById('characterSpeech');
+      let clickCount = 0;
+      
+      const dialogues = [
+        "Welcome to my digital hub!",
+        "Try the Pixel Art Creator!",
+        "Select canvas size from dropdown!",
+        "Choose colors and start drawing!",
+        "Meet my awesome students!",
+        "Leave a message in the guestbook!"
+      ];
+      
+      character.addEventListener('click', function() {
+        playSound('clickSound');
+        clickCount = (clickCount + 1) % dialogues.length;
+        speech.textContent = dialogues[clickCount];
+        bubble.classList.add('show');
+        
+        setTimeout(() => {
+          bubble.classList.remove('show');
+        }, 6000);
+      });
+    }
+    
+    // Sound Functions
     function playSound(soundId) {
       if (!soundEnabled) return;
       const sound = document.getElementById(soundId);
       sound.currentTime = 0;
-      sound.play().catch(e => console.log("Audio play failed:", e));
+      sound.play().catch(e => console.log("Audio:", e));
     }
-
-    // Toggle sound
+    
     function toggleSound() {
       soundEnabled = !soundEnabled;
-      const btn = document.querySelector('.audio-btn');
+      const btn = document.getElementById('audioToggle');
       btn.textContent = soundEnabled ? '🔊' : '🔇';
       playSound('clickSound');
       
-      // Pause or play background music based on toggle
+      if (soundEnabled) {
+        document.getElementById('bgMusic').play();
+      } else {
+        document.getElementById('bgMusic').pause();
+      }
+    }
+    
+    function startBackgroundMusic() {
       const bgMusic = document.getElementById('bgMusic');
-      if (soundEnabled) {
-        bgMusic.play().catch(e => console.log("Background music play failed:", e));
-      } else {
-        bgMusic.pause();
-      }
-    }
-
-    // Konami code easter egg
-    document.addEventListener('keydown', (e) => {
-      if (e.code === konamiCode[konamiIndex]) {
-        konamiIndex++;
-        if (konamiIndex === konamiCode.length) {
-          document.getElementById('konamiMessage').style.display = 'block';
-          setTimeout(() => {
-            document.getElementById('konamiMessage').style.display = 'none';
-          }, 3000);
-          konamiIndex = 0;
-          playSound('unlockSound');
-        }
-      } else {
-        konamiIndex = 0;
-      }
-    });
-
-    function unlock() {
-      playSound('clickSound');
-      const key = document.getElementById('keyInput').value.trim();
-      if (key === VISITOR_PASS) {
-        mode = 'visitor'; isAdmin = false; enterVault();
-      } else if (key === ADMIN_PASS) {
-        mode = 'admin'; isAdmin = true; enterVault();
-      } else {
-        alert("❌ WRONG KEY. TRY AGAIN!");
-      }
-    }
-
-    function enterVault() {
-      playSound('unlockSound');
-      document.getElementById('links').classList.remove('hidden');
-      
-      // Start background music if sound is enabled
-      if (soundEnabled) {
-        const bgMusic = document.getElementById('bgMusic');
-        bgMusic.volume = 0.3;
-        bgMusic.play().catch(e => console.log("Background music play failed:", e));
-      }
-      
-      displayNotes();
-      setTimeout(() => document.getElementById('links').scrollIntoView({behavior:'smooth'}), 50);
-    }
-
-    function showHint() { 
-      playSound('hintSound');
-      alert("When was the greatest human on earth born? (type numbers only, format: daymonthyear)"); 
+      bgMusic.volume = 0.3;
+      bgMusic.play().catch(e => console.log("Background music:", e));
     }
     
-    function trap() { 
-      playSound('clickSound');
-      alert("⚠️ Ghassan got notified that you tried to see him naked, shame on you!"); 
+    // Hover Sounds
+    function initHoverSounds() {
+      const interactiveElements = document.querySelectorAll('.social-card, .student-card, .nav-link, .pixel-button, .trap-button');
+      interactiveElements.forEach(el => {
+        el.addEventListener('mouseenter', () => playSound('hoverSound'));
+      });
     }
     
-    function openModal() { 
-      playSound('clickSound');
-      document.getElementById("myModal").style.display = "flex"; 
-    }
-    
-    function closeModal() { 
-      playSound('clickSound');
-      document.getElementById("myModal").style.display = "none"; 
-    }
-
-    function escapeHTML(str) {
-      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    }
-
+    // Notes Functions
     function addNote() {
       playSound('clickSound');
       const nickname = document.getElementById('nickname').value.trim();
       const noteText = document.getElementById('noteText').value.trim();
-      if (!nickname || !noteText) { 
-        alert("⚠️ Please enter a nickname and a note!"); 
-        return; 
+      
+      if (!nickname || !noteText) {
+        alert("Please enter both a nickname and a message!");
+        return;
       }
-      const newNote = { nickname, noteText };
+      
+      const newNote = {
+        nickname: nickname,
+        noteText: noteText,
+        timestamp: Date.now()
+      };
+      
       db.ref("notes").push(newNote);
+      
       document.getElementById('nickname').value = "";
       document.getElementById('noteText').value = "";
+      
+      alert("Message posted successfully!");
     }
-
-    function displayNotes() {
+    
+    function loadNotes() {
       const notesWall = document.getElementById('notesWall');
-      notesWall.innerHTML = "";
-      db.ref("notes").on("value", snapshot => {
+      db.ref("notes").on("value", function(snapshot) {
         notesWall.innerHTML = "";
-        snapshot.forEach(child => {
-          const n = child.val();
-          const noteDiv = document.createElement('div');
-          noteDiv.classList.add('note');
-          const safeNick = escapeHTML(n.nickname);
-          const safeText = escapeHTML(n.noteText).replace(/\n/g, "<br>");
-          noteDiv.innerHTML = `
-            <span class="nickname">${safeNick}</span>
-            <div>${safeText}</div>
-            ${isAdmin ? `<button class="delete-btn" onclick="deleteNote('${child.key}')">❌ Delete</button>` : ""}
+        
+        if (!snapshot.exists()) {
+          notesWall.innerHTML = '<p style="text-align: center; grid-column: 1/-1;">No messages yet. Be the first to leave a message!</p>';
+          return;
+        }
+        
+        const notes = [];
+        snapshot.forEach(function(childSnapshot) {
+          notes.push({
+            id: childSnapshot.key,
+            ...childSnapshot.val()
+          });
+        });
+        
+        notes.sort((a, b) => b.timestamp - a.timestamp);
+        
+        notes.forEach(note => {
+          const noteElement = document.createElement('div');
+          noteElement.className = 'note';
+          
+          const date = new Date(note.timestamp);
+          const dateStr = date.toLocaleDateString();
+          
+          noteElement.innerHTML = `
+            <span class="note-author">${escapeHTML(note.nickname)} • ${dateStr}</span>
+            <div class="note-content">${escapeHTML(note.noteText).replace(/\n/g, '<br>')}</div>
+            ${isAdmin ? `<button class="delete-btn" onclick="deleteNote('${note.id}')">DELETE</button>` : ''}
           `;
-          notesWall.appendChild(noteDiv);
+          
+          notesWall.appendChild(noteElement);
         });
       });
     }
-
-    function deleteNote(id) {
-      playSound('clickSound');
+    
+    function deleteNote(noteId) {
       if (!isAdmin) return;
-      db.ref("notes/" + id).remove();
-    }
-
-    // Pixel character dialogue
-    let characterClicks = 0;
-    document.getElementById("pixelCharacter").addEventListener("click", () => {
-      playSound('clickSound');
-      const bubble = document.getElementById("speechBubble");
-      const speech = document.getElementById("characterSpeech");
-      characterClicks++;
-
-      bubble.classList.add("show");
-
-      if (characterClicks === 1) {
-        speech.textContent = "Hmmm... you seek the secret key?";
-      } else if (characterClicks === 2) {
-        speech.textContent = "Let me think... it's a date...";
-      } else if (characterClicks === 3) {
-        speech.textContent = "The greatest human's birthday... 10101999.";
-      } else if (characterClicks === 4) {
-        speech.textContent = "Congrats, genius. Even YOU can't mess this up, stupid.";
-      } else if (characterClicks === 5) {
-        speech.textContent = "Stop clicking me, you weirdo!";
-      }
       
-      // Hide bubble after 5 seconds
+      if (confirm("Are you sure you want to delete this message?")) {
+        db.ref("notes/" + noteId).remove();
+        playSound('clickSound');
+      }
+    }
+    
+    // Konami Code Easter Egg
+    function initKonamiCode() {
+      document.addEventListener('keydown', (e) => {
+        if (e.code === konamiCode[konamiIndex]) {
+          konamiIndex++;
+          if (konamiIndex === konamiCode.length) {
+            activateEasterEgg();
+          }
+        } else {
+          konamiIndex = 0;
+        }
+      });
+    }
+    
+    function activateEasterEgg() {
+      playSound('clickSound');
+      document.getElementById('easterEgg').style.display = 'block';
+      document.body.classList.add('secret-mode');
+      
       setTimeout(() => {
-        bubble.classList.remove("show");
+        document.body.classList.remove('secret-mode');
       }, 5000);
+    }
+    
+    function closeEasterEgg() {
+      playSound('clickSound');
+      document.getElementById('easterEgg').style.display = 'none';
+    }
+    
+    // Utility Functions
+    function escapeHTML(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+    
+    // Smooth scrolling
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          window.scrollTo({
+            top: targetElement.offsetTop - 80,
+            behavior: 'smooth'
+          });
+        }
+      });
     });
     
-    // Add audio controls to the page
-    const audioControls = document.createElement('div');
-    audioControls.className = 'audio-controls';
-    audioControls.innerHTML = '<button class="audio-btn" onclick="toggleSound()">🔊</button>';
-    document.body.appendChild(audioControls);
+    // Page load animation
+    window.addEventListener('load', () => {
+      document.body.style.opacity = '0';
+      document.body.style.transition = 'opacity 0.5s';
+      
+      setTimeout(() => {
+        document.body.style.opacity = '1';
+      }, 100);
+    });
   </script>
 </body>
 </html>
