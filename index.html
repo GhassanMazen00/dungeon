@@ -449,6 +449,92 @@
       font-size: 10px;
       color: #fff;
       word-break: break-word;
+      display: none; /* HIDDEN AS REQUESTED */
+    }
+    
+    /* Quote Generator Section - NEW ADDITION */
+    .quote-section {
+      max-width: 95vw;
+      margin: 60px auto;
+      padding: 25px 20px;
+      background: rgba(10, 20, 40, 0.8);
+      border: 3px solid #ff00ff;
+      text-align: center;
+      border-radius: 8px;
+    }
+    
+    .quote-container {
+      background: rgba(0, 0, 0, 0.6);
+      border: 2px solid var(--accent);
+      padding: 25px;
+      margin: 20px auto;
+      max-width: 700px;
+      min-height: 180px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      border-radius: 8px;
+    }
+    
+    .quote-text {
+      font-size: 12px;
+      line-height: 1.6;
+      margin-bottom: 15px;
+      color: var(--accent);
+      text-align: center;
+    }
+    
+    .quote-author {
+      font-size: 10px;
+      color: #ff00ff;
+      text-align: center;
+      margin-top: 10px;
+    }
+    
+    .quote-input {
+      background: rgba(0, 0, 0, 0.5);
+      border: 2px solid var(--primary);
+      color: #fff;
+      padding: 12px 15px;
+      font-family: 'Press Start 2P', cursive;
+      font-size: 10px;
+      width: 100%;
+      max-width: 300px;
+      margin: 15px auto;
+      text-align: center;
+    }
+    
+    .quote-generator-btn {
+      background: linear-gradient(45deg, #ff00ff, #0088ff);
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      font-family: 'Press Start 2P', cursive;
+      font-size: 10px;
+      cursor: pointer;
+      border: 2px solid var(--accent);
+      transition: all 0.3s;
+      margin-top: 10px;
+    }
+    
+    .quote-generator-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(255, 0, 255, 0.4);
+    }
+    
+    .quote-counter {
+      font-size: 9px;
+      color: var(--accent);
+      margin-top: 15px;
+      opacity: 0.7;
+    }
+    
+    .pixel-quote-icon {
+      font-size: 24px;
+      margin-bottom: 15px;
+      color: #ff00ff;
     }
     
     /* Notes Section - FIXED for mobile */
@@ -655,6 +741,11 @@
       padding: 0 10px;
     }
     
+    .quote-title {
+      color: #ff00ff;
+      text-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+    }
+    
     /* Mobile-specific styles */
     @media (max-width: 480px) {
       .nav-logo {
@@ -703,6 +794,20 @@
         font-size: 8px;
         padding: 6px 8px;
       }
+      
+      .quote-text {
+        font-size: 10px;
+        padding: 0 5px;
+      }
+      
+      .quote-container {
+        padding: 20px 15px;
+        min-height: 160px;
+      }
+      
+      .social-grid {
+        grid-template-columns: 1fr 1fr;
+      }
     }
     
     @media (max-width: 768px) {
@@ -727,6 +832,10 @@
         width: 20px;
         height: 20px;
       }
+      
+      .social-grid {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      }
     }
     
     /* Touch device optimizations */
@@ -746,6 +855,10 @@
       .student-card:active {
         transform: scale(1.05);
       }
+      
+      .quote-generator-btn:active {
+        transform: translateY(-3px);
+      }
     }
     
     /* Secret Mode */
@@ -756,6 +869,16 @@
     @keyframes secretColors {
       0% { filter: hue-rotate(0deg); }
       100% { filter: hue-rotate(360deg); }
+    }
+    
+    /* Animation for new quote */
+    @keyframes quotePop {
+      0% { transform: scale(0.9); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    
+    .quote-pop {
+      animation: quotePop 0.5s ease-out;
     }
   </style>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -775,6 +898,7 @@
       <a href="#hero" class="nav-link">HOME</a>
       <a href="#social" class="nav-link">SOCIALS</a>
       <a href="#pixel-art" class="nav-link">PIXEL ART</a>
+      <a href="#quote" class="nav-link">QUOTE GEN</a>
       <a href="#students" class="nav-link">STUDENTS</a>
       <a href="#notes" class="nav-link">GUESTBOOK</a>
     </div>
@@ -809,6 +933,11 @@
     <a href="https://github.com/GhassanMazen00/GhassanMazen00" target="_blank" class="social-card">
       <i class="fab fa-github"></i>
       <h3>GITHUB</h3>
+    </a>
+    
+    <a href="https://www.instagram.com/ghassan.shk/" target="_blank" class="social-card">
+      <i class="fab fa-instagram"></i>
+      <h3>INSTAGRAM</h3>
     </a>
     
     <a href="https://t.snapchat.com/p3KLzoLR" target="_blank" class="social-card">
@@ -864,6 +993,40 @@
       <button class="pixel-button" onclick="saveArt()">
         <i class="fas fa-save"></i> SAVE
       </button>
+    </div>
+  </section>
+  
+  <!-- NEW: Quote Generator Section -->
+  <section id="quote" class="quote-section">
+    <h2 class="section-title quote-title">💬 GHASSAN'S QUOTE GENERATOR</h2>
+    
+    <div class="pixel-quote-icon">
+      <i class="fas fa-comment-dots"></i>
+    </div>
+    
+    <p style="text-align: center; margin-bottom: 20px; font-size: 9px; color: var(--accent);">
+      Enter your name and get a hilarious, relatable quote from Ghassan! No programming stuff, just real talk.
+    </p>
+    
+    <div style="margin: 20px 0;">
+      <input type="text" id="userName" class="quote-input" placeholder="ENTER YOUR NAME..." maxlength="30">
+      <br>
+      <button class="quote-generator-btn" onclick="generateQuote()">
+        <i class="fas fa-laugh-beam"></i> GET FUNNY QUOTE
+      </button>
+    </div>
+    
+    <div class="quote-container" id="quoteDisplay">
+      <div class="quote-text" id="quoteText">
+        Enter your name above and click generate to get your personalized roast... I mean quote!
+      </div>
+      <div class="quote-author" id="quoteAuthor">
+        - Ghassan
+      </div>
+    </div>
+    
+    <div class="quote-counter" id="quoteCounter">
+      Click generate to get your first dose of reality!
     </div>
   </section>
   
@@ -979,6 +1142,7 @@
     let konamiIndex = 0;
     let currentColor = '#0088ff';
     let gridSize = 24;
+    let quoteCount = 0;
     const ADMIN_PASSWORD = "ananke";
     const konamiCode = [
       'ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown',
@@ -994,6 +1158,60 @@
       '#ff00ff', '#00ffff', '#8800ff', '#ff8800'
     ];
     
+    // NEW: Funny, real-life quotes (no programming stuff!)
+    const ghassanQuotes = [
+      "If you think you're too small to make a difference, try sleeping with a mosquito.",
+      "I asked God for a bike, but I know God doesn't work that way. So I stole a bike and asked for forgiveness.",
+      "The early bird might get the worm, but the second mouse gets the cheese.",
+      "I don't mean to interrupt people. I just randomly remember things and get really excited.",
+      "My bed is a magical place where I suddenly remember everything I was supposed to do.",
+      "I'm not lazy, I'm on energy saving mode.",
+      "I'm not arguing, I'm just explaining why I'm right.",
+      "If I agreed with you, we'd both be wrong.",
+      "I'm not saying I'm Wonder Woman, I'm just saying no one has ever seen me and Wonder Woman in the same room.",
+      "I'm not procrastinating, I'm just doing tomorrow's work today.",
+      "Common sense is like deodorant. The people who need it most never use it.",
+      "I'm not short, I'm concentrated awesome.",
+      "I'm not weird, I'm limited edition.",
+      "I'm not insulting you, I'm describing you.",
+      "I'm not stubborn. My way is just better.",
+      "I'm not arguing, I'm just passionately expressing my point of view while completely ignoring yours.",
+      "I'm not a complete idiot - some parts are missing.",
+      "I'm not saying I'm Batman, I'm just saying you've never seen me and Batman in the same room.",
+      "I'm not late, everyone else is just early.",
+      "I'm not ignoring you, I'm just giving you time to reflect on what you just said.",
+      "My brain has too many tabs open.",
+      "I'm not saying I'm Superman, I'm just saying no one has ever seen me and Superman in the same room.",
+      "I'm not clumsy, I'm just testing gravity.",
+      "I'm not avoiding work, I'm conducting a strategic work delay.",
+      "I'm not tired, I'm just power-saving mode.",
+      "I'm not old, I'm vintage.",
+      "I'm not weird, I'm a limited edition masterpiece.",
+      "I'm not lost, I'm exploring alternative routes.",
+      "I'm not arguing, I'm just explaining why I'm amazing.",
+      "I'm not lazy, I'm in energy-saving mode.",
+      "I'm not late, I'm fashionably delayed.",
+      "I'm not weird, I'm limited edition. You can't have me.",
+      "I'm not crazy, my reality is just different than yours.",
+      "I'm not short, I'm fun-sized.",
+      "I'm not bossy, I just have better ideas.",
+      "I'm not ignoring you, I'm just prioritizing my peace.",
+      "I'm not anti-social, I'm selectively social.",
+      "I'm not weird, I'm gifted at being different.",
+      "I'm not late, everyone else is just ridiculously early.",
+      "I'm not always right, but I'm never wrong.",
+      "I'm not a morning person. Don't talk to me until I've had my coffee and my soul has returned to my body.",
+      "I'm not arguing, I'm just explaining why you're wrong.",
+      "I'm not a complete idiot - some parts are actually quite useful.",
+      "I'm not saying I'm perfect, but I'm pretty close.",
+      "I'm not laughing at you, I'm laughing near you.",
+      "I'm not avoiding responsibility, I'm avoiding unnecessary stress.",
+      "I'm not weird, I'm a creative genius.",
+      "I'm not clumsy, the floor just hates me, objects jump in front of me, and walls get in my way.",
+      "I'm not lazy, I'm just conserving energy for important things.",
+      "I'm not ignoring you, I'm just giving you the silent treatment because you deserve it."
+    ];
+    
     // Initialize on page load
     document.addEventListener('DOMContentLoaded', function() {
       initParticles();
@@ -1003,6 +1221,7 @@
       initPixelArtCreator();
       updateAdminStatus();
       initMobileTouchSupport();
+      updateQuoteCounter();
     });
     
     // Mobile touch support
@@ -1024,6 +1243,97 @@
     // 18+ Trap Function
     function showTrap() {
       alert("⚠️ Ghassan was alerted that you tried to see him nude, shame on you!");
+    }
+    
+    // NEW: Quote Generator Function with funny quotes
+    function generateQuote() {
+      const userName = document.getElementById('userName').value.trim();
+      const quoteText = document.getElementById('quoteText');
+      const quoteAuthor = document.getElementById('quoteAuthor');
+      const quoteDisplay = document.getElementById('quoteDisplay');
+      
+      if (!userName) {
+        quoteText.textContent = "You need to enter your name first, unless you're trying to be mysterious...";
+        quoteAuthor.textContent = "- Ghassan";
+        quoteDisplay.classList.add('quote-pop');
+        setTimeout(() => quoteDisplay.classList.remove('quote-pop'), 500);
+        return;
+      }
+      
+      // Get random quote
+      const randomIndex = Math.floor(Math.random() * ghassanQuotes.length);
+      const selectedQuote = ghassanQuotes[randomIndex];
+      
+      // Update display with animation
+      quoteText.textContent = `"${selectedQuote}"`;
+      quoteAuthor.textContent = `- Ghassan says to ${userName}`;
+      
+      // Add animation
+      quoteDisplay.classList.add('quote-pop');
+      setTimeout(() => quoteDisplay.classList.remove('quote-pop'), 500);
+      
+      // Update counter
+      quoteCount++;
+      updateQuoteCounter();
+      
+      // Optional: Change border color for fun
+      const colors = ['#0088ff', '#00ddff', '#ff00ff', '#ffff00', '#00ff00'];
+      const randomColor = colors[Math.floor(Math.random() * colors.length)];
+      quoteDisplay.style.borderColor = randomColor;
+    }
+    
+    function updateQuoteCounter() {
+      const counter = document.getElementById('quoteCounter');
+      if (quoteCount === 0) {
+        counter.textContent = "Click generate to get your first dose of reality!";
+      } else if (quoteCount === 1) {
+        counter.textContent = "You've generated 1 truth bomb! Want more?";
+      } else if (quoteCount < 5) {
+        counter.textContent = `${quoteCount} truth bombs delivered! Keep going!`;
+      } else if (quoteCount < 10) {
+        counter.textContent = `${quoteCount} hilarious quotes! You're addicted!`;
+      } else {
+        counter.textContent = `${quoteCount} quotes! You're a quote connoisseur!`;
+      }
+    }
+    
+    // Character Interaction with updated dialogues
+    function initCharacterInteraction() {
+      const character = document.getElementById('pixelCharacter');
+      const bubble = document.getElementById('speechBubble');
+      const speech = document.getElementById('characterSpeech');
+      let clickCount = 0;
+      
+      const dialogues = [
+        "Welcome to my digital hub!",
+        "Try the Pixel Art Creator!",
+        "Generate a funny quote about you!",
+        "Want to hear something hilarious?",
+        "I've got jokes for days!",
+        "Ready for some real talk?"
+      ];
+      
+      character.addEventListener('click', function() {
+        clickCount = (clickCount + 1) % dialogues.length;
+        speech.textContent = dialogues[clickCount];
+        bubble.classList.add('show');
+        
+        setTimeout(() => {
+          bubble.classList.remove('show');
+        }, 4000);
+      });
+      
+      // Mobile touch support for character
+      character.addEventListener('touchstart', function(e) {
+        e.preventDefault();
+        clickCount = (clickCount + 1) % dialogues.length;
+        speech.textContent = dialogues[clickCount];
+        bubble.classList.add('show');
+        
+        setTimeout(() => {
+          bubble.classList.remove('show');
+        }, 4000);
+      }, { passive: false });
     }
     
     // Initialize Pixel Art Creator - MOBILE FIXED
@@ -1303,45 +1613,6 @@
         },
         retina_detect: true
       });
-    }
-    
-    // Character Interaction
-    function initCharacterInteraction() {
-      const character = document.getElementById('pixelCharacter');
-      const bubble = document.getElementById('speechBubble');
-      const speech = document.getElementById('characterSpeech');
-      let clickCount = 0;
-      
-      const dialogues = [
-        "Welcome to my digital hub!",
-        "Try the Pixel Art Creator!",
-        "Select canvas size from dropdown!",
-        "Choose colors and start drawing!",
-        "Meet my awesome students!",
-        "Leave a message in the guestbook!"
-      ];
-      
-      character.addEventListener('click', function() {
-        clickCount = (clickCount + 1) % dialogues.length;
-        speech.textContent = dialogues[clickCount];
-        bubble.classList.add('show');
-        
-        setTimeout(() => {
-          bubble.classList.remove('show');
-        }, 4000);
-      });
-      
-      // Mobile touch support for character
-      character.addEventListener('touchstart', function(e) {
-        e.preventDefault();
-        clickCount = (clickCount + 1) % dialogues.length;
-        speech.textContent = dialogues[clickCount];
-        bubble.classList.add('show');
-        
-        setTimeout(() => {
-          bubble.classList.remove('show');
-        }, 4000);
-      }, { passive: false });
     }
     
     // Notes Functions - MOBILE FIXED
