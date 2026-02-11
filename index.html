@@ -624,7 +624,7 @@
       box-shadow: 8px 8px 0 #000;
     }
     
-    /* Notes Section - FIXED for mobile */
+    /* Notes Section - FIXED for mobile, NO DATES */
     .notes-section {
       max-width: 95vw;
       margin: 60px auto;
@@ -1262,7 +1262,7 @@
     </div>
   </section>
   
-  <!-- Notes Section - MOBILE FIXED -->
+  <!-- Notes Section - NO DATES, only nickname and message -->
   <section id="notes" class="notes-section">
     <h2 class="section-title">📝 GUESTBOOK</h2>
     <p style="text-align: center; margin-bottom: 20px; font-size: 9px; color: var(--accent);">
@@ -1276,7 +1276,7 @@
     </div>
     
     <div class="notes-wall" id="notesWall">
-      <!-- Notes will be loaded here -->
+      <!-- Notes will be loaded here (NO DATES, only nickname + message) -->
     </div>
   </section>
   
@@ -2276,7 +2276,7 @@
       });
     }
     
-    // Notes Functions - MOBILE FIXED
+    // Notes Functions - MOBILE FIXED, NO DATES
     function addNote() {
       const nickname = document.getElementById('nickname').value.trim();
       const noteText = document.getElementById('noteText').value.trim();
@@ -2328,12 +2328,9 @@
           const noteElement = document.createElement('div');
           noteElement.className = 'note';
           
-          const date = new Date(note.timestamp);
-          const dateStr = date.toLocaleDateString();
-          const timeStr = date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-          
+          // NO DATE, NO TIMESTAMP - ONLY nickname + message
           noteElement.innerHTML = `
-            <span class="note-author">${escapeHTML(note.nickname)} • ${dateStr} ${timeStr}</span>
+            <span class="note-author">${escapeHTML(note.nickname)}</span>
             <div class="note-content">${escapeHTML(note.noteText).replace(/\n/g, '<br>')}</div>
             ${isAdmin ? `<button class="delete-btn" onclick="deleteNote('${note.id}')">DELETE</button>` : ''}
           `;
