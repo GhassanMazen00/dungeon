@@ -3,16 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Ghassan's Digital Hub</title>
+  <title>Ghassan's Digital Hub • RED EDITION</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
     
     :root {
-      --primary: #0088ff;
-      --secondary: #0055aa;
-      --accent: #00ddff;
-      --dark: #0a0a1a;
-      --grid-color: rgba(0, 136, 255, 0.1);
+      --primary: #cc0000;
+      --secondary: #8b0000;
+      --accent: #ff3333;
+      --dark: #0a0000;
+      --grid-color: rgba(200, 0, 0, 0.12);
+      --card-bg: rgba(15, 0, 0, 0.85);
+      --border-color: #660000;
+      --glow-color: rgba(255, 0, 0, 0.4);
     }
     
     * {
@@ -25,35 +28,14 @@
     
     body { 
       font-family: 'Press Start 2P', cursive; 
-      background: linear-gradient(135deg, #050510 0%, #0a1525 50%, #050510 100%);
+      background: linear-gradient(135deg, #020000 0%, #0d0101 50%, #020000 100%);
       color: #fff;
       min-height: 100vh;
       position: relative;
       overflow-x: hidden;
-      touch-action: pan-y; /* Prevents pinch-zoom bugs */
+      touch-action: pan-y;
     }
     
-    /* 18+ Button */
-    .trap-button {
-      position: fixed;
-      top: 70px;
-      left: 20px;
-      z-index: 1001;
-      background: #ff0000;
-      color: white;
-      border: 3px solid #000;
-      padding: 8px 12px;
-      font-size: 10px;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-    
-    .trap-button:hover {
-      background: #ff5500;
-      transform: scale(1.1);
-    }
-    
-    /* Pixel grid background - FIXED for mobile */
     .pixel-grid {
       position: fixed;
       top: 0;
@@ -69,12 +51,32 @@
       pointer-events: none;
     }
     
-    /* Navigation - FIXED for mobile */
+    .trap-button {
+      position: fixed;
+      top: 70px;
+      left: 20px;
+      z-index: 1001;
+      background: #000;
+      color: #ff0000;
+      border: 2px solid #ff0000;
+      padding: 8px 12px;
+      font-size: 10px;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-family: 'Press Start 2P', cursive;
+    }
+    
+    .trap-button:hover {
+      background: #330000;
+      transform: scale(1.1);
+      box-shadow: 0 0 15px var(--glow-color);
+    }
+    
     .pixel-nav {
       position: fixed;
       top: 0;
       width: 100%;
-      background: rgba(10, 20, 40, 0.95);
+      background: rgba(5, 0, 0, 0.95);
       backdrop-filter: blur(10px);
       border-bottom: 3px solid var(--accent);
       z-index: 1000;
@@ -82,24 +84,28 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
     }
     
     .nav-logo {
       font-size: 14px;
       color: var(--accent);
       text-decoration: none;
-      text-shadow: 2px 2px 0 var(--primary);
+      text-shadow: 2px 2px 0 #000;
+      letter-spacing: 1px;
     }
     
     .nav-links {
       display: flex;
-      gap: 15px;
+      gap: 10px;
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
+      flex-wrap: wrap;
     }
     
     .nav-link {
-      color: #fff;
+      color: #ccc;
       text-decoration: none;
       font-size: 9px;
       padding: 6px 10px;
@@ -109,12 +115,11 @@
     }
     
     .nav-link:hover {
-      color: var(--accent);
+      color: #fff;
       border: 2px solid var(--accent);
-      background: rgba(0, 221, 255, 0.1);
+      background: rgba(255, 0, 0, 0.1);
     }
     
-    /* Hero Section - FIXED for mobile */
     .hero {
       padding: 120px 15px 60px;
       text-align: center;
@@ -129,7 +134,7 @@
       height: 200px;
       background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
       filter: blur(60px);
-      opacity: 0.2;
+      opacity: 0.15;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
@@ -185,19 +190,28 @@
     
     .hero-tagline {
       font-size: 10px;
-      color: var(--accent);
+      color: #ff8888;
       margin-bottom: 30px;
       line-height: 1.5;
       padding: 0 10px;
     }
     
-    /* Pixel Character - FIXED for mobile */
     .character-container {
       display: flex;
       flex-direction: column;
       align-items: center;
       margin: 30px 0;
       position: relative;
+      gap: 20px;
+    }
+    
+    .pixel-character-link {
+      display: block;
+      transition: transform 0.3s;
+    }
+    
+    .pixel-character-link:hover {
+      transform: scale(1.05);
     }
     
     .pixel-character {
@@ -206,30 +220,47 @@
       image-rendering: pixelated;
       cursor: pointer;
       transition: transform 0.3s;
-      filter: drop-shadow(0 0 15px rgba(0, 221, 255, 0.5));
+      filter: drop-shadow(0 0 15px rgba(255, 0, 0, 0.5));
       border: 3px solid var(--accent);
       background: rgba(0, 0, 0, 0.5);
       padding: 8px;
       border-radius: 10px;
+      display: block;
     }
     
     .pixel-character:hover {
       transform: scale(1.1) rotate(5deg);
-      animation: float 3s ease-in-out infinite;
     }
     
-    @keyframes float {
-      0%, 100% { transform: translateY(0) scale(1.1) rotate(5deg); }
-      50% { transform: translateY(-10px) scale(1.1) rotate(5deg); }
+    .ai-button {
+      background: linear-gradient(45deg, #cc0000, #ff3333);
+      color: #fff;
+      border: 2px solid #ff6666;
+      padding: 12px 24px;
+      font-family: 'Press Start 2P', cursive;
+      font-size: 11px;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 5px;
+      box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+    }
+    
+    .ai-button:hover {
+      background: linear-gradient(45deg, #ff0000, #ff5555);
+      transform: translateY(-3px);
+      box-shadow: 0 5px 25px rgba(255, 0, 0, 0.6);
+      border-color: #ff8888;
     }
     
     .speech-bubble {
       position: absolute;
       top: -80px;
-      background: #fff;
-      color: #000;
+      background: #1a0000;
+      color: #ffaaaa;
       padding: 10px;
-      border: 2px solid #000;
+      border: 2px solid #ff0000;
       border-radius: 8px;
       font-size: 9px;
       max-width: 180px;
@@ -252,11 +283,64 @@
       left: 50%;
       transform: translateX(-50%);
       border: 6px solid transparent;
-      border-top-color: #fff;
-      filter: drop-shadow(1px 1px 0 #000);
+      border-top-color: #1a0000;
+      filter: drop-shadow(1px 1px 0 #ff0000);
     }
     
-    /* Social Links - FIXED for mobile */
+    .collapse-section {
+      max-width: 95vw;
+      margin: 25px auto;
+      background: var(--card-bg);
+      border: 2px solid var(--border-color);
+      border-radius: 6px;
+      overflow: hidden;
+      box-shadow: 0 0 15px rgba(255, 0, 0, 0.05);
+    }
+    
+    .collapse-header {
+      background: #0d0000;
+      padding: 16px 20px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #440000;
+      transition: all 0.3s;
+      user-select: none;
+    }
+    
+    .collapse-header:hover {
+      background: #1a0000;
+    }
+    
+    .collapse-header h3 {
+      font-size: 13px;
+      color: var(--accent);
+      text-shadow: 1px 1px 0 #000;
+      margin: 0;
+    }
+    
+    .collapse-arrow {
+      font-size: 14px;
+      color: var(--accent);
+      transition: transform 0.3s;
+    }
+    
+    .collapse-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s ease-in-out;
+      background: rgba(0, 0, 0, 0.3);
+    }
+    
+    .collapse-content.open {
+      max-height: 3000px;
+    }
+    
+    .collapse-inner {
+      padding: 20px;
+    }
+    
     .social-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -267,8 +351,8 @@
     }
     
     .social-card {
-      background: rgba(10, 20, 40, 0.8);
-      border: 2px solid var(--accent);
+      background: rgba(15, 0, 0, 0.8);
+      border: 2px solid var(--border-color);
       padding: 20px 15px;
       text-align: center;
       transition: all 0.3s;
@@ -284,31 +368,21 @@
     
     .social-card:hover {
       transform: translateY(-3px);
-      border-color: var(--primary);
-      box-shadow: 0 5px 15px rgba(0, 136, 255, 0.3);
+      border-color: var(--accent);
+      box-shadow: 0 5px 20px var(--glow-color);
     }
     
     .social-card i {
       font-size: 30px;
       margin-bottom: 10px;
       display: block;
+      color: var(--accent);
     }
     
     .social-card h3 {
-      color: var(--accent);
+      color: #ff8888;
       font-size: 11px;
       margin-bottom: 5px;
-    }
-    
-    /* Pixel Art Creator - FIXED for mobile */
-    .pixel-art-section {
-      max-width: 95vw;
-      margin: 60px auto;
-      padding: 20px;
-      background: rgba(10, 20, 40, 0.8);
-      border: 3px solid var(--accent);
-      text-align: center;
-      overflow: hidden;
     }
     
     .pixel-controls {
@@ -335,13 +409,12 @@
     
     .canvas-size-selector select {
       background: #000;
-      color: white;
+      color: #fff;
       border: 2px solid var(--primary);
       padding: 8px;
       font-family: 'Press Start 2P', cursive;
       font-size: 9px;
       cursor: pointer;
-      width: 150px;
     }
     
     .color-palette {
@@ -349,28 +422,36 @@
       gap: 6px;
       flex-wrap: wrap;
       justify-content: center;
-      max-width: 300px;
+      max-width: 500px;
       margin: 0 auto;
     }
     
     .color-option {
-      width: 22px;
-      height: 22px;
-      border: 2px solid #fff;
+      width: 24px;
+      height: 24px;
+      border: 2px solid #555;
       cursor: pointer;
       border-radius: 4px;
-      transition: transform 0.2s;
+      transition: all 0.2s;
     }
     
     .color-option.active {
       transform: scale(1.3);
-      border: 2px solid var(--accent);
+      border: 2px solid #fff;
+      box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
     }
     
     .selected-color-display {
       font-size: 10px;
       color: var(--accent);
       margin-top: 5px;
+    }
+    
+    .pixel-art-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
     }
     
     .pixel-art-container {
@@ -388,16 +469,16 @@
       display: grid;
       background: #000;
       margin: 0 auto;
-      border: 1px solid #333;
-      touch-action: none; /* Prevents pan/zoom while drawing */
+      border: 1px solid #330000;
+      touch-action: none;
     }
     
     .pixel-cell {
-      border: 1px solid #333;
+      border: 1px solid #330000;
       cursor: pointer;
       transition: all 0.1s;
       -webkit-tap-highlight-color: transparent;
-      touch-action: none; /* Prevents zoom on double-tap */
+      touch-action: none;
     }
     
     .pixel-cell:hover, .pixel-cell:active {
@@ -413,15 +494,6 @@
       flex-wrap: wrap;
     }
     
-    /* Students Section - FIXED for mobile */
-    .students-section {
-      max-width: 95vw;
-      margin: 60px auto;
-      padding: 20px;
-      background: rgba(10, 20, 40, 0.8);
-      border: 3px solid var(--primary);
-    }
-    
     .students-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
@@ -432,6 +504,8 @@
     .student-card {
       text-align: center;
       transition: transform 0.3s;
+      text-decoration: none;
+      color: #fff;
       width: 100%;
     }
     
@@ -447,71 +521,48 @@
       border-radius: 8px;
       margin-bottom: 8px;
       image-rendering: pixelated;
-      background: rgba(0, 0, 0, 0.3);
+      background: rgba(0, 0, 0, 0.5);
       padding: 3px;
     }
     
     .student-name {
-      font-size: 10px;
-      color: #fff;
-      word-break: break-word;
-      display: none; /* HIDDEN AS REQUESTED */
+      display: none;
     }
     
-    /* Fortune Teller Section */
-    .fortune-section {
-      max-width: 95vw;
-      margin: 60px auto;
-      padding: 25px 20px;
-      background: rgba(10, 20, 40, 0.8);
-      border: 3px solid #8b5cf6;
+    .fortune-icon {
+      font-size: 24px;
+      margin-bottom: 15px;
+      color: var(--accent);
       text-align: center;
-      border-radius: 8px;
     }
     
-    .fortune-title {
-      color: #8b5cf6;
-      text-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
-    }
-    
-    .crystal-ball {
-      width: 200px;
-      height: 200px;
-      margin: 20px auto;
+    .crystal-ball-svg {
+      width: 180px;
+      height: 180px;
+      margin: 15px auto;
       cursor: pointer;
-      animation: pulse 3s infinite alternate;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      border: none;
-      background: transparent;
-      box-shadow: none;
+      display: block;
+      filter: drop-shadow(0 0 25px rgba(255, 0, 0, 0.6));
+      transition: all 0.3s;
     }
     
-    .crystal-ball img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      border-radius: 10px;
-      transition: transform 0.3s;
-      border: 3px solid #8b5cf6;
-      background: rgba(0, 0, 0, 0.3);
-      padding: 5px;
-    }
-    
-    .crystal-ball:hover img {
+    .crystal-ball-svg:hover {
       transform: scale(1.05);
+      filter: drop-shadow(0 0 35px rgba(255, 0, 0, 0.8));
     }
     
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      100% { transform: scale(1.03); }
+    .crystal-ball-svg.glow {
+      animation: crystalGlow 2s ease-in-out infinite;
+    }
+    
+    @keyframes crystalGlow {
+      0%, 100% { filter: drop-shadow(0 0 25px rgba(255, 0, 0, 0.6)); }
+      50% { filter: drop-shadow(0 0 50px rgba(255, 0, 0, 0.9)); }
     }
     
     .fortune-text-container {
-      background: rgba(0, 0, 0, 0.6);
-      border: 2px solid #8b5cf6;
+      background: rgba(15, 0, 0, 0.6);
+      border: 2px solid var(--primary);
       padding: 25px;
       margin: 20px auto;
       max-width: 700px;
@@ -520,67 +571,54 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      position: relative;
-      border-radius: 8px;
+      border-radius: 6px;
     }
     
     .fortune-text {
       font-size: 12px;
       line-height: 1.6;
       margin-bottom: 15px;
-      color: #00ffff;
+      color: #ffaaaa;
       text-align: center;
-      padding: 0 10px;
     }
     
     .fortune-subtitle {
       font-size: 10px;
-      color: #8b5cf6;
+      color: var(--accent);
       text-align: center;
       margin-top: 10px;
     }
     
     .fortune-button {
-      background: linear-gradient(45deg, #8b5cf6, #0088ff);
-      color: white;
-      border: none;
+      background: linear-gradient(45deg, #8b0000, #cc0000);
+      color: #fff;
+      border: 2px solid #ff4444;
       padding: 12px 20px;
       font-family: 'Press Start 2P', cursive;
       font-size: 10px;
       cursor: pointer;
-      border: 2px solid #00ffff;
       transition: all 0.3s;
-      margin-top: 10px;
     }
     
     .fortune-button:hover {
       transform: translateY(-3px);
-      box-shadow: 0 5px 15px rgba(139, 92, 246, 0.4);
+      box-shadow: 0 5px 15px var(--glow-color);
     }
     
     .fortune-counter {
       font-size: 9px;
-      color: #00ffff;
+      color: #ff8888;
       margin-top: 15px;
       opacity: 0.7;
     }
     
-    .fortune-icon {
-      font-size: 24px;
-      margin-bottom: 15px;
-      color: #8b5cf6;
-    }
-    
-    /* Shame Page Styles */
     .shame-page {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(45deg, #ff0000, #ff5500, #ffff00, #00ff00, #0088ff, #ff00ff);
-      background-size: 400% 400%;
-      animation: shameBackground 5s infinite alternate;
+      background: #1a0000;
       display: none;
       flex-direction: column;
       justify-content: center;
@@ -590,53 +628,34 @@
       text-align: center;
     }
     
-    @keyframes shameBackground {
-      0% { background-position: 0% 50%; }
-      100% { background-position: 100% 50%; }
-    }
-    
     .shame-message {
       font-family: 'Press Start 2P', cursive;
       font-size: 16px;
-      color: #000;
-      text-shadow: 3px 3px 0 #fff;
+      color: #ff0000;
+      text-shadow: 2px 2px 0 #000;
       margin-bottom: 40px;
       max-width: 800px;
       line-height: 1.5;
-      text-align: center;
       padding: 20px;
-      background: rgba(255, 255, 255, 0.8);
-      border: 5px solid #000;
+      background: rgba(0, 0, 0, 0.8);
+      border: 3px solid #ff0000;
       border-radius: 10px;
-      box-shadow: 10px 10px 0 #000;
     }
     
     .sorry-button {
       background: #ff0000;
-      color: white;
-      border: 3px solid #000;
+      color: #000;
+      border: 3px solid #fff;
       padding: 15px 30px;
       font-family: 'Press Start 2P', cursive;
       font-size: 12px;
       cursor: pointer;
       transition: all 0.3s;
-      box-shadow: 5px 5px 0 #000;
     }
     
     .sorry-button:hover {
-      background: #00ff00;
-      color: #000;
-      transform: translateY(-5px);
-      box-shadow: 8px 8px 0 #000;
-    }
-    
-    /* Notes Section - FIXED for mobile, NO DATES */
-    .notes-section {
-      max-width: 95vw;
-      margin: 60px auto;
-      padding: 20px;
-      background: rgba(10, 20, 40, 0.8);
-      border: 3px solid var(--accent);
+      background: #cc0000;
+      color: #fff;
     }
     
     .note-form {
@@ -649,7 +668,7 @@
     
     .note-form input,
     .note-form textarea {
-      background: rgba(0, 0, 0, 0.5);
+      background: rgba(0, 0, 0, 0.7);
       border: 2px solid var(--primary);
       color: #fff;
       padding: 12px;
@@ -663,23 +682,6 @@
       resize: vertical;
     }
     
-    .note-form button {
-      background: var(--primary);
-      color: #fff;
-      border: none;
-      padding: 12px;
-      font-family: 'Press Start 2P', cursive;
-      font-size: 10px;
-      cursor: pointer;
-      transition: background 0.3s;
-      width: 100%;
-    }
-    
-    .note-form button:hover {
-      background: var(--accent);
-      color: #000;
-    }
-    
     .notes-wall {
       display: grid;
       grid-template-columns: 1fr;
@@ -688,7 +690,7 @@
     }
     
     .note {
-      background: rgba(0, 0, 0, 0.5);
+      background: rgba(15, 0, 0, 0.6);
       padding: 15px;
       border-left: 4px solid var(--accent);
       position: relative;
@@ -710,14 +712,12 @@
       font-size: 10px;
       margin-bottom: 8px;
       display: block;
-      word-break: break-word;
     }
     
     .note-content {
       font-size: 9px;
       line-height: 1.5;
-      word-wrap: break-word;
-      overflow-wrap: break-word;
+      color: #ffcccc;
     }
     
     .delete-btn {
@@ -732,30 +732,26 @@
       cursor: pointer;
       opacity: 0;
       transition: opacity 0.3s;
+      font-family: 'Press Start 2P', cursive;
     }
     
     .note:hover .delete-btn {
       opacity: 1;
     }
     
-    /* Admin Section - FIXED for mobile */
     .admin-section {
-      text-align: center;
-      margin: 30px auto;
-      padding: 15px;
       max-width: 95vw;
-      background: rgba(10, 20, 40, 0.8);
-      border: 3px solid var(--primary);
-      border-radius: 8px;
-    }
-    
-    .admin-login {
-      padding: 15px;
+      margin: 30px auto;
+      padding: 20px;
+      background: var(--card-bg);
+      border: 2px solid var(--border-color);
+      border-radius: 6px;
+      text-align: center;
     }
     
     .admin-login input {
       background: #000;
-      color: white;
+      color: #fff;
       border: 2px solid var(--accent);
       padding: 10px;
       font-family: 'Press Start 2P', cursive;
@@ -766,13 +762,12 @@
       font-size: 10px;
     }
     
-    /* Admin Art Gallery */
     .art-gallery-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
       gap: 10px;
       padding: 10px;
-      background: rgba(0,0,0,0.3);
+      background: rgba(0, 0, 0, 0.3);
       border-radius: 8px;
       min-height: 100px;
     }
@@ -781,7 +776,7 @@
       position: relative;
       background: #000;
       padding: 5px;
-      border: 2px solid #0088ff;
+      border: 2px solid var(--primary);
       border-radius: 5px;
     }
     
@@ -793,7 +788,7 @@
     
     .art-timestamp {
       font-size: 6px;
-      color: #00ddff;
+      color: var(--accent);
       text-align: center;
       margin-top: 3px;
     }
@@ -814,7 +809,6 @@
       padding: 0;
     }
     
-    /* Particles Container */
     #particles-js {
       position: fixed;
       width: 100%;
@@ -823,46 +817,14 @@
       pointer-events: none;
     }
     
-    /* Easter Egg */
-    .easter-egg {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: rgba(0, 0, 0, 0.95);
-      padding: 20px;
-      border: 3px solid var(--primary);
-      z-index: 10000;
-      text-align: center;
-      display: none;
-      max-width: 90vw;
-    }
-    
-    .easter-egg h2 {
-      color: var(--accent);
-      margin-bottom: 15px;
-      font-size: 16px;
-    }
-    
-    /* Footer */
-    .footer {
-      text-align: center;
-      padding: 30px 15px;
-      background: rgba(10, 20, 40, 0.9);
-      margin-top: 60px;
-      border-top: 3px solid var(--primary);
-    }
-    
-    /* Button Styles */
     .pixel-button {
       background: var(--primary);
-      color: white;
-      border: none;
+      color: #fff;
+      border: 2px solid var(--accent);
       padding: 10px 15px;
       font-family: 'Press Start 2P', cursive;
       font-size: 10px;
       cursor: pointer;
-      border: 2px solid var(--accent);
       transition: all 0.3s;
       display: inline-block;
     }
@@ -871,175 +833,25 @@
       background: var(--accent);
       color: #000;
       transform: translateY(-2px);
+      box-shadow: 0 5px 15px var(--glow-color);
     }
     
-    /* Section Title */
     .section-title {
       text-align: center;
       color: var(--accent);
       font-size: 14px;
       margin-bottom: 25px;
       text-shadow: 2px 2px 0 #000;
-      padding: 0 10px;
     }
     
-    /* Mobile-specific styles */
-    @media (max-width: 480px) {
-      .nav-logo {
-        font-size: 12px;
-      }
-      
-      .nav-link {
-        font-size: 8px;
-        padding: 5px 8px;
-      }
-      
-      .glitch {
-        font-size: 18px;
-      }
-      
-      .hero-tagline {
-        font-size: 9px;
-      }
-      
-      .pixel-character {
-        width: 100px;
-        height: 100px;
-      }
-      
-      .social-card {
-        min-height: 80px;
-        padding: 15px 10px;
-      }
-      
-      .social-card i {
-        font-size: 25px;
-      }
-      
-      .social-card h3 {
-        font-size: 10px;
-      }
-      
-      .student-avatar {
-        width: 70px;
-        height: 70px;
-      }
-      
-      .trap-button {
-        top: 60px;
-        left: 10px;
-        font-size: 8px;
-        padding: 6px 8px;
-      }
-      
-      .crystal-ball {
-        width: 160px;
-        height: 160px;
-      }
-      
-      .fortune-text {
-        font-size: 10px;
-        padding: 0 5px;
-      }
-      
-      .fortune-text-container {
-        padding: 20px 15px;
-        min-height: 160px;
-      }
-      
-      .social-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-      
-      .art-gallery-grid {
-        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-      }
-      
-      .shame-message {
-        font-size: 12px;
-        padding: 15px;
-      }
+    .footer {
+      text-align: center;
+      padding: 30px 15px;
+      background: rgba(10, 0, 0, 0.9);
+      margin-top: 60px;
+      border-top: 3px solid var(--primary);
     }
     
-    @media (max-width: 768px) {
-      .nav-links {
-        gap: 8px;
-      }
-      
-      .hero {
-        padding-top: 100px;
-      }
-      
-      .pixel-art-container {
-        padding: 8px;
-      }
-      
-      .canvas-size-selector select {
-        font-size: 8px;
-        padding: 6px;
-      }
-      
-      .color-option {
-        width: 20px;
-        height: 20px;
-      }
-      
-      .social-grid {
-        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-      }
-      
-      .crystal-ball {
-        width: 180px;
-        height: 180px;
-      }
-    }
-    
-    /* Touch device optimizations - FIXED PINCH ZOOM */
-    @media (hover: none) and (pointer: coarse) {
-      body {
-        touch-action: pan-y; /* Allows vertical scrolling but prevents pinch-zoom */
-      }
-      
-      .pixel-grid-container {
-        touch-action: none; /* Prevents zoom while drawing */
-      }
-      
-      .pixel-cell:active {
-        transform: scale(1.05);
-      }
-      
-      .note:hover .delete-btn {
-        opacity: 1;
-      }
-      
-      .social-card:active {
-        transform: translateY(-3px);
-      }
-      
-      .student-card:active {
-        transform: scale(1.05);
-      }
-      
-      .fortune-button:active {
-        transform: translateY(-3px);
-      }
-      
-      .crystal-ball:active img {
-        transform: scale(1.05);
-      }
-    }
-    
-    /* Secret Mode */
-    .secret-mode {
-      animation: secretColors 10s infinite linear;
-    }
-    
-    @keyframes secretColors {
-      0% { filter: hue-rotate(0deg); }
-      100% { filter: hue-rotate(360deg); }
-    }
-    
-    /* Animation for new fortune */
     @keyframes fortunePop {
       0% { transform: scale(0.9); opacity: 0; }
       100% { transform: scale(1); opacity: 1; }
@@ -1049,30 +861,30 @@
       animation: fortunePop 0.5s ease-out;
     }
     
-    /* Crystal ball glow animation */
-    @keyframes crystalGlow {
-      0%, 100% { 
-        box-shadow: 0 0 30px #00ffff;
-        transform: scale(1);
-      }
-      50% { 
-        box-shadow: 0 0 60px #00ffff;
-        transform: scale(1.05);
-      }
-    }
-    
-    .crystal-ball.glow img {
-      animation: crystalGlow 2s ease-in-out infinite;
+    @media (max-width: 480px) {
+      .nav-logo { font-size: 12px; }
+      .nav-link { font-size: 8px; padding: 5px 8px; }
+      .glitch { font-size: 16px; }
+      .hero-tagline { font-size: 9px; }
+      .pixel-character { width: 100px; height: 100px; }
+      .social-card { min-height: 80px; padding: 15px 10px; }
+      .social-card i { font-size: 25px; }
+      .social-card h3 { font-size: 10px; }
+      .student-avatar { width: 70px; height: 70px; }
+      .trap-button { top: 60px; left: 10px; font-size: 8px; padding: 6px 8px; }
+      .crystal-ball-svg { width: 150px; height: 150px; }
+      .fortune-text { font-size: 10px; }
+      .social-grid { grid-template-columns: 1fr 1fr; }
+      .collapse-header h3 { font-size: 10px; }
+      .ai-button { font-size: 9px; padding: 10px 18px; }
     }
   </style>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-  <!-- Background Elements -->
   <div class="pixel-grid"></div>
   <div id="particles-js"></div>
   
-  <!-- Shame Page (Hidden by default) -->
   <div class="shame-page" id="shamePage">
     <div class="shame-message">
       G H A S S A N<br>
@@ -1094,212 +906,237 @@
     <button class="sorry-button" onclick="returnToSite()">I'M SORRY</button>
   </div>
   
-  <!-- 18+ Button -->
   <button class="trap-button" onclick="showTrap()">🔞 18+ CONTENT OF GHASSAN</button>
   
-  <!-- Navigation -->
   <nav class="pixel-nav">
     <a href="#" class="nav-logo">GHASSAN_MAZEN</a>
     <div class="nav-links">
       <a href="#hero" class="nav-link">HOME</a>
-      <a href="#social" class="nav-link">SOCIALS</a>
-      <a href="#pixel-art" class="nav-link">PIXEL ART</a>
-      <a href="#fortune" class="nav-link">FORTUNE</a>
-      <a href="#students" class="nav-link">STUDENTS</a>
-      <a href="#notes" class="nav-link">GUESTBOOK</a>
+      <a href="#socialCollapse" class="nav-link">SOCIALS</a>
+      <a href="#pixelCollapse" class="nav-link">PIXEL ART</a>
+      <a href="#fortuneCollapse" class="nav-link">FORTUNE</a>
+      <a href="#studentsCollapse" class="nav-link">STUDENTS</a>
+      <a href="#notesCollapse" class="nav-link">GUESTBOOK</a>
     </div>
   </nav>
   
-  <!-- Hero Section -->
   <section id="hero" class="hero">
     <div class="hero-glow"></div>
-    
     <div class="glitch-wrapper">
       <h1 class="glitch" data-text="GHASSAN'S DIGITAL HUB">GHASSAN'S DIGITAL HUB</h1>
     </div>
-    
     <p class="hero-tagline">
       Developer • Creator • Digital Alchemist<br>
       Crafting pixels into experiences since 1999
     </p>
-    
     <div class="character-container">
       <div class="speech-bubble" id="speechBubble">
         <span id="characterSpeech">Welcome to my realm!</span>
       </div>
-      <img src="https://i.postimg.cc/9Xvbc3sw-/7eed46e2-854a-46dd-a073-c66409387f95.png" 
-           alt="Ghassan Pixel" 
-           class="pixel-character"
-           id="pixelCharacter">
+      <a href="ai" class="pixel-character-link">
+        <img src="https://i.postimg.cc/9Xvbc3sw-/7eed46e2-854a-46dd-a073-c66409387f95.png" 
+             alt="Ghassan Pixel" 
+             class="pixel-character"
+             id="pixelCharacter">
+      </a>
+      <a href="ai" class="ai-button">
+        🤖 MY AI
+      </a>
     </div>
   </section>
   
-  <!-- Social Links Section -->
-  <section id="social" class="social-grid">
-    <a href="https://github.com/GhassanMazen00/GhassanMazen00" target="_blank" class="social-card">
-      <i class="fab fa-github"></i>
-      <h3>GITHUB</h3>
-    </a>
-    
-    <a href="https://www.instagram.com/ghassan.shk/" target="_blank" class="social-card">
-      <i class="fab fa-instagram"></i>
-      <h3>INSTAGRAM</h3>
-    </a>
-    
-    <a href="https://t.snapchat.com/p3KLzoLR" target="_blank" class="social-card">
-      <i class="fab fa-snapchat-ghost"></i>
-      <h3>SNAPCHAT</h3>
-    </a>
-    
-    <a href="mailto:ghassanmazen@zohomail.com" class="social-card">
-      <i class="fas fa-envelope"></i>
-      <h3>EMAIL</h3>
-    </a>
-  </section>
-  
-  <!-- Pixel Art Creator - NOW WITH FIREBASE STORAGE -->
-  <section id="pixel-art" class="pixel-art-section">
-    <h2 class="section-title">🎨 PIXEL ART CREATOR</h2>
-    
-    <div class="pixel-controls">
-      <div class="canvas-size-selector">
-        <span>Canvas Size:</span>
-        <select id="canvasSize" onchange="changeCanvasSize()">
-          <option value="8">8x8 (Tiny)</option>
-          <option value="16" selected>16x16 (Small)</option>
-          <option value="24">24x24 (Medium)</option>
-          <option value="32">32x32 (Large)</option>
-        </select>
-      </div>
-      
-      <div class="selected-color-display">
-        Selected: <span id="selectedColor" style="color: #0088ff;">#0088ff</span>
-      </div>
+  <!-- SOCIAL LINKS - Open by default -->
+  <div class="collapse-section" id="socialCollapse">
+    <div class="collapse-header" onclick="toggleCollapse('socialContent', this)">
+      <h3>📡 SOCIAL LINKS</h3>
+      <span class="collapse-arrow">▼</span>
     </div>
-    
-    <div class="color-palette" id="colorPalette">
-      <!-- Colors will be generated by JS -->
-    </div>
-    
-    <div style="margin: 15px 0; width: 100%; overflow: auto; -webkit-overflow-scrolling: touch;">
-      <div class="pixel-art-container">
-        <div class="pixel-grid-container" id="pixelGrid">
-          <!-- Pixel grid will be generated by JS -->
+    <div class="collapse-content open" id="socialContent">
+      <div class="collapse-inner">
+        <div class="social-grid">
+          <a href="https://github.com/GhassanMazen00/GhassanMazen00" target="_blank" class="social-card">
+            <i class="fab fa-github"></i>
+            <h3>GITHUB</h3>
+          </a>
+          <a href="https://www.instagram.com/ghassan.shk/" target="_blank" class="social-card">
+            <i class="fab fa-instagram"></i>
+            <h3>INSTAGRAM</h3>
+          </a>
+          <a href="https://t.snapchat.com/p3KLzoLR" target="_blank" class="social-card">
+            <i class="fab fa-snapchat-ghost"></i>
+            <h3>SNAPCHAT</h3>
+          </a>
+          <a href="mailto:ghassanmazen@zohomail.com" class="social-card">
+            <i class="fas fa-envelope"></i>
+            <h3>EMAIL</h3>
+          </a>
         </div>
       </div>
     </div>
-    
-    <div class="art-controls">
-      <button class="pixel-button" onclick="clearGrid()">
-        <i class="fas fa-eraser"></i> CLEAR
-      </button>
-      <button class="pixel-button" onclick="fillRandom()">
-        <i class="fas fa-random"></i> RANDOM
-      </button>
-      <button class="pixel-button" onclick="saveArt()">
-        <i class="fas fa-paper-plane"></i> SEND TO GHASSAN
-      </button>
-    </div>
-    <p style="font-size: 8px; color: var(--accent); margin-top: 10px;">
-      ⚡ Art is saved to the cloud! Visible to all admins.
-    </p>
-  </section>
+  </div>
   
-  <!-- Ghassan's Fortune Teller Section -->
-  <section id="fortune" class="fortune-section">
-    <h2 class="section-title fortune-title">🔮 GHASSAN'S FORTUNE TELLER</h2>
-    
-    <div class="fortune-icon">
-      <i class="fas fa-crystal-ball"></i>
+  <!-- PIXEL ART CREATOR - Collapsed by default -->
+  <div class="collapse-section" id="pixelCollapse">
+    <div class="collapse-header" onclick="toggleCollapse('pixelContent', this)">
+      <h3>🎨 PIXEL ART CREATOR</h3>
+      <span class="collapse-arrow">▶</span>
     </div>
-    
-    <p style="text-align: center; margin-bottom: 20px; font-size: 9px; color: #00ffff;">
-      Click the image to reveal your fortune
-    </p>
-    
-    <div class="crystal-ball" id="crystalBall" onclick="getFortune()">
-      <img src="https://i.postimg.cc/G2FSmngc/bg-8d6237bc-c20f-43d9-89cf-cc12a011eebe.png" alt="Fortune Teller" id="fortuneImage">
-    </div>
-    
-    <div class="fortune-text-container" id="fortuneDisplay">
-      <div class="fortune-text" id="fortuneText">
-        Your fortune awaits... Click the image above!
+    <div class="collapse-content" id="pixelContent">
+      <div class="collapse-inner">
+        <div class="pixel-controls">
+          <div class="canvas-size-selector">
+            <span>Canvas Size:</span>
+            <select id="canvasSize" onchange="changeCanvasSize()">
+              <option value="8">8x8 (Tiny)</option>
+              <option value="16" selected>16x16 (Small)</option>
+              <option value="24">24x24 (Medium)</option>
+              <option value="32">32x32 (Large)</option>
+            </select>
+          </div>
+          <div class="selected-color-display">
+            Selected: <span id="selectedColor" style="color: #0088ff;">#0088ff</span>
+          </div>
+        </div>
+        <div class="color-palette" id="colorPalette"></div>
+        <div class="pixel-art-wrapper">
+          <div class="pixel-art-container">
+            <div class="pixel-grid-container" id="pixelGrid"></div>
+          </div>
+        </div>
+        <div class="art-controls">
+          <button class="pixel-button" onclick="clearGrid()"><i class="fas fa-eraser"></i> CLEAR</button>
+          <button class="pixel-button" onclick="fillRandom()"><i class="fas fa-random"></i> RANDOM</button>
+          <button class="pixel-button" onclick="saveArt()"><i class="fas fa-paper-plane"></i> SEND TO GHASSAN</button>
+        </div>
+        <p style="font-size: 8px; color: var(--accent); margin-top: 10px; text-align: center;">
+          ⚡ Art is saved to the cloud! Visible to all admins.
+        </p>
       </div>
-      <div class="fortune-subtitle" id="fortuneSubtitle">
-        - Ghassan's Fortune Teller
+    </div>
+  </div>
+  
+  <!-- FORTUNE TELLER - Collapsed by default -->
+  <div class="collapse-section" id="fortuneCollapse">
+    <div class="collapse-header" onclick="toggleCollapse('fortuneContent', this)">
+      <h3>🔮 GHASSAN'S FORTUNE TELLER</h3>
+      <span class="collapse-arrow">▶</span>
+    </div>
+    <div class="collapse-content" id="fortuneContent">
+      <div class="collapse-inner" style="text-align: center;">
+        <div class="fortune-icon">
+          <i class="fas fa-crystal-ball"></i>
+        </div>
+        <p style="text-align: center; margin-bottom: 20px; font-size: 9px; color: #ff8888;">
+          Click the crystal ball to reveal your fortune
+        </p>
+        
+        <svg class="crystal-ball-svg" id="crystalBallSvg" onclick="getFortune()" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="ballGlow" cx="40%" cy="35%" r="50%">
+              <stop offset="0%" stop-color="#ff4444" stop-opacity="0.3"/>
+              <stop offset="100%" stop-color="#330000" stop-opacity="0.1"/>
+            </radialGradient>
+            <filter id="glow">
+              <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+              <feMerge>
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+          </defs>
+          
+          <ellipse cx="60" cy="95" rx="25" ry="6" fill="#1a0000" stroke="#cc0000" stroke-width="1.5"/>
+          <path d="M45 95 Q60 85 75 95" fill="#0d0000" stroke="#cc0000" stroke-width="1"/>
+          
+          <circle cx="60" cy="50" r="30" fill="#0a0000" stroke="#ff0000" stroke-width="2.5" filter="url(#glow)"/>
+          <circle cx="60" cy="50" r="26" fill="url(#ballGlow)" stroke="#cc0000" stroke-width="1"/>
+          
+          <circle cx="52" cy="42" r="4" fill="#ff4444" opacity="0.4"/>
+          <circle cx="68" cy="45" r="3" fill="#ff6666" opacity="0.3"/>
+          <circle cx="57" cy="58" r="2.5" fill="#ff8888" opacity="0.5"/>
+          <path d="M45 50 Q55 40 65 50 T85 50" stroke="#ff3333" stroke-width="0.8" fill="none" opacity="0.4"/>
+          
+          <text x="40" y="38" font-size="6" fill="#ffaaaa" opacity="0.7">✦</text>
+          <text x="72" y="55" font-size="5" fill="#ffaaaa" opacity="0.6">✧</text>
+          <text x="50" y="65" font-size="4" fill="#ffaaaa" opacity="0.5">⋆</text>
+        </svg>
+        
+        <div class="fortune-text-container" id="fortuneDisplay">
+          <div class="fortune-text" id="fortuneText">
+            Your fortune awaits... Click the crystal ball above!
+          </div>
+          <div class="fortune-subtitle" id="fortuneSubtitle">
+            - Ghassan's Fortune Teller
+          </div>
+        </div>
+        
+        <button class="fortune-button" onclick="getFortune()">
+          <i class="fas fa-redo"></i> NEW FORTUNE
+        </button>
+        
+        <div class="fortune-counter" id="fortuneCounter">
+          Click the crystal ball for your first fortune!
+        </div>
       </div>
     </div>
-    
-    <button class="fortune-button" onclick="getFortune()">
-      <i class="fas fa-redo"></i> NEW FORTUNE
-    </button>
-    
-    <div class="fortune-counter" id="fortuneCounter">
-      Click the image for your first fortune!
-    </div>
-  </section>
+  </div>
   
-  <!-- Students Section -->
-  <section id="students" class="students-section">
-    <h2 class="section-title">MY BITCHES</h2>
-    <div class="students-grid">
-      <a href="https://www.instagram.com/loai_abb/" target="_blank" class="student-card">
-        <img src="https://i.postimg.cc/XqLnjRMS/20250819-2117-Pixel-Ginger-Character-simple-compose-01k31rss70fmktq7sny215zh9h.png" 
-             alt="Loai" 
-             class="student-avatar">
-        <span class="student-name">LOAI_ABB</span>
-      </a>
-      
-      <a href="https://www.instagram.com/osaidjano/" target="_blank" class="student-card">
-        <img src="https://i.postimg.cc/JhH7NYXZ/20250819-2129-Pixel-Man-with-T-Shirt-simple-compose-01k31scc2efvfbt02vce5hkp5r.png" 
-             alt="Osaid" 
-             class="student-avatar">
-        <span class="student-name">OSAIDJANO</span>
-      </a>
-      
-      <a href="https://www.instagram.com/loai_kashkash/" target="_blank" class="student-card">
-        <img src="https://i.postimg.cc/76gxcCmL/20250819-2136-Pixel-Fat-Man-simple-compose-01k31sw-dygemgba9w7vm7tmpq5.png" 
-             alt="Kashkash" 
-             class="student-avatar">
-        <span class="student-name">LOAI_KASHKASH</span>
-      </a>
-      
-      <a href="https://www.instagram.com/khalid.alfares1/" target="_blank" class="student-card">
-        <img src="https://i.postimg.cc/d1Ms4RRX/20250819-2140-Pixel-Man-with-Flag-simple-compose-01k31t39ykee6bbh3fcc1xfhjv-removebg-preview.png" 
-             alt="Khaled" 
-             class="student-avatar">
-        <span class="student-name">KHALID.ALFARES1</span>
-      </a>
-      
-      <a href="https://www.instagram.com/badr_sanoufi/" target="_blank" class="student-card">
-        <img src="https://i.postimg.cc/j2tsrsF4/assets-task-01k31taeamf6tavtp3htwn6b2h-1755629076-img-0.webp" 
-             alt="Badr" 
-             class="student-avatar">
-        <span class="student-name">BADR_SANOUFI</span>
-      </a>
+  <!-- STUDENTS - Collapsed by default -->
+  <div class="collapse-section" id="studentsCollapse">
+    <div class="collapse-header" onclick="toggleCollapse('studentsContent', this)">
+      <h3>👥 MY BITCHES</h3>
+      <span class="collapse-arrow">▶</span>
     </div>
-  </section>
+    <div class="collapse-content" id="studentsContent">
+      <div class="collapse-inner">
+        <div class="students-grid">
+          <a href="https://www.instagram.com/loai_abb/" target="_blank" class="student-card">
+            <img src="https://i.postimg.cc/XqLnjRMS/20250819-2117-Pixel-Ginger-Character-simple-compose-01k31rss70fmktq7sny215zh9h.png" alt="Loai" class="student-avatar">
+            <span class="student-name">LOAI_ABB</span>
+          </a>
+          <a href="https://www.instagram.com/osaidjano/" target="_blank" class="student-card">
+            <img src="https://i.postimg.cc/JhH7NYXZ/20250819-2129-Pixel-Man-with-T-Shirt-simple-compose-01k31scc2efvfbt02vce5hkp5r.png" alt="Osaid" class="student-avatar">
+            <span class="student-name">OSAIDJANO</span>
+          </a>
+          <a href="https://www.instagram.com/loai_kashkash/" target="_blank" class="student-card">
+            <img src="https://i.postimg.cc/76gxcCmL/20250819-2136-Pixel-Fat-Man-simple-compose-01k31sw-dygemgba9w7vm7tmpq5.png" alt="Kashkash" class="student-avatar">
+            <span class="student-name">LOAI_KASHKASH</span>
+          </a>
+          <a href="https://www.instagram.com/khalid.alfares1/" target="_blank" class="student-card">
+            <img src="https://i.postimg.cc/d1Ms4RRX/20250819-2140-Pixel-Man-with-Flag-simple-compose-01k31t39ykee6bbh3fcc1xfhjv-removebg-preview.png" alt="Khaled" class="student-avatar">
+            <span class="student-name">KHALID.ALFARES1</span>
+          </a>
+          <a href="https://www.instagram.com/badr_sanoufi/" target="_blank" class="student-card">
+            <img src="https://i.postimg.cc/j2tsrsF4/assets-task-01k31taeamf6tavtp3htwn6b2h-1755629076-img-0.webp" alt="Badr" class="student-avatar">
+            <span class="student-name">BADR_SANOUFI</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
   
-  <!-- Notes Section - NO DATES, only nickname and message -->
-  <section id="notes" class="notes-section">
-    <h2 class="section-title">📝 GUESTBOOK</h2>
-    <p style="text-align: center; margin-bottom: 20px; font-size: 9px; color: var(--accent);">
-      Leave your mark in my digital realm. Share your thoughts, compliments, or just say hello!
-    </p>
-    
-    <div class="note-form">
-      <input type="text" id="nickname" placeholder="YOUR NICKNAME..." maxlength="30">
-      <textarea id="noteText" placeholder="YOUR MESSAGE... (max 500 characters)" maxlength="500"></textarea>
-      <button onclick="addNote()" class="pixel-button">POST MESSAGE</button>
+  <!-- GUESTBOOK - Collapsed by default -->
+  <div class="collapse-section" id="notesCollapse">
+    <div class="collapse-header" onclick="toggleCollapse('notesContent', this)">
+      <h3>📝 GUESTBOOK</h3>
+      <span class="collapse-arrow">▶</span>
     </div>
-    
-    <div class="notes-wall" id="notesWall">
-      <!-- Notes will be loaded here (NO DATES, only nickname + message) -->
+    <div class="collapse-content" id="notesContent">
+      <div class="collapse-inner">
+        <p style="text-align: center; margin-bottom: 20px; font-size: 9px; color: var(--accent);">
+          Leave your mark in my digital realm. Share your thoughts, compliments, or just say hello!
+        </p>
+        <div class="note-form">
+          <input type="text" id="nickname" placeholder="YOUR NICKNAME..." maxlength="30">
+          <textarea id="noteText" placeholder="YOUR MESSAGE... (max 500 characters)" maxlength="500"></textarea>
+          <button onclick="addNote()" class="pixel-button">POST MESSAGE</button>
+        </div>
+        <div class="notes-wall" id="notesWall"></div>
+      </div>
     </div>
-  </section>
+  </div>
   
-  <!-- Admin Login Section -->
-  <section id="admin" class="admin-section">
+  <div class="admin-section" id="admin">
     <h2 class="section-title">🔐 ADMIN MODE</h2>
     <div class="admin-login">
       <p style="font-size: 10px; margin-bottom: 15px; color: var(--accent);">
@@ -1311,58 +1148,48 @@
       <button class="pixel-button" onclick="deactivateAdmin()" style="background: var(--accent); color: #000; margin-left: 10px;">DEACTIVATE</button>
     </div>
     <p id="adminStatus" style="font-size: 9px; margin-top: 15px; color: var(--accent);"></p>
-  </section>
+  </div>
   
-  <!-- Admin Art Gallery Section - NOW LOADS FROM FIREBASE -->
-  <section id="admin-gallery" class="admin-section" style="display: none;">
+  <div class="admin-section" id="admin-gallery" style="display: none;">
     <h2 class="section-title">🖼️ ART SENT TO GHASSAN</h2>
     <p style="text-align: center; margin-bottom: 20px; font-size: 9px; color: var(--accent);">
       Gallery of all art pieces sent to Ghassan (Cloud Storage • Admin Only)
     </p>
-    <div id="artGallery" class="art-gallery-grid">
-      <!-- Art pieces will be loaded from Firebase -->
-    </div>
+    <div id="artGallery" class="art-gallery-grid"></div>
     <div style="text-align: center; margin-top: 15px;">
       <button class="pixel-button" onclick="clearAllArt()" style="background: #ff0000;">
         <i class="fas fa-trash"></i> CLEAR ALL ART (CLOUD)
       </button>
     </div>
-  </section>
+  </div>
   
-  <!-- Footer -->
   <footer class="footer">
     <p style="font-size: 10px; margin-bottom: 15px; color: var(--accent);">
       CRAFTED WITH PIXELS AND PASSION
     </p>
-    <p style="font-size: 8px; opacity: 0.7;">
+    <p style="font-size: 8px; opacity: 0.7; color: #ff8888;">
       © 2024 GHASSAN MAZEN • ALL PIXELS RESERVED
     </p>
   </footer>
   
-  <!-- Easter Egg Modal -->
-  <div class="easter-egg" id="easterEgg">
-    <h2>🎮 SECRET UNLOCKED! 🎮</h2>
+  <div class="easter-egg" id="easterEgg" style="position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:rgba(0,0,0,0.95); padding:20px; border:3px solid var(--primary); z-index:10000; text-align:center; display:none;">
+    <h2 style="color:var(--accent);">🎮 SECRET UNLOCKED! 🎮</h2>
     <p>You found the hidden easter egg!</p>
-    <p style="margin: 15px 0; font-size: 10px;">You are now an honorary member of the pixel realm!</p>
     <button onclick="closeEasterEgg()" class="pixel-button">CLOSE</button>
   </div>
   
-  <!-- Firebase & Particles -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
   <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
   
   <script>
-    // Firebase Configuration
     const firebaseConfig = {
       databaseURL: "https://dungeon-data-base-default-rtdb.firebaseio.com/"
     };
     
-    // Initialize Firebase
     const app = firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
     
-    // Global Variables
     let isAdmin = false;
     let konamiIndex = 0;
     let currentColor = '#0088ff';
@@ -1375,15 +1202,17 @@
       'KeyB', 'KeyA'
     ];
     
-    // Color palette for pixel art
+    // Full color palette
     const colors = [
       '#0088ff', '#00ddff', '#0055aa', '#00aa00',
       '#ff5500', '#ff0080', '#aa00ff', '#ffff00',
       '#ffffff', '#000000', '#888888', '#ffaa00',
-      '#ff00ff', '#00ffff', '#8800ff', '#ff8800'
+      '#ff00ff', '#00ffff', '#8800ff', '#ff8800',
+      '#cc0000', '#ff3333', '#990000', '#ff6666',
+      '#00cc00', '#33ff33', '#006600', '#66ff66',
+      '#ffcc00', '#ff9900', '#cc6600', '#ffcc33'
     ];
     
-    // Fortune collection
     const fortunes = [
       "A beautiful, smart, and loving person will be coming into your life.",
       "A dubious friend may be an enemy in camouflage.",
@@ -1721,7 +1550,19 @@
       "Your work interests can capture the highest status or prestige."
     ];
     
-    // Initialize on page load
+    function toggleCollapse(contentId, headerElement) {
+      const content = document.getElementById(contentId);
+      const arrow = headerElement.querySelector('.collapse-arrow');
+      
+      if (content.classList.contains('open')) {
+        content.classList.remove('open');
+        if (arrow) arrow.textContent = '▶';
+      } else {
+        content.classList.add('open');
+        if (arrow) arrow.textContent = '▼';
+      }
+    }
+    
     document.addEventListener('DOMContentLoaded', function() {
       initParticles();
       initCharacterInteraction();
@@ -1731,34 +1572,28 @@
       updateAdminStatus();
       initMobileTouchSupport();
       updateFortuneCounter();
-      // Start listening for art updates from Firebase
       if (isAdmin) {
         initArtListener();
       }
     });
     
-    // Mobile touch support - FIXED PINCH ZOOM
     function initMobileTouchSupport() {
-      // Prevent zoom on double tap for the whole page
       document.addEventListener('touchstart', function(event) {
         if (event.touches.length > 1) {
-          event.preventDefault(); // Prevents pinch zoom
+          event.preventDefault();
         }
       }, { passive: false });
       
-      // Prevent context menu on long press
       document.addEventListener('contextmenu', function(event) {
         event.preventDefault();
         return false;
       });
       
-      // Additional pinch zoom prevention
       document.addEventListener('gesturestart', function(e) {
         e.preventDefault();
       });
     }
     
-    // UPDATED: 18+ Trap Function
     function showTrap() {
       const userConfirmed = confirm("⚠️ WARNING: This content contains explicit material.\nAre you sure you want to see Ghassan's nudes?");
       
@@ -1766,42 +1601,29 @@
         document.getElementById('shamePage').style.display = 'flex';
         document.querySelector('.pixel-nav').style.display = 'none';
         document.querySelector('.hero').style.display = 'none';
-        document.querySelector('.social-grid').style.display = 'none';
-        document.querySelector('.pixel-art-section').style.display = 'none';
-        document.querySelector('.fortune-section').style.display = 'none';
-        document.querySelector('.students-section').style.display = 'none';
-        document.querySelector('.notes-section').style.display = 'none';
+        document.querySelectorAll('.collapse-section').forEach(el => el.style.display = 'none');
         document.querySelector('.admin-section').style.display = 'none';
         document.querySelector('#admin-gallery').style.display = 'none';
         document.querySelector('.footer').style.display = 'none';
         document.querySelector('.trap-button').style.display = 'none';
-        
-        const shamePage = document.getElementById('shamePage');
-        shamePage.style.animation = 'shameBackground 1s infinite alternate';
       }
     }
     
-    // Return to site from shame page
     function returnToSite() {
       document.getElementById('shamePage').style.display = 'none';
       document.querySelector('.pixel-nav').style.display = 'flex';
       document.querySelector('.hero').style.display = 'block';
-      document.querySelector('.social-grid').style.display = 'grid';
-      document.querySelector('.pixel-art-section').style.display = 'block';
-      document.querySelector('.fortune-section').style.display = 'block';
-      document.querySelector('.students-section').style.display = 'block';
-      document.querySelector('.notes-section').style.display = 'block';
+      document.querySelectorAll('.collapse-section').forEach(el => el.style.display = 'block');
       document.querySelector('.admin-section').style.display = 'block';
       document.querySelector('.footer').style.display = 'block';
       document.querySelector('.trap-button').style.display = 'block';
     }
     
-    // Get Fortune
     function getFortune() {
       const fortuneText = document.getElementById('fortuneText');
       const fortuneDisplay = document.getElementById('fortuneDisplay');
-      const fortuneImage = document.getElementById('fortuneImage');
       const fortuneSubtitle = document.getElementById('fortuneSubtitle');
+      const crystalBallSvg = document.getElementById('crystalBallSvg');
       
       const randomIndex = Math.floor(Math.random() * fortunes.length);
       const selectedFortune = fortunes[randomIndex];
@@ -1823,21 +1645,17 @@
       fortuneDisplay.classList.add('fortune-pop');
       setTimeout(() => fortuneDisplay.classList.remove('fortune-pop'), 500);
       
-      fortuneImage.classList.add('glow');
-      setTimeout(() => fortuneImage.classList.remove('glow'), 2000);
+      crystalBallSvg.classList.add('glow');
+      setTimeout(() => crystalBallSvg.classList.remove('glow'), 2000);
       
       fortuneCount++;
       updateFortuneCounter();
-      
-      const colors = ['#00ffff', '#8b5cf6', '#ff00ff', '#ffff00', '#00ff00', '#0088ff'];
-      const randomColor = colors[Math.floor(Math.random() * colors.length)];
-      fortuneDisplay.style.borderColor = randomColor;
     }
     
     function updateFortuneCounter() {
       const counter = document.getElementById('fortuneCounter');
       if (fortuneCount === 0) {
-        counter.textContent = "Click the image for your first fortune!";
+        counter.textContent = "Click the crystal ball for your first fortune!";
       } else if (fortuneCount === 1) {
         counter.textContent = "You've revealed 1 fortune! The future is looking bright.";
       } else if (fortuneCount < 5) {
@@ -1849,7 +1667,6 @@
       }
     }
     
-    // Character Interaction
     function initCharacterInteraction() {
       const character = document.getElementById('pixelCharacter');
       const bubble = document.getElementById('speechBubble');
@@ -1859,7 +1676,7 @@
       const dialogues = [
         "Welcome to my digital hub!",
         "Try the Pixel Art Creator!",
-        "Get your fortune from the image!",
+        "Get your fortune from the crystal ball!",
         "Want to know your future?",
         "The fortune teller knows all!",
         "Fortune favors the bold!"
@@ -1869,10 +1686,7 @@
         clickCount = (clickCount + 1) % dialogues.length;
         speech.textContent = dialogues[clickCount];
         bubble.classList.add('show');
-        
-        setTimeout(() => {
-          bubble.classList.remove('show');
-        }, 4000);
+        setTimeout(() => { bubble.classList.remove('show'); }, 4000);
       });
       
       character.addEventListener('touchstart', function(e) {
@@ -1880,14 +1694,10 @@
         clickCount = (clickCount + 1) % dialogues.length;
         speech.textContent = dialogues[clickCount];
         bubble.classList.add('show');
-        
-        setTimeout(() => {
-          bubble.classList.remove('show');
-        }, 4000);
+        setTimeout(() => { bubble.classList.remove('show'); }, 4000);
       }, { passive: false });
     }
     
-    // Initialize Pixel Art Creator
     function initPixelArtCreator() {
       createColorPalette();
       createPixelGrid(gridSize);
@@ -2036,20 +1846,19 @@
       });
     }
     
-    // SAVE ART TO FIREBASE (NOT LOCAL STORAGE)
     function saveArt() {
       const notification = document.createElement('div');
       notification.style.position = 'fixed';
       notification.style.top = '20px';
       notification.style.right = '20px';
-      notification.style.background = '#0088ff';
+      notification.style.background = '#cc0000';
       notification.style.color = 'white';
       notification.style.padding = '15px 20px';
       notification.style.fontFamily = "'Press Start 2P', cursive";
       notification.style.fontSize = '10px';
       notification.style.zIndex = '10000';
-      notification.style.border = '2px solid #00ddff';
-      notification.style.boxShadow = '0 0 20px rgba(0, 136, 255, 0.5)';
+      notification.style.border = '2px solid #ff3333';
+      notification.style.boxShadow = '0 0 20px rgba(255, 0, 0, 0.5)';
       notification.textContent = 'Sending art to cloud...';
       document.body.appendChild(notification);
       
@@ -2059,7 +1868,6 @@
         gridData.push(cell.style.backgroundColor || '#000000');
       });
       
-      // Save to Firebase instead of localStorage
       const artRef = db.ref("artGallery").push();
       artRef.set({
         id: Date.now(),
@@ -2068,13 +1876,12 @@
         timestamp: new Date().toLocaleString()
       }).then(() => {
         notification.textContent = '✅ Art saved to cloud!';
-        notification.style.background = '#00aa00';
+        notification.style.background = '#006600';
         
         setTimeout(() => {
           notification.remove();
         }, 2000);
         
-        // If admin mode is active, update the gallery
         if (isAdmin) {
           updateAdminGallery();
         }
@@ -2088,7 +1895,6 @@
       });
     }
     
-    // Initialize Firebase art listener
     function initArtListener() {
       db.ref("artGallery").on("value", function(snapshot) {
         if (isAdmin) {
@@ -2097,7 +1903,6 @@
       });
     }
     
-    // Admin Mode Functions
     function activateAdmin() {
       const password = document.getElementById('adminPassword').value;
       
@@ -2126,7 +1931,6 @@
           document.body.appendChild(indicator);
         }
         
-        // Show admin gallery and start listening for art
         document.getElementById('admin-gallery').style.display = 'block';
         initArtListener();
         updateAdminGallery();
@@ -2148,7 +1952,6 @@
       }
       
       document.getElementById('admin-gallery').style.display = 'none';
-      // Remove listener
       db.ref("artGallery").off();
     }
     
@@ -2163,7 +1966,6 @@
       }
     }
     
-    // Update Admin Gallery - LOADS FROM FIREBASE
     function updateAdminGallery() {
       if (!isAdmin) return;
       
@@ -2174,7 +1976,6 @@
       
       gallerySection.style.display = 'block';
       
-      // Get art from Firebase
       db.ref("artGallery").once("value", function(snapshot) {
         gallery.innerHTML = '';
         
@@ -2191,7 +1992,6 @@
           });
         });
         
-        // Sort by timestamp (newest first)
         artPieces.sort((a, b) => {
           if (a.timestamp && b.timestamp) {
             return new Date(b.timestamp) - new Date(a.timestamp);
@@ -2265,7 +2065,6 @@
       });
     }
     
-    // Particles.js Configuration
     function initParticles() {
       const isMobile = window.innerWidth <= 768;
       
@@ -2275,15 +2074,15 @@
             value: isMobile ? 50 : 100, 
             density: { enable: true, value_area: 800 } 
           },
-          color: { value: ["#0088ff", "#00ddff", "#0055aa"] },
+          color: { value: ["#cc0000", "#ff0000", "#990000", "#ff3333"] },
           shape: { type: "circle" },
           opacity: { value: 0.5, random: true },
           size: { value: isMobile ? 2 : 3, random: true, anim: { enable: true, speed: 3 } },
           line_linked: {
             enable: true,
             distance: isMobile ? 100 : 150,
-            color: "#00ddff",
-            opacity: 0.4,
+            color: "#ff0000",
+            opacity: 0.3,
             width: 1
           },
           move: {
@@ -2308,7 +2107,6 @@
       });
     }
     
-    // Notes Functions - NO DATES
     function addNote() {
       const nickname = document.getElementById('nickname').value.trim();
       const noteText = document.getElementById('noteText').value.trim();
@@ -2386,7 +2184,6 @@
       }
     }
     
-    // Konami Code Easter Egg
     function initKonamiCode() {
       document.addEventListener('keydown', (e) => {
         if (e.code === konamiCode[konamiIndex]) {
@@ -2402,11 +2199,6 @@
     
     function activateEasterEgg() {
       document.getElementById('easterEgg').style.display = 'block';
-      document.body.classList.add('secret-mode');
-      
-      setTimeout(() => {
-        document.body.classList.remove('secret-mode');
-      }, 5000);
     }
     
     function closeEasterEgg() {
@@ -2419,7 +2211,6 @@
       return div.innerHTML;
     }
     
-    // Smooth scrolling with mobile support
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function(e) {
         e.preventDefault();
@@ -2438,61 +2229,6 @@
           });
         }
       });
-    });
-    
-    // Handle window resize for responsive particles
-    let resizeTimer;
-    window.addEventListener('resize', function() {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(function() {
-        particlesJS('particles-js', {
-          particles: {
-            number: { 
-              value: window.innerWidth <= 768 ? 50 : 100, 
-              density: { enable: true, value_area: 800 } 
-            },
-            color: { value: ["#0088ff", "#00ddff", "#0055aa"] },
-            shape: { type: "circle" },
-            opacity: { value: 0.5, random: true },
-            size: { value: window.innerWidth <= 768 ? 2 : 3, random: true, anim: { enable: true, speed: 3 } },
-            line_linked: {
-              enable: true,
-              distance: window.innerWidth <= 768 ? 100 : 150,
-              color: "#00ddff",
-              opacity: 0.4,
-              width: 1
-            },
-            move: {
-              enable: true,
-              speed: window.innerWidth <= 768 ? 1 : 2,
-              direction: "none",
-              random: true,
-              straight: false,
-              out_mode: "out",
-              bounce: false
-            }
-          },
-          interactivity: {
-            detect_on: "canvas",
-            events: {
-              onhover: { enable: window.innerWidth > 768, mode: "repulse" },
-              onclick: { enable: true, mode: "push" },
-              resize: true
-            }
-          },
-          retina_detect: true
-        });
-      }, 250);
-    });
-    
-    // Page load animation
-    window.addEventListener('load', () => {
-      document.body.style.opacity = '0';
-      document.body.style.transition = 'opacity 0.3s';
-      
-      setTimeout(() => {
-        document.body.style.opacity = '1';
-      }, 100);
     });
   </script>
 </body>
