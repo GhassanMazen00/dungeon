@@ -30,7 +30,7 @@ in `assets/js/data/site.js`. If you change the portrait, regenerate
 
 ```
 index.html              markup only — all behaviour lives in modules
-ai/index.html           the AI chat page (standalone)
+ai/index.html           the AI arcade (chat + dungeon) — see below
 assets/
   css/
     tokens.css          colours, type scale, spacing, accent themes
@@ -64,6 +64,46 @@ assets/
   img/                  put ghassan.jpg here
 ```
 
+## The AI arcade (`/ai`)
+
+Two modes, both running on OpenRouter's **free** models only.
+
+```
+ai/index.html
+ai/assets/
+  css/ai.css            app shell, chat, dungeon (reuses the site's tokens)
+  js/
+    config.js           key, model ranking, tunables
+    openrouter.js       free-model discovery, SSE streaming, failover
+    personas.js         the 11 personalities  ← edit voices here
+    markdown.js         escape-first markdown renderer
+    chat.js             chat mode
+    dungeon.js          dungeon mode
+    sfx.js              WebAudio blips
+    main.js             boot + mode switching
+```
+
+**Chat** streams replies token by token, renders markdown and code blocks, keeps
+history in localStorage, and has 11 personas (pirate, therapist, villain,
+Gen Z, noir detective, medieval peasant…). Slash commands: `/help`, `/persona`,
+`/models`, `/model`, `/dungeon`, `/clear`.
+
+**Dungeon** is an AI dungeon master with real state — HP, gold, inventory, turn
+count — that persists across refreshes. The model returns a strict JSON object
+each turn; every field is clamped and validated, and a malformed reply degrades
+to plain narration instead of breaking the run. Pick one of three choices
+(or press `1`/`2`/`3`), or type any action you like.
+
+### Staying free
+
+`openrouter.js` fetches the live model catalogue on load and keeps only models
+priced at zero, so the list can never drift onto a paid model as OpenRouter's
+lineup changes. Models are ranked by family, reasoning models are demoted
+(their `<think>` blocks ruin the timing of a joke), and the top eight become a
+failover chain — a rate-limited model automatically hands off to the next.
+`FALLBACK_FREE_MODELS` in `config.js` covers the case where the catalogue itself
+is unreachable.
+
 ## Editing content
 
 Almost everything readable lives in `assets/js/data/site.js` — bio, skills,
@@ -81,17 +121,22 @@ Section names, order, and the nav come from `SECTIONS` in `assets/js/config.js`.
 | `Ctrl+Z` / `Ctrl+Shift+Z` | Studio: undo / redo |
 | `Ctrl+Enter` | Guestbook: post |
 | `↑↑↓↓←→←→BA` | CRT mode |
+| `1` `2` `3` | Dungeon: pick a choice |
+| `Enter` / `Shift+Enter` | Chat: send / newline |
 
 ## Security notes
 
-Two things on this site are **not** secure, by design of how a static page works:
+Two things on this site are **not** secret, because a static page has nowhere
+to hide them:
 
 1. **The admin passcode** in `assets/js/config.js` ships in the page source.
    It only hides UI. Anything that must actually be protected has to be
    enforced with [Firebase Realtime Database rules](https://firebase.google.com/docs/database/security)
    on the server side — right now the database is world-writable, so anyone can
-   post to the guestbook or the art gallery directly.
+   post to the guestbook or the art gallery directly. **This one is worth fixing.**
 
-2. **The OpenRouter API key** in `ai/index.html` is public to anyone who views
-   the source. It should be rotated and moved behind a small proxy (a Cloudflare
-   Worker or similar) that holds the key server-side.
+2. **The OpenRouter API key** in `ai/assets/js/config.js` is visible to anyone
+   who views the source. This is a deliberate trade: the client is locked to
+   zero-cost models, so the worst case is someone burning through the free rate
+   limits, not a bill. If that ever becomes annoying, rotate the key and put it
+   behind a small proxy (a Cloudflare Worker) that holds it server-side.
