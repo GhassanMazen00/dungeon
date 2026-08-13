@@ -2,28 +2,34 @@
 
 <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0F2027,50:7C3AED,100:2C5364&height=200&section=header&text=GHASSAN%20MAZEN&fontSize=54&fontColor=ffffff&animation=fadeIn&fontAlignY=36&desc=software%20%C2%B7%20web%20%C2%B7%20app%20developer&descAlignY=56&descSize=18" width="100%" />
 
-<div align="center">
+<p align="center">
+  <a href="https://abomazen.com">
+    <img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=700&size=22&pause=900&color=7C3AED&center=true&vCenter=true&width=620&height=45&lines=%3E+full-stack+dev+%2F+app+builder;%3E+web+%C2%B7+tooling+%C2%B7+AI+experiments;%3E+IT+%2B+networking+%2B+security+underneath;%3E+ship+it.+break+it.+patch+it.+repeat." alt="full-stack dev / app builder" />
+  </a>
+</p>
 
-[![Typing](https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=700&size=22&pause=900&color=7C3AED&center=true&vCenter=true&width=620&height=45&lines=%3E+full-stack+dev+%2F+app+builder;%3E+web+%C2%B7+tooling+%C2%B7+AI+experiments;%3E+IT+%2B+networking+%2B+security+underneath;%3E+ship+it.+break+it.+patch+it.+repeat.)](https://abomazen.com)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/GhassanMazen00/GhassanMazen00/output/github-contribution-grid-snake-dark.svg" width="100%" alt="" />
+</p>
 
-<img src="https://raw.githubusercontent.com/platane/snk/output/github-contribution-grid-snake-dark.svg" width="100%" alt="" />
+<p align="center">
+  <a href="https://abomazen.com"><img src="https://img.shields.io/badge/abomazen.com-live-7C3AED?style=for-the-badge&logo=firefoxbrowser&logoColor=white" alt="abomazen.com" /></a>
+  <a href="https://instagram.com/ghassan.shk"><img src="https://img.shields.io/badge/@ghassan.shk-E4405F?style=for-the-badge&logo=instagram&logoColor=white" alt="Instagram" /></a>
+  <a href="mailto:ghasscc@gmail.com"><img src="https://img.shields.io/badge/say_hi-D14836?style=for-the-badge&logo=gmail&logoColor=white" alt="Email" /></a>
+</p>
 
-[![Site](https://img.shields.io/badge/abomazen.com-live-7C3AED?style=for-the-badge&logo=firefoxbrowser&logoColor=white)](https://abomazen.com)
-[![Instagram](https://img.shields.io/badge/@ghassan.shk-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://instagram.com/ghassan.shk)
-[![Email](https://img.shields.io/badge/say_hi-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:ghasscc@gmail.com)
-
-![Views](https://komarev.com/ghpvc/?username=GhassanMazen00&label=visitors&color=7C3AED&style=flat-square)
-[![Followers](https://img.shields.io/github/followers/GhassanMazen00?label=followers&style=flat-square&color=7C3AED&labelColor=0d1117)](https://github.com/GhassanMazen00)
-
-</div>
+<p align="center">
+  <img src="https://komarev.com/ghpvc/?username=GhassanMazen00&label=visitors&color=7C3AED&style=flat-square" alt="visitors" />
+  <a href="https://github.com/GhassanMazen00"><img src="https://img.shields.io/github/followers/GhassanMazen00?label=followers&style=flat-square&color=7C3AED&labelColor=0d1117" alt="followers" /></a>
+</p>
 
 <img src="https://capsule-render.vercel.app/api?type=rect&color=0:7C3AED,100:2C5364&height=3&section=header" width="100%" />
 
 <!-- ██████████████████████  N E O F E T C H  ██████████████████████ -->
 
-## <img src="https://media.giphy.com/media/WUlplcMpOCEmTGBtBW/giphy.gif" width="28" /> `$ neofetch`
+<h2>🖥️ <code>$ neofetch</code></h2>
 
-```
+```yaml
        .--.            ghassan@abomazen
       |o_o |           ────────────────────────────────
       |:_/ |           OS........: Windows · Linux (Ubuntu, Kali)
@@ -40,7 +46,7 @@
 
 <!-- ██████████████████████  W H O A M I  ██████████████████████ -->
 
-## <img src="https://media.giphy.com/media/iY8CRBdQXODJSCERIr/giphy.gif" width="28" /> `$ whoami --verbose`
+<h2>🧬 <code>$ whoami --verbose</code></h2>
 
 I started in cables, subnets, and packet captures — then figured out the part I
 actually loved was **building the software that runs on top of them**. So now I
@@ -68,13 +74,11 @@ const ghassan = {
 
 <!-- ██████████████████████  S T A C K  ██████████████████████ -->
 
-## <img src="https://media.giphy.com/media/dWesBcTLavkZuG35MI/giphy.gif" width="28" /> `$ ls -la ~/stack`
+<h2>🧰 <code>$ ls -la ~/stack</code></h2>
 
-<div align="center">
-
-![JS](https://skillicons.dev/icons?i=js,ts,html,css,python,bash,powershell,nodejs,firebase,git,linux,docker,aws,azure,vscode,figma&perline=8)
-
-</div>
+<p align="center">
+  <img src="https://skillicons.dev/icons?i=js,html,css,python,bash,powershell,nodejs,firebase,git,linux,vscode,figma&perline=6" alt="stack" />
+</p>
 
 | Layer | Tech |
 | --- | --- |
@@ -86,33 +90,37 @@ const ghassan = {
 
 <!-- ██████████████████████  S T A T S  ██████████████████████ -->
 
-## <img src="https://media.giphy.com/media/LnQjpWaON8nhr21vNW/giphy.gif" width="28" /> `$ top -o commits`
+<h2>📈 <code>$ top -o commits</code></h2>
 
-<div align="center">
+<p align="center">
+  <img src="https://github-readme-stats.vercel.app/api?username=GhassanMazen00&show_icons=true&hide_border=true&theme=tokyonight&include_all_commits=true&count_private=true&bg_color=0d1117" height="170" alt="stats" />
+  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=GhassanMazen00&layout=compact&hide_border=true&theme=tokyonight&langs_count=8&bg_color=0d1117" height="170" alt="top languages" />
+</p>
 
-<img src="https://github-readme-stats.vercel.app/api?username=GhassanMazen00&show_icons=true&hide_border=true&theme=tokyonight&include_all_commits=true&count_private=true&card_width=420" height="180" />
-<img src="https://github-readme-stats.vercel.app/api/top-langs/?username=GhassanMazen00&layout=compact&hide_border=true&theme=tokyonight&langs_count=8&card_width=340" height="180" />
+<p align="center">
+  <img src="https://streak-stats.demolab.com?user=GhassanMazen00&theme=tokyonight&hide_border=true&background=0d1117" width="70%" alt="streak" />
+</p>
 
-<img src="https://streak-stats.demolab.com?user=GhassanMazen00&theme=tokyonight&hide_border=true&date_format=M%20j%5B%2C%20Y%5D" width="70%" />
+<p align="center">
+  <img src="https://github-profile-trophy.vercel.app/?username=GhassanMazen00&theme=tokyonight&no-frame=true&no-bg=true&column=7&margin-w=6" width="100%" alt="trophies" />
+</p>
 
-<img src="https://github-profile-trophy.vercel.app/?username=GhassanMazen00&theme=tokyonight&no-frame=true&no-bg=true&column=7&margin-w=6" width="100%" />
-
-<img src="https://github-readme-activity-graph.vercel.app/graph?username=GhassanMazen00&theme=tokyo-night&hide_border=true&area=true&custom_title=contribution%20heartbeat" width="100%" />
-
-</div>
+<p align="center">
+  <img src="https://github-readme-activity-graph.vercel.app/graph?username=GhassanMazen00&theme=tokyo-night&hide_border=true&area=true&custom_title=contribution%20heartbeat" width="100%" alt="activity graph" />
+</p>
 
 <!-- ██████████████████████  M A N   P A G E  ██████████████████████ -->
 
-## <img src="https://media.giphy.com/media/RbDKaczqWovIugyJmW/giphy.gif" width="28" /> `$ man ghassan`
+<h2>📖 <code>$ man ghassan</code></h2>
 
-```
+```troff
 PRINCIPLES(7)                 Developer Manual                 PRINCIPLES(7)
 
 NAME
      ghassan — writes software, then reads the logs
 
 SYNOPSIS
-     ghassan [--curious] [--stubborn] [-v ...] < problem > solution
+     ghassan [--curious] [--stubborn] [-v ...] problem > solution
 
 DESCRIPTION
      Ship small, ship often. Read the spec before the Stack Overflow
@@ -133,14 +141,14 @@ PRINCIPLES(7)                    2026                          PRINCIPLES(7)
 
 <!-- ██████████████████████  F O O T E R  ██████████████████████ -->
 
-<div align="center">
+<p align="center">
+  <code>[ system ] all services nominal · coffee.service: active (running)</code>
+</p>
 
-```
-[ system ] all services nominal · coffee.service: active (running)
-```
-
-[![Footer typing](https://readme-typing-svg.demolab.com?font=JetBrains+Mono&size=17&pause=1400&color=7C3AED&center=true&vCenter=true&width=520&lines=always+learning%2C+always+curious;now+with+better+error+handling;thanks+for+scrolling+%E2%80%94+say+hi+%F0%9F%91%8B)](mailto:ghasscc@gmail.com)
-
-</div>
+<p align="center">
+  <a href="mailto:ghasscc@gmail.com">
+    <img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&size=17&pause=1400&color=7C3AED&center=true&vCenter=true&width=520&lines=always+learning%2C+always+curious;now+with+better+error+handling;thanks+for+scrolling+%E2%80%94+say+hi+%F0%9F%91%8B" alt="always learning, always curious" />
+  </a>
+</p>
 
 <img src="https://capsule-render.vercel.app/api?type=waving&color=0:2C5364,50:7C3AED,100:0F2027&height=140&section=footer" width="100%" />

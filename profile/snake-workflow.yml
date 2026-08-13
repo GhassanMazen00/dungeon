@@ -1,5 +1,4 @@
-# Save this in your PROFILE repo as .github/workflows/snake.yml
-# It regenerates the contribution-grid snake every 12 hours and pushes the
+# Regenerates the contribution-grid snake every 12 hours and pushes the
 # SVGs to an `output` branch, which the README image URL points at.
 # One-time setup: Settings → Actions → General → Workflow permissions →
 # "Read and write permissions".
