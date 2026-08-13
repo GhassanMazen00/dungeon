@@ -7,18 +7,24 @@ Open `index.html` in a browser, or serve the folder:
 python3 -m http.server 8000
 ```
 
-## Adding your photo
+## The photo
 
-Save your portrait as **`assets/img/ghassan.jpg`** and it appears in the hero
-automatically. Nothing else to change.
+Two images are in `assets/img/`:
 
-- Square-ish crop works best (the frame is 1:1).
-- ~800×800 is plenty; keep it under ~300 KB so the page stays fast.
-- If the file is missing, the hero falls back to the pixel avatar, so the site
-  never shows a broken image.
+| File | Size | Used for |
+| --- | --- | --- |
+| `ghassan.jpg` | 900×900, ~67 KB | The hero portrait |
+| `og-cover.jpg` | 1200×630, ~50 KB | Link previews (Open Graph / Twitter cards) |
+
+To swap the portrait, overwrite `ghassan.jpg` with another square image — the
+hero picks it up with no code changes. A square crop works best (the frame is
+1:1) and anything around 900×900 is plenty; keep it under ~150 KB so the page
+stays fast. If the file is ever missing the hero falls back to the pixel
+avatar, so the site never shows a broken image.
 
 To point at a different filename or a hosted URL instead, edit `PROFILE.photo`
-in `assets/js/data/site.js`.
+in `assets/js/data/site.js`. If you change the portrait, regenerate
+`og-cover.jpg` too, or link previews will still show the old shot.
 
 ## Structure
 

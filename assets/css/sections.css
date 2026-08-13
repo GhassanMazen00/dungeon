@@ -209,8 +209,24 @@
   height: 100%;
   object-fit: cover;
   display: block;
-  filter: saturate(1.05) contrast(1.05);
   transition: transform var(--t-slow);
+}
+
+/* Fades the photo into the card and lays a whisper of accent over it, so a
+   bright portrait does not sit on the dark page as a floating rectangle. */
+#portraitFace::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(to top, rgba(5, 2, 5, 0.75) 0%, rgba(5, 2, 5, 0.12) 38%, transparent 62%),
+    linear-gradient(140deg, rgba(var(--accent-rgb), 0.16), transparent 55%);
+  transition: opacity var(--t-slow);
+}
+
+.portrait:hover #portraitFace::after {
+  opacity: 0.72;
 }
 
 .portrait:hover .portrait__img {
