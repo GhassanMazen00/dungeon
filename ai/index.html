@@ -224,6 +224,7 @@
       justify-content: center;
       transition: var(--transition-fast);
       font-size: 0.9rem;
+      text-decoration: none;
     }
 
     .btn-ghost:hover {
@@ -531,6 +532,10 @@
         <div class="subtitle" id="modelSubtitle">AI Assistant</div>
       </div>
       <div class="header-actions">
+        <!-- Back to the main hub -->
+        <a class="btn-ghost" href="../" title="Back to the hub" aria-label="Back to the hub">
+          <i class="fa-solid fa-arrow-left"></i>
+        </a>
         <!-- Clear button with a clear/delete symbol (trash icon) -->
         <button class="btn-ghost" id="btnClear" title="New conversation">
           <i class="fa-solid fa-trash-can"></i>

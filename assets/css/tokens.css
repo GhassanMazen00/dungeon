@@ -1,0 +1,139 @@
+/* ==========================================================================
+   TOKENS — colors, type scale, spacing, motion. Everything else reads these.
+   ========================================================================== */
+
+:root {
+  /* --- Accent (overridden per theme below) --- */
+  --accent: #ff3b3b;
+  --accent-strong: #cc0000;
+  --accent-soft: #ff8a8a;
+  --accent-rgb: 255, 59, 59;
+
+  /* --- Surfaces --- */
+  --bg-void: #050205;
+  --bg-deep: #0a0508;
+  --bg-surface: rgba(20, 10, 14, 0.72);
+  --bg-elevated: rgba(28, 14, 18, 0.9);
+  --bg-sunken: rgba(0, 0, 0, 0.38);
+  --bg-glass: rgba(16, 8, 11, 0.62);
+
+  /* --- Text --- */
+  --text: #f4eef0;
+  --text-dim: #b9a8ae;
+  --text-muted: #7c6a71;
+
+  /* --- Lines --- */
+  --line: rgba(255, 255, 255, 0.08);
+  --line-strong: rgba(var(--accent-rgb), 0.34);
+  --glow: rgba(var(--accent-rgb), 0.35);
+
+  /* --- Status --- */
+  --ok: #4ade80;
+  --warn: #fbbf24;
+  --bad: #f87171;
+
+  /* --- Type --- */
+  --font-display: 'Press Start 2P', 'Courier New', monospace;
+  --font-body: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  --fs-xs: 0.72rem;
+  --fs-sm: 0.82rem;
+  --fs-base: 0.95rem;
+  --fs-md: 1.05rem;
+  --fs-lg: clamp(1.15rem, 2.2vw, 1.4rem);
+  --fs-xl: clamp(1.5rem, 4vw, 2.2rem);
+  --fs-hero: clamp(2rem, 7vw, 4.2rem);
+
+  /* --- Space --- */
+  --sp-1: 0.25rem;
+  --sp-2: 0.5rem;
+  --sp-3: 0.75rem;
+  --sp-4: 1rem;
+  --sp-5: 1.5rem;
+  --sp-6: 2rem;
+  --sp-7: 3rem;
+  --sp-8: 4.5rem;
+
+  /* --- Shape --- */
+  --r-xs: 6px;
+  --r-sm: 10px;
+  --r-md: 16px;
+  --r-lg: 24px;
+  --r-pill: 999px;
+
+  /* --- Depth --- */
+  --shadow-sm: 0 2px 12px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 12px 36px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 32px var(--glow);
+
+  /* --- Motion --- */
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --t-fast: 0.18s var(--ease);
+  --t-mid: 0.32s var(--ease);
+  --t-slow: 0.6s var(--ease-out);
+
+  /* --- Layout --- */
+  --wrap: 1140px;
+  --nav-h: 64px;
+}
+
+/* --- Accent themes ------------------------------------------------------ */
+
+[data-theme='crimson'] {
+  --accent: #ff3b3b;
+  --accent-strong: #cc0000;
+  --accent-soft: #ff8a8a;
+  --accent-rgb: 255, 59, 59;
+  --bg-void: #050205;
+  --bg-deep: #0a0508;
+}
+
+[data-theme='cyber'] {
+  --accent: #36d1ff;
+  --accent-strong: #0077b6;
+  --accent-soft: #9fe6ff;
+  --accent-rgb: 54, 209, 255;
+  --bg-void: #01050a;
+  --bg-deep: #040c14;
+  --bg-surface: rgba(10, 18, 26, 0.72);
+  --bg-elevated: rgba(14, 24, 34, 0.9);
+  --text-dim: #a4bcc9;
+}
+
+[data-theme='toxic'] {
+  --accent: #4ade80;
+  --accent-strong: #16a34a;
+  --accent-soft: #bbf7d0;
+  --accent-rgb: 74, 222, 128;
+  --bg-void: #020603;
+  --bg-deep: #050d07;
+  --bg-surface: rgba(10, 22, 14, 0.72);
+  --bg-elevated: rgba(14, 30, 19, 0.9);
+  --text-dim: #a8c2b0;
+}
+
+[data-theme='amber'] {
+  --accent: #fbbf24;
+  --accent-strong: #d97706;
+  --accent-soft: #fde68a;
+  --accent-rgb: 251, 191, 36;
+  --bg-void: #060402;
+  --bg-deep: #0d0904;
+  --bg-surface: rgba(24, 16, 6, 0.72);
+  --bg-elevated: rgba(32, 22, 9, 0.9);
+  --text-dim: #c6b494;
+}
+
+[data-theme='violet'] {
+  --accent: #a78bfa;
+  --accent-strong: #7c3aed;
+  --accent-soft: #ddd6fe;
+  --accent-rgb: 167, 139, 250;
+  --bg-void: #040209;
+  --bg-deep: #08050f;
+  --bg-surface: rgba(18, 12, 30, 0.72);
+  --bg-elevated: rgba(24, 16, 40, 0.9);
+  --text-dim: #b3a8cc;
+}

@@ -1,2235 +1,491 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="crimson">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Ghassan's Digital Hub • RED EDITION</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-    
-    :root {
-      --primary: #cc0000;
-      --secondary: #8b0000;
-      --accent: #ff3333;
-      --dark: #0a0000;
-      --grid-color: rgba(200, 0, 0, 0.12);
-      --card-bg: rgba(15, 0, 0, 0.85);
-      --border-color: #660000;
-      --glow-color: rgba(255, 0, 0, 0.4);
-    }
-    
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      -webkit-touch-callout: none;
-      -webkit-tap-highlight-color: transparent;
-    }
-    
-    body { 
-      font-family: 'Press Start 2P', cursive; 
-      background: linear-gradient(135deg, #020000 0%, #0d0101 50%, #020000 100%);
-      color: #fff;
-      min-height: 100vh;
-      position: relative;
-      overflow-x: hidden;
-      touch-action: pan-y;
-    }
-    
-    .pixel-grid {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-image: 
-        linear-gradient(var(--grid-color) 1px, transparent 1px),
-        linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
-      background-size: 40px 40px;
-      z-index: -1;
-      opacity: 0.3;
-      pointer-events: none;
-    }
-    
-    .trap-button {
-      position: fixed;
-      top: 70px;
-      left: 20px;
-      z-index: 1001;
-      background: #000;
-      color: #ff0000;
-      border: 2px solid #ff0000;
-      padding: 8px 12px;
-      font-size: 10px;
-      cursor: pointer;
-      transition: all 0.3s;
-      font-family: 'Press Start 2P', cursive;
-    }
-    
-    .trap-button:hover {
-      background: #330000;
-      transform: scale(1.1);
-      box-shadow: 0 0 15px var(--glow-color);
-    }
-    
-    .pixel-nav {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      background: rgba(5, 0, 0, 0.95);
-      backdrop-filter: blur(10px);
-      border-bottom: 3px solid var(--accent);
-      z-index: 1000;
-      padding: 15px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-    
-    .nav-logo {
-      font-size: 14px;
-      color: var(--accent);
-      text-decoration: none;
-      text-shadow: 2px 2px 0 #000;
-      letter-spacing: 1px;
-    }
-    
-    .nav-links {
-      display: flex;
-      gap: 10px;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      flex-wrap: wrap;
-    }
-    
-    .nav-link {
-      color: #ccc;
-      text-decoration: none;
-      font-size: 9px;
-      padding: 6px 10px;
-      border: 2px solid transparent;
-      transition: all 0.3s;
-      white-space: nowrap;
-    }
-    
-    .nav-link:hover {
-      color: #fff;
-      border: 2px solid var(--accent);
-      background: rgba(255, 0, 0, 0.1);
-    }
-    
-    .hero {
-      padding: 120px 15px 60px;
-      text-align: center;
-      max-width: 1200px;
-      margin: 0 auto;
-      position: relative;
-    }
-    
-    .hero-glow {
-      position: absolute;
-      width: 200px;
-      height: 200px;
-      background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
-      filter: blur(60px);
-      opacity: 0.15;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: -1;
-    }
-    
-    .glitch-wrapper {
-      position: relative;
-      display: inline-block;
-      margin-bottom: 20px;
-    }
-    
-    .glitch {
-      font-size: 20px;
-      color: #fff;
-      position: relative;
-      display: inline-block;
-      text-shadow: 2px 2px 0 #000;
-    }
-    
-    .glitch::before,
-    .glitch::after {
-      content: attr(data-text);
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-    }
-    
-    .glitch::before {
-      left: 1px;
-      color: var(--primary);
-      animation: glitch 3s infinite;
-      clip-path: polygon(0 0, 100% 0, 100% 35%, 0 35%);
-    }
-    
-    .glitch::after {
-      left: -1px;
-      color: var(--accent);
-      animation: glitch 2s infinite reverse;
-      clip-path: polygon(0 65%, 100% 65%, 100% 100%, 0 100%);
-    }
-    
-    @keyframes glitch {
-      0% { transform: translate(0); }
-      20% { transform: translate(-1px, 1px); }
-      40% { transform: translate(-1px, -1px); }
-      60% { transform: translate(1px, 1px); }
-      80% { transform: translate(1px, -1px); }
-      100% { transform: translate(0); }
-    }
-    
-    .hero-tagline {
-      font-size: 10px;
-      color: #ff8888;
-      margin-bottom: 30px;
-      line-height: 1.5;
-      padding: 0 10px;
-    }
-    
-    .character-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin: 30px 0;
-      position: relative;
-      gap: 20px;
-    }
-    
-    .pixel-character-link {
-      display: block;
-      transition: transform 0.3s;
-    }
-    
-    .pixel-character-link:hover {
-      transform: scale(1.05);
-    }
-    
-    .pixel-character {
-      width: 120px;
-      height: 120px;
-      image-rendering: pixelated;
-      cursor: pointer;
-      transition: transform 0.3s;
-      filter: drop-shadow(0 0 15px rgba(255, 0, 0, 0.5));
-      border: 3px solid var(--accent);
-      background: rgba(0, 0, 0, 0.5);
-      padding: 8px;
-      border-radius: 10px;
-      display: block;
-    }
-    
-    .pixel-character:hover {
-      transform: scale(1.1) rotate(5deg);
-    }
-    
-    .ai-button {
-      background: linear-gradient(45deg, #cc0000, #ff3333);
-      color: #fff;
-      border: 2px solid #ff6666;
-      padding: 12px 24px;
-      font-family: 'Press Start 2P', cursive;
-      font-size: 11px;
-      cursor: pointer;
-      transition: all 0.3s;
-      text-decoration: none;
-      display: inline-block;
-      margin-top: 5px;
-      box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
-    }
-    
-    .ai-button:hover {
-      background: linear-gradient(45deg, #ff0000, #ff5555);
-      transform: translateY(-3px);
-      box-shadow: 0 5px 25px rgba(255, 0, 0, 0.6);
-      border-color: #ff8888;
-    }
-    
-    .speech-bubble {
-      position: absolute;
-      top: -80px;
-      background: #1a0000;
-      color: #ffaaaa;
-      padding: 10px;
-      border: 2px solid #ff0000;
-      border-radius: 8px;
-      font-size: 9px;
-      max-width: 180px;
-      box-shadow: 3px 3px 0 #000;
-      opacity: 0;
-      transform: translateY(10px);
-      transition: all 0.3s;
-      z-index: 10;
-    }
-    
-    .speech-bubble.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    
-    .speech-bubble::after {
-      content: '';
-      position: absolute;
-      bottom: -12px;
-      left: 50%;
-      transform: translateX(-50%);
-      border: 6px solid transparent;
-      border-top-color: #1a0000;
-      filter: drop-shadow(1px 1px 0 #ff0000);
-    }
-    
-    .collapse-section {
-      max-width: 95vw;
-      margin: 25px auto;
-      background: var(--card-bg);
-      border: 2px solid var(--border-color);
-      border-radius: 6px;
-      overflow: hidden;
-      box-shadow: 0 0 15px rgba(255, 0, 0, 0.05);
-    }
-    
-    .collapse-header {
-      background: #0d0000;
-      padding: 16px 20px;
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid #440000;
-      transition: all 0.3s;
-      user-select: none;
-    }
-    
-    .collapse-header:hover {
-      background: #1a0000;
-    }
-    
-    .collapse-header h3 {
-      font-size: 13px;
-      color: var(--accent);
-      text-shadow: 1px 1px 0 #000;
-      margin: 0;
-    }
-    
-    .collapse-arrow {
-      font-size: 14px;
-      color: var(--accent);
-      transition: transform 0.3s;
-    }
-    
-    .collapse-content {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.5s ease-in-out;
-      background: rgba(0, 0, 0, 0.3);
-    }
-    
-    .collapse-content.open {
-      max-height: 3000px;
-    }
-    
-    .collapse-inner {
-      padding: 20px;
-    }
-    
-    .social-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 15px;
-      max-width: 900px;
-      margin: 40px auto;
-      padding: 0 15px;
-    }
-    
-    .social-card {
-      background: rgba(15, 0, 0, 0.8);
-      border: 2px solid var(--border-color);
-      padding: 20px 15px;
-      text-align: center;
-      transition: all 0.3s;
-      cursor: pointer;
-      text-decoration: none;
-      color: inherit;
-      min-height: 100px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-    
-    .social-card:hover {
-      transform: translateY(-3px);
-      border-color: var(--accent);
-      box-shadow: 0 5px 20px var(--glow-color);
-    }
-    
-    .social-card i {
-      font-size: 30px;
-      margin-bottom: 10px;
-      display: block;
-      color: var(--accent);
-    }
-    
-    .social-card h3 {
-      color: #ff8888;
-      font-size: 11px;
-      margin-bottom: 5px;
-    }
-    
-    .pixel-controls {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      margin-bottom: 20px;
-      justify-content: center;
-      align-items: center;
-    }
-    
-    .canvas-size-selector {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-    
-    .canvas-size-selector span {
-      font-size: 10px;
-      color: var(--accent);
-    }
-    
-    .canvas-size-selector select {
-      background: #000;
-      color: #fff;
-      border: 2px solid var(--primary);
-      padding: 8px;
-      font-family: 'Press Start 2P', cursive;
-      font-size: 9px;
-      cursor: pointer;
-    }
-    
-    .color-palette {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-      justify-content: center;
-      max-width: 500px;
-      margin: 0 auto;
-    }
-    
-    .color-option {
-      width: 24px;
-      height: 24px;
-      border: 2px solid #555;
-      cursor: pointer;
-      border-radius: 4px;
-      transition: all 0.2s;
-    }
-    
-    .color-option.active {
-      transform: scale(1.3);
-      border: 2px solid #fff;
-      box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
-    }
-    
-    .selected-color-display {
-      font-size: 10px;
-      color: var(--accent);
-      margin-top: 5px;
-    }
-    
-    .pixel-art-wrapper {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 100%;
-    }
-    
-    .pixel-art-container {
-      background: #000;
-      border: 3px solid var(--primary);
-      padding: 10px;
-      display: inline-block;
-      margin: 10px auto;
-      max-width: 95vw;
-      overflow: auto;
-      -webkit-overflow-scrolling: touch;
-    }
-    
-    .pixel-grid-container {
-      display: grid;
-      background: #000;
-      margin: 0 auto;
-      border: 1px solid #330000;
-      touch-action: none;
-    }
-    
-    .pixel-cell {
-      border: 1px solid #330000;
-      cursor: pointer;
-      transition: all 0.1s;
-      -webkit-tap-highlight-color: transparent;
-      touch-action: none;
-    }
-    
-    .pixel-cell:hover, .pixel-cell:active {
-      transform: scale(1.05);
-      z-index: 1;
-    }
-    
-    .art-controls {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      margin-top: 20px;
-      flex-wrap: wrap;
-    }
-    
-    .students-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-      gap: 15px;
-      justify-items: center;
-    }
-    
-    .student-card {
-      text-align: center;
-      transition: transform 0.3s;
-      text-decoration: none;
-      color: #fff;
-      width: 100%;
-    }
-    
-    .student-card:hover {
-      transform: scale(1.05);
-    }
-    
-    .student-avatar {
-      width: 80px;
-      height: 80px;
-      object-fit: contain;
-      border: 2px solid var(--accent);
-      border-radius: 8px;
-      margin-bottom: 8px;
-      image-rendering: pixelated;
-      background: rgba(0, 0, 0, 0.5);
-      padding: 3px;
-    }
-    
-    .student-name {
-      display: none;
-    }
-    
-    .fortune-icon {
-      font-size: 24px;
-      margin-bottom: 15px;
-      color: var(--accent);
-      text-align: center;
-    }
-    
-    .crystal-ball-svg {
-      width: 180px;
-      height: 180px;
-      margin: 15px auto;
-      cursor: pointer;
-      display: block;
-      filter: drop-shadow(0 0 25px rgba(255, 0, 0, 0.6));
-      transition: all 0.3s;
-    }
-    
-    .crystal-ball-svg:hover {
-      transform: scale(1.05);
-      filter: drop-shadow(0 0 35px rgba(255, 0, 0, 0.8));
-    }
-    
-    .crystal-ball-svg.glow {
-      animation: crystalGlow 2s ease-in-out infinite;
-    }
-    
-    @keyframes crystalGlow {
-      0%, 100% { filter: drop-shadow(0 0 25px rgba(255, 0, 0, 0.6)); }
-      50% { filter: drop-shadow(0 0 50px rgba(255, 0, 0, 0.9)); }
-    }
-    
-    .fortune-text-container {
-      background: rgba(15, 0, 0, 0.6);
-      border: 2px solid var(--primary);
-      padding: 25px;
-      margin: 20px auto;
-      max-width: 700px;
-      min-height: 180px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      border-radius: 6px;
-    }
-    
-    .fortune-text {
-      font-size: 12px;
-      line-height: 1.6;
-      margin-bottom: 15px;
-      color: #ffaaaa;
-      text-align: center;
-    }
-    
-    .fortune-subtitle {
-      font-size: 10px;
-      color: var(--accent);
-      text-align: center;
-      margin-top: 10px;
-    }
-    
-    .fortune-button {
-      background: linear-gradient(45deg, #8b0000, #cc0000);
-      color: #fff;
-      border: 2px solid #ff4444;
-      padding: 12px 20px;
-      font-family: 'Press Start 2P', cursive;
-      font-size: 10px;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-    
-    .fortune-button:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 5px 15px var(--glow-color);
-    }
-    
-    .fortune-counter {
-      font-size: 9px;
-      color: #ff8888;
-      margin-top: 15px;
-      opacity: 0.7;
-    }
-    
-    .shame-page {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: #1a0000;
-      display: none;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      z-index: 10000;
-      padding: 20px;
-      text-align: center;
-    }
-    
-    .shame-message {
-      font-family: 'Press Start 2P', cursive;
-      font-size: 16px;
-      color: #ff0000;
-      text-shadow: 2px 2px 0 #000;
-      margin-bottom: 40px;
-      max-width: 800px;
-      line-height: 1.5;
-      padding: 20px;
-      background: rgba(0, 0, 0, 0.8);
-      border: 3px solid #ff0000;
-      border-radius: 10px;
-    }
-    
-    .sorry-button {
-      background: #ff0000;
-      color: #000;
-      border: 3px solid #fff;
-      padding: 15px 30px;
-      font-family: 'Press Start 2P', cursive;
-      font-size: 12px;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-    
-    .sorry-button:hover {
-      background: #cc0000;
-      color: #fff;
-    }
-    
-    .note-form {
-      display: grid;
-      gap: 12px;
-      margin-bottom: 30px;
-      max-width: 600px;
-      margin: 0 auto 30px;
-    }
-    
-    .note-form input,
-    .note-form textarea {
-      background: rgba(0, 0, 0, 0.7);
-      border: 2px solid var(--primary);
-      color: #fff;
-      padding: 12px;
-      font-family: 'Press Start 2P', cursive;
-      font-size: 10px;
-      width: 100%;
-    }
-    
-    .note-form textarea {
-      min-height: 100px;
-      resize: vertical;
-    }
-    
-    .notes-wall {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 15px;
-      margin-top: 30px;
-    }
-    
-    .note {
-      background: rgba(15, 0, 0, 0.6);
-      padding: 15px;
-      border-left: 4px solid var(--accent);
-      position: relative;
-      transition: transform 0.3s;
-      word-wrap: break-word;
-      overflow-wrap: break-word;
-    }
-    
-    .note:hover {
-      transform: scale(1.01);
-    }
-    
-    .note:nth-child(even) {
-      border-left-color: var(--primary);
-    }
-    
-    .note-author {
-      color: var(--accent);
-      font-size: 10px;
-      margin-bottom: 8px;
-      display: block;
-    }
-    
-    .note-content {
-      font-size: 9px;
-      line-height: 1.5;
-      color: #ffcccc;
-    }
-    
-    .delete-btn {
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      background: #ff0000;
-      color: #fff;
-      border: none;
-      padding: 4px 6px;
-      font-size: 7px;
-      cursor: pointer;
-      opacity: 0;
-      transition: opacity 0.3s;
-      font-family: 'Press Start 2P', cursive;
-    }
-    
-    .note:hover .delete-btn {
-      opacity: 1;
-    }
-    
-    .admin-section {
-      max-width: 95vw;
-      margin: 30px auto;
-      padding: 20px;
-      background: var(--card-bg);
-      border: 2px solid var(--border-color);
-      border-radius: 6px;
-      text-align: center;
-    }
-    
-    .admin-login input {
-      background: #000;
-      color: #fff;
-      border: 2px solid var(--accent);
-      padding: 10px;
-      font-family: 'Press Start 2P', cursive;
-      margin: 8px 0;
-      width: 100%;
-      max-width: 200px;
-      text-align: center;
-      font-size: 10px;
-    }
-    
-    .art-gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-      gap: 10px;
-      padding: 10px;
-      background: rgba(0, 0, 0, 0.3);
-      border-radius: 8px;
-      min-height: 100px;
-    }
-    
-    .art-item {
-      position: relative;
-      background: #000;
-      padding: 5px;
-      border: 2px solid var(--primary);
-      border-radius: 5px;
-    }
-    
-    .art-item canvas {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-    
-    .art-timestamp {
-      font-size: 6px;
-      color: var(--accent);
-      text-align: center;
-      margin-top: 3px;
-    }
-    
-    .art-delete-btn {
-      position: absolute;
-      top: 2px;
-      right: 2px;
-      background: #ff0000;
-      color: #fff;
-      border: none;
-      border-radius: 50%;
-      width: 15px;
-      height: 15px;
-      font-size: 8px;
-      cursor: pointer;
-      line-height: 1;
-      padding: 0;
-    }
-    
-    #particles-js {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      z-index: -2;
-      pointer-events: none;
-    }
-    
-    .pixel-button {
-      background: var(--primary);
-      color: #fff;
-      border: 2px solid var(--accent);
-      padding: 10px 15px;
-      font-family: 'Press Start 2P', cursive;
-      font-size: 10px;
-      cursor: pointer;
-      transition: all 0.3s;
-      display: inline-block;
-    }
-    
-    .pixel-button:hover {
-      background: var(--accent);
-      color: #000;
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px var(--glow-color);
-    }
-    
-    .section-title {
-      text-align: center;
-      color: var(--accent);
-      font-size: 14px;
-      margin-bottom: 25px;
-      text-shadow: 2px 2px 0 #000;
-    }
-    
-    .footer {
-      text-align: center;
-      padding: 30px 15px;
-      background: rgba(10, 0, 0, 0.9);
-      margin-top: 60px;
-      border-top: 3px solid var(--primary);
-    }
-    
-    @keyframes fortunePop {
-      0% { transform: scale(0.9); opacity: 0; }
-      100% { transform: scale(1); opacity: 1; }
-    }
-    
-    .fortune-pop {
-      animation: fortunePop 0.5s ease-out;
-    }
-    
-    @media (max-width: 480px) {
-      .nav-logo { font-size: 12px; }
-      .nav-link { font-size: 8px; padding: 5px 8px; }
-      .glitch { font-size: 16px; }
-      .hero-tagline { font-size: 9px; }
-      .pixel-character { width: 100px; height: 100px; }
-      .social-card { min-height: 80px; padding: 15px 10px; }
-      .social-card i { font-size: 25px; }
-      .social-card h3 { font-size: 10px; }
-      .student-avatar { width: 70px; height: 70px; }
-      .trap-button { top: 60px; left: 10px; font-size: 8px; padding: 6px 8px; }
-      .crystal-ball-svg { width: 150px; height: 150px; }
-      .fortune-text { font-size: 10px; }
-      .social-grid { grid-template-columns: 1fr 1fr; }
-      .collapse-header h3 { font-size: 10px; }
-      .ai-button { font-size: 9px; padding: 10px 18px; }
-    }
-  </style>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Ghassan Mazen — Digital Hub</title>
+
+  <meta name="description" content="The personal hub of Ghassan Mazen — developer and creator. Pixel studio, fortune oracle, guestbook and an AI assistant.">
+  <meta name="author" content="Ghassan Mazen">
+  <meta name="theme-color" content="#ff3b3b">
+  <link rel="canonical" href="https://abomazen.com/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Ghassan Mazen — Digital Hub">
+  <meta property="og:description" content="Pixel studio, fortune oracle, guestbook and an AI assistant. Built by hand.">
+  <meta property="og:url" content="https://abomazen.com/">
+  <meta property="og:image" content="https://abomazen.com/assets/img/ghassan.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%230a0508'/><text x='16' y='23' font-size='18' font-family='monospace' fill='%23ff3b3b' text-anchor='middle'>G</text></svg>">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Grotesk:wght@300..700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/sections.css">
 </head>
 <body>
-  <div class="pixel-grid"></div>
-  <div id="particles-js"></div>
-  
-  <div class="shame-page" id="shamePage">
-    <div class="shame-message">
-      G H A S S A N<br>
-      H A S<br>
-      B E E N<br>
-      N O T I F I E D<br>
-      T H A T<br>
-      Y O U<br>
-      T R I E D<br>
-      T O<br>
-      S E E<br>
-      H I M<br>
-      N A K E D<br>
-      <br>
-      S H A M E<br>
-      O N<br>
-      Y O U
-    </div>
-    <button class="sorry-button" onclick="returnToSite()">I'M SORRY</button>
-  </div>
-  
-  <button class="trap-button" onclick="showTrap()">🔞 18+ CONTENT OF GHASSAN</button>
-  
-  <nav class="pixel-nav">
-    <a href="#" class="nav-logo">GHASSAN_MAZEN</a>
-    <div class="nav-links">
-      <a href="#hero" class="nav-link">HOME</a>
-      <a href="#socialCollapse" class="nav-link">SOCIALS</a>
-      <a href="#pixelCollapse" class="nav-link">PIXEL ART</a>
-      <a href="#fortuneCollapse" class="nav-link">FORTUNE</a>
-      <a href="#studentsCollapse" class="nav-link">STUDENTS</a>
-      <a href="#notesCollapse" class="nav-link">GUESTBOOK</a>
-    </div>
-  </nav>
-  
-  <section id="hero" class="hero">
-    <div class="hero-glow"></div>
-    <div class="glitch-wrapper">
-      <h1 class="glitch" data-text="GHASSAN'S DIGITAL HUB">GHASSAN'S DIGITAL HUB</h1>
-    </div>
-    <p class="hero-tagline">
-      Developer • Creator • Digital Alchemist<br>
-      Crafting pixels into experiences since 1999
-    </p>
-    <div class="character-container">
-      <div class="speech-bubble" id="speechBubble">
-        <span id="characterSpeech">Welcome to my realm!</span>
-      </div>
-      <a href="ai" class="pixel-character-link">
-        <img src="https://i.postimg.cc/9Xvbc3sw-/7eed46e2-854a-46dd-a073-c66409387f95.png" 
-             alt="Ghassan Pixel" 
-             class="pixel-character"
-             id="pixelCharacter">
-      </a>
-      <a href="ai" class="ai-button">
-        🤖 MY AI
-      </a>
-    </div>
-  </section>
-  
-  <!-- SOCIAL LINKS - Open by default -->
-  <div class="collapse-section" id="socialCollapse">
-    <div class="collapse-header" onclick="toggleCollapse('socialContent', this)">
-      <h3>📡 SOCIAL LINKS</h3>
-      <span class="collapse-arrow">▼</span>
-    </div>
-    <div class="collapse-content open" id="socialContent">
-      <div class="collapse-inner">
-        <div class="social-grid">
-          <a href="https://github.com/GhassanMazen00/GhassanMazen00" target="_blank" class="social-card">
-            <i class="fab fa-github"></i>
-            <h3>GITHUB</h3>
-          </a>
-          <a href="https://www.instagram.com/ghassan.shk/" target="_blank" class="social-card">
-            <i class="fab fa-instagram"></i>
-            <h3>INSTAGRAM</h3>
-          </a>
-          <a href="https://t.snapchat.com/p3KLzoLR" target="_blank" class="social-card">
-            <i class="fab fa-snapchat-ghost"></i>
-            <h3>SNAPCHAT</h3>
-          </a>
-          <a href="mailto:ghassanmazen@zohomail.com" class="social-card">
-            <i class="fas fa-envelope"></i>
-            <h3>EMAIL</h3>
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  <!-- PIXEL ART CREATOR - Collapsed by default -->
-  <div class="collapse-section" id="pixelCollapse">
-    <div class="collapse-header" onclick="toggleCollapse('pixelContent', this)">
-      <h3>🎨 PIXEL ART CREATOR</h3>
-      <span class="collapse-arrow">▶</span>
-    </div>
-    <div class="collapse-content" id="pixelContent">
-      <div class="collapse-inner">
-        <div class="pixel-controls">
-          <div class="canvas-size-selector">
-            <span>Canvas Size:</span>
-            <select id="canvasSize" onchange="changeCanvasSize()">
-              <option value="8">8x8 (Tiny)</option>
-              <option value="16" selected>16x16 (Small)</option>
-              <option value="24">24x24 (Medium)</option>
-              <option value="32">32x32 (Large)</option>
-            </select>
-          </div>
-          <div class="selected-color-display">
-            Selected: <span id="selectedColor" style="color: #0088ff;">#0088ff</span>
-          </div>
-        </div>
-        <div class="color-palette" id="colorPalette"></div>
-        <div class="pixel-art-wrapper">
-          <div class="pixel-art-container">
-            <div class="pixel-grid-container" id="pixelGrid"></div>
-          </div>
-        </div>
-        <div class="art-controls">
-          <button class="pixel-button" onclick="clearGrid()"><i class="fas fa-eraser"></i> CLEAR</button>
-          <button class="pixel-button" onclick="fillRandom()"><i class="fas fa-random"></i> RANDOM</button>
-          <button class="pixel-button" onclick="saveArt()"><i class="fas fa-paper-plane"></i> SEND TO GHASSAN</button>
-        </div>
-        <p style="font-size: 8px; color: var(--accent); margin-top: 10px; text-align: center;">
-          ⚡ Art is saved to the cloud! Visible to all admins.
-        </p>
-      </div>
-    </div>
-  </div>
-  
-  <!-- FORTUNE TELLER - Collapsed by default -->
-  <div class="collapse-section" id="fortuneCollapse">
-    <div class="collapse-header" onclick="toggleCollapse('fortuneContent', this)">
-      <h3>🔮 GHASSAN'S FORTUNE TELLER</h3>
-      <span class="collapse-arrow">▶</span>
-    </div>
-    <div class="collapse-content" id="fortuneContent">
-      <div class="collapse-inner" style="text-align: center;">
-        <div class="fortune-icon">
-          <i class="fas fa-crystal-ball"></i>
-        </div>
-        <p style="text-align: center; margin-bottom: 20px; font-size: 9px; color: #ff8888;">
-          Click the crystal ball to reveal your fortune
-        </p>
-        
-        <svg class="crystal-ball-svg" id="crystalBallSvg" onclick="getFortune()" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <radialGradient id="ballGlow" cx="40%" cy="35%" r="50%">
-              <stop offset="0%" stop-color="#ff4444" stop-opacity="0.3"/>
-              <stop offset="100%" stop-color="#330000" stop-opacity="0.1"/>
-            </radialGradient>
-            <filter id="glow">
-              <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-              <feMerge>
-                <feMergeNode in="coloredBlur"/>
-                <feMergeNode in="SourceGraphic"/>
-              </feMerge>
-            </filter>
-          </defs>
-          
-          <ellipse cx="60" cy="95" rx="25" ry="6" fill="#1a0000" stroke="#cc0000" stroke-width="1.5"/>
-          <path d="M45 95 Q60 85 75 95" fill="#0d0000" stroke="#cc0000" stroke-width="1"/>
-          
-          <circle cx="60" cy="50" r="30" fill="#0a0000" stroke="#ff0000" stroke-width="2.5" filter="url(#glow)"/>
-          <circle cx="60" cy="50" r="26" fill="url(#ballGlow)" stroke="#cc0000" stroke-width="1"/>
-          
-          <circle cx="52" cy="42" r="4" fill="#ff4444" opacity="0.4"/>
-          <circle cx="68" cy="45" r="3" fill="#ff6666" opacity="0.3"/>
-          <circle cx="57" cy="58" r="2.5" fill="#ff8888" opacity="0.5"/>
-          <path d="M45 50 Q55 40 65 50 T85 50" stroke="#ff3333" stroke-width="0.8" fill="none" opacity="0.4"/>
-          
-          <text x="40" y="38" font-size="6" fill="#ffaaaa" opacity="0.7">✦</text>
-          <text x="72" y="55" font-size="5" fill="#ffaaaa" opacity="0.6">✧</text>
-          <text x="50" y="65" font-size="4" fill="#ffaaaa" opacity="0.5">⋆</text>
-        </svg>
-        
-        <div class="fortune-text-container" id="fortuneDisplay">
-          <div class="fortune-text" id="fortuneText">
-            Your fortune awaits... Click the crystal ball above!
-          </div>
-          <div class="fortune-subtitle" id="fortuneSubtitle">
-            - Ghassan's Fortune Teller
-          </div>
-        </div>
-        
-        <button class="fortune-button" onclick="getFortune()">
-          <i class="fas fa-redo"></i> NEW FORTUNE
-        </button>
-        
-        <div class="fortune-counter" id="fortuneCounter">
-          Click the crystal ball for your first fortune!
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  <!-- STUDENTS - Collapsed by default -->
-  <div class="collapse-section" id="studentsCollapse">
-    <div class="collapse-header" onclick="toggleCollapse('studentsContent', this)">
-      <h3>👥 MY BITCHES</h3>
-      <span class="collapse-arrow">▶</span>
-    </div>
-    <div class="collapse-content" id="studentsContent">
-      <div class="collapse-inner">
-        <div class="students-grid">
-          <a href="https://www.instagram.com/loai_abb/" target="_blank" class="student-card">
-            <img src="https://i.postimg.cc/XqLnjRMS/20250819-2117-Pixel-Ginger-Character-simple-compose-01k31rss70fmktq7sny215zh9h.png" alt="Loai" class="student-avatar">
-            <span class="student-name">LOAI_ABB</span>
-          </a>
-          <a href="https://www.instagram.com/osaidjano/" target="_blank" class="student-card">
-            <img src="https://i.postimg.cc/JhH7NYXZ/20250819-2129-Pixel-Man-with-T-Shirt-simple-compose-01k31scc2efvfbt02vce5hkp5r.png" alt="Osaid" class="student-avatar">
-            <span class="student-name">OSAIDJANO</span>
-          </a>
-          <a href="https://www.instagram.com/loai_kashkash/" target="_blank" class="student-card">
-            <img src="https://i.postimg.cc/76gxcCmL/20250819-2136-Pixel-Fat-Man-simple-compose-01k31sw-dygemgba9w7vm7tmpq5.png" alt="Kashkash" class="student-avatar">
-            <span class="student-name">LOAI_KASHKASH</span>
-          </a>
-          <a href="https://www.instagram.com/khalid.alfares1/" target="_blank" class="student-card">
-            <img src="https://i.postimg.cc/d1Ms4RRX/20250819-2140-Pixel-Man-with-Flag-simple-compose-01k31t39ykee6bbh3fcc1xfhjv-removebg-preview.png" alt="Khaled" class="student-avatar">
-            <span class="student-name">KHALID.ALFARES1</span>
-          </a>
-          <a href="https://www.instagram.com/badr_sanoufi/" target="_blank" class="student-card">
-            <img src="https://i.postimg.cc/j2tsrsF4/assets-task-01k31taeamf6tavtp3htwn6b2h-1755629076-img-0.webp" alt="Badr" class="student-avatar">
-            <span class="student-name">BADR_SANOUFI</span>
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  <!-- GUESTBOOK - Collapsed by default -->
-  <div class="collapse-section" id="notesCollapse">
-    <div class="collapse-header" onclick="toggleCollapse('notesContent', this)">
-      <h3>📝 GUESTBOOK</h3>
-      <span class="collapse-arrow">▶</span>
-    </div>
-    <div class="collapse-content" id="notesContent">
-      <div class="collapse-inner">
-        <p style="text-align: center; margin-bottom: 20px; font-size: 9px; color: var(--accent);">
-          Leave your mark in my digital realm. Share your thoughts, compliments, or just say hello!
-        </p>
-        <div class="note-form">
-          <input type="text" id="nickname" placeholder="YOUR NICKNAME..." maxlength="30">
-          <textarea id="noteText" placeholder="YOUR MESSAGE... (max 500 characters)" maxlength="500"></textarea>
-          <button onclick="addNote()" class="pixel-button">POST MESSAGE</button>
-        </div>
-        <div class="notes-wall" id="notesWall"></div>
-      </div>
-    </div>
-  </div>
-  
-  <div class="admin-section" id="admin">
-    <h2 class="section-title">🔐 ADMIN MODE</h2>
-    <div class="admin-login">
-      <p style="font-size: 10px; margin-bottom: 15px; color: var(--accent);">
-        Enter password to enable admin features:
-      </p>
-      <input type="password" id="adminPassword" placeholder="Enter password..." onkeydown="if(event.key==='Enter')activateAdmin()">
-      <br>
-      <button class="pixel-button" onclick="activateAdmin()">ACTIVATE</button>
-      <button class="pixel-button" onclick="deactivateAdmin()" style="background: var(--accent); color: #000; margin-left: 10px;">DEACTIVATE</button>
-    </div>
-    <p id="adminStatus" style="font-size: 9px; margin-top: 15px; color: var(--accent);"></p>
-  </div>
-  
-  <div class="admin-section" id="admin-gallery" style="display: none;">
-    <h2 class="section-title">🖼️ ART SENT TO GHASSAN</h2>
-    <p style="text-align: center; margin-bottom: 20px; font-size: 9px; color: var(--accent);">
-      Gallery of all art pieces sent to Ghassan (Cloud Storage • Admin Only)
-    </p>
-    <div id="artGallery" class="art-gallery-grid"></div>
-    <div style="text-align: center; margin-top: 15px;">
-      <button class="pixel-button" onclick="clearAllArt()" style="background: #ff0000;">
-        <i class="fas fa-trash"></i> CLEAR ALL ART (CLOUD)
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- Ambient background layers -->
+  <div class="bg-layer bg-wash"></div>
+  <div class="bg-layer bg-grid"></div>
+  <canvas id="particles" aria-hidden="true"></canvas>
+
+  <div class="progress" id="progress" aria-hidden="true"></div>
+
+  <!-- ===================== NAV ===================== -->
+  <nav class="nav" id="nav" aria-label="Primary">
+    <a class="nav__brand" href="#hero">
+      <span class="nav__mark" aria-hidden="true">G</span>
+      <span>GHASSAN_MAZEN</span>
+    </a>
+
+    <button class="icon-btn nav__burger" id="navBurger" type="button"
+            aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+
+    <div class="nav__links" id="navLinks"></div>
+
+    <div class="nav__tools">
+      <button class="nav__kbd" data-open-palette type="button" aria-label="Open command palette">
+        <span>Search</span><kbd>⌘K</kbd>
+      </button>
+      <button class="icon-btn" data-open-achievements type="button" aria-label="Achievements" title="Achievements">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 5.5H5.5v1A3.5 3.5 0 0 0 8 9.8M16 5.5h2.5v1A3.5 3.5 0 0 1 16 9.8"/><path d="M12 13v3M9 20h6"/></svg>
       </button>
     </div>
-  </div>
-  
+  </nav>
+
+  <main id="main">
+
+    <!-- ===================== HERO ===================== -->
+    <section class="section hero" id="hero">
+      <div class="wrap hero__grid">
+        <div class="hero__text">
+          <span class="badge hero__status"><span class="dot-live"></span> Available for builds</span>
+
+          <h1 class="hero__name glitch" id="heroName" data-text="GHASSAN MAZEN">GHASSAN MAZEN</h1>
+
+          <p class="hero__role"><span id="heroRole"></span><span class="cursor">|</span></p>
+
+          <p class="hero__tagline" id="heroTagline">Crafting pixels into experiences since 1999.</p>
+
+          <div class="hero__cta">
+            <a class="btn btn--primary" href="ai/">🤖 Talk to my AI</a>
+            <a class="btn" href="#studio">Open pixel studio</a>
+            <button class="btn btn--ghost" data-open-palette type="button">⌘K Explore</button>
+          </div>
+
+          <div class="hero__stats">
+            <div>
+              <div class="stat__value">334</div>
+              <div class="stat__label">Fortunes</div>
+            </div>
+            <div>
+              <div class="stat__value" data-achv-count>0/12</div>
+              <div class="stat__label">Achievements</div>
+            </div>
+            <div>
+              <div class="stat__value">∞</div>
+              <div class="stat__label">Pixels drawn</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="portrait" id="portrait">
+          <div class="speech" id="speech"><span id="speechText"></span></div>
+          <div class="portrait__inner">
+            <div class="portrait__face" id="portraitFace">
+              <!-- src is set from assets/js/data/site.js; falls back to the pixel avatar -->
+              <img class="portrait__img" id="heroPhoto" alt="Ghassan Mazen" decoding="async">
+            </div>
+            <div class="portrait__face portrait__face--back">
+              <img class="portrait__img portrait__img--pixel"
+                   src="https://i.postimg.cc/9Xvbc3sw-/7eed46e2-854a-46dd-a073-c66409387f95.png"
+                   alt="Pixel avatar of Ghassan" loading="lazy" decoding="async">
+            </div>
+          </div>
+          <button class="btn btn--sm portrait__flip" id="portraitFlip" type="button" aria-pressed="false">
+            Flip
+          </button>
+        </div>
+      </div>
+
+      <div class="scroll-cue" aria-hidden="true">
+        <span>Scroll</span>
+        <span>↓</span>
+      </div>
+    </section>
+
+    <!-- ===================== ABOUT ===================== -->
+    <section class="section" id="about">
+      <div class="wrap">
+        <header class="section-head reveal">
+          <div class="section-head__text">
+            <span class="section-eyebrow">01 — Profile</span>
+            <h2 class="section-title">WHO'S THIS GUY</h2>
+            <p class="section-sub">The short version, for people who don't read long versions.</p>
+          </div>
+        </header>
+
+        <div class="about__grid">
+          <div class="card reveal">
+            <div class="about__bio" id="aboutBio"></div>
+            <div class="skills" id="aboutSkills"></div>
+          </div>
+          <div class="card reveal">
+            <span class="section-eyebrow">Quick facts</span>
+            <div class="facts" id="aboutFacts"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SOCIALS ===================== -->
+    <section class="section" id="socials">
+      <div class="wrap">
+        <header class="section-head reveal">
+          <div class="section-head__text">
+            <span class="section-eyebrow">02 — Signals</span>
+            <h2 class="section-title">FIND ME</h2>
+            <p class="section-sub">Pick your channel. Email gets the fastest answer.</p>
+          </div>
+        </header>
+
+        <div class="socials reveal" id="socialGrid"></div>
+      </div>
+    </section>
+
+    <!-- ===================== PIXEL STUDIO ===================== -->
+    <section class="section" id="studio">
+      <div class="wrap">
+        <header class="section-head reveal">
+          <div class="section-head__text">
+            <span class="section-eyebrow">03 — Make something</span>
+            <h2 class="section-title">PIXEL STUDIO</h2>
+            <p class="section-sub">
+              Brush, fill, mirror, undo. Export a PNG or send it straight to me.
+              Your canvas is saved in this browser automatically.
+            </p>
+          </div>
+        </header>
+
+        <div class="studio reveal">
+          <aside class="studio__side">
+            <div class="tool-group">
+              <span class="field__label">Tools</span>
+              <div class="tool-row" id="toolRow" role="group" aria-label="Drawing tools"></div>
+            </div>
+
+            <div class="tool-group">
+              <span class="field__label">Colour</span>
+              <div class="color-readout">
+                <span class="color-readout__chip" id="colorChip"></span>
+                <span class="color-readout__hex" id="colorHex">#FF3333</span>
+                <input type="color" id="colorPicker" value="#ff3333" aria-label="Custom colour">
+              </div>
+              <div class="palette-grid" id="swatches" role="group" aria-label="Colour swatches"></div>
+            </div>
+
+            <div class="tool-group">
+              <label class="field__label" for="canvasSize">Canvas</label>
+              <select class="select" id="canvasSize">
+                <option value="8">8 × 8 — tiny</option>
+                <option value="16" selected>16 × 16 — small</option>
+                <option value="24">24 × 24 — medium</option>
+                <option value="32">32 × 32 — large</option>
+              </select>
+            </div>
+
+            <div class="tool-group">
+              <span class="field__label">Options</span>
+              <div class="row">
+                <button class="icon-btn" id="btnMirror" type="button" aria-pressed="false" title="Mirror mode">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 3v18"/><path d="M8 7 4 12l4 5z"/><path d="m16 7 4 5-4 5z"/></svg>
+                </button>
+                <button class="icon-btn is-on" id="btnGrid" type="button" aria-pressed="true" title="Toggle grid">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3.5" y="3.5" width="17" height="17" rx="1.5"/><path d="M9 3.5v17M15 3.5v17M3.5 9h17M3.5 15h17"/></svg>
+                </button>
+                <button class="icon-btn" id="btnUndo" type="button" title="Undo (Ctrl+Z)">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h11a5 5 0 0 1 0 10h-6"/><path d="M8 5 4 9l4 4"/></svg>
+                </button>
+                <button class="icon-btn" id="btnRedo" type="button" title="Redo (Ctrl+Shift+Z)">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 9H9a5 5 0 0 0 0 10h6"/><path d="m16 5 4 4-4 4"/></svg>
+                </button>
+              </div>
+            </div>
+          </aside>
+
+          <div class="studio__main">
+            <div class="canvas-frame show-grid" id="canvasFrame">
+              <canvas id="artCanvas" width="16" height="16" role="img" aria-label="Pixel art canvas"></canvas>
+            </div>
+
+            <div class="studio__actions">
+              <button class="btn btn--sm" id="btnClear" type="button">Clear</button>
+              <button class="btn btn--sm" id="btnRandom" type="button">Randomise</button>
+              <button class="btn btn--sm" id="btnExport" type="button">Export PNG</button>
+              <button class="btn btn--sm btn--primary" id="btnSend" type="button">Send to Ghassan</button>
+            </div>
+
+            <p class="studio__hint">
+              Shortcuts: <kbd>B</kbd> brush · <kbd>E</kbd> eraser · <kbd>G</kbd> fill · <kbd>I</kbd> pick · <kbd>Ctrl</kbd>+<kbd>Z</kbd> undo
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== ORACLE ===================== -->
+    <section class="section" id="oracle">
+      <div class="wrap">
+        <header class="section-head reveal">
+          <div class="section-head__text">
+            <span class="section-eyebrow">04 — Ask nicely</span>
+            <h2 class="section-title">THE ORACLE</h2>
+            <p class="section-sub">
+              334 fortunes, shuffled so you never get the same one twice in a cycle.
+              Star the good ones — they stay in this browser.
+            </p>
+          </div>
+        </header>
+
+        <div class="oracle reveal">
+          <svg class="orb" id="orb" viewBox="0 0 120 120" role="button" tabindex="0" aria-label="Draw a fortune">
+            <defs>
+              <radialGradient id="orbGlow" cx="38%" cy="32%" r="62%">
+                <stop offset="0%" stop-color="var(--accent-soft)" stop-opacity="0.55"/>
+                <stop offset="55%" stop-color="var(--accent)" stop-opacity="0.22"/>
+                <stop offset="100%" stop-color="#000" stop-opacity="0.9"/>
+              </radialGradient>
+              <filter id="orbBlur"><feGaussianBlur stdDeviation="1.6"/></filter>
+            </defs>
+
+            <ellipse cx="60" cy="104" rx="26" ry="5" fill="currentColor" opacity="0.12"/>
+            <path d="M40 100 Q60 84 80 100 Z" fill="#120709" stroke="var(--accent-strong)" stroke-width="2"/>
+            <circle cx="60" cy="56" r="36" fill="url(#orbGlow)" stroke="var(--accent)" stroke-width="2"/>
+            <circle cx="60" cy="56" r="30" fill="none" stroke="var(--accent-strong)" stroke-width="0.8" opacity="0.6"/>
+            <circle cx="48" cy="44" r="6" fill="var(--accent-soft)" opacity="0.28" filter="url(#orbBlur)"/>
+            <circle cx="72" cy="52" r="3.5" fill="var(--accent-soft)" opacity="0.2"/>
+            <path d="M36 60 Q48 48 60 60 T84 60" stroke="var(--accent)" stroke-width="1" fill="none" opacity="0.45"/>
+            <text x="42" y="36" font-size="7" fill="var(--accent-soft)" opacity="0.7">✦</text>
+            <text x="76" y="66" font-size="6" fill="var(--accent-soft)" opacity="0.6">✧</text>
+          </svg>
+
+          <div class="fortune-card" id="fortuneCard">
+            <p class="fortune-text" id="fortuneText">Touch the orb.</p>
+            <p class="fortune-by" id="fortuneBy">— Ghassan's Oracle</p>
+          </div>
+
+          <div class="oracle__actions">
+            <button class="btn btn--primary" id="btnDraw" type="button">New fortune</button>
+            <button class="btn btn--sm" id="btnDaily" type="button">Fortune of the day</button>
+            <button class="icon-btn" id="btnFav" type="button" aria-pressed="false" title="Save this fortune"></button>
+            <button class="icon-btn" id="btnShare" type="button" title="Share / copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg>
+            </button>
+          </div>
+
+          <p class="oracle__meta" id="oracleMeta"></p>
+
+          <div class="fav-list" id="favWrap" hidden>
+            <span class="field__label">Saved fortunes</span>
+            <div class="fav-list" id="favList"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== CREW ===================== -->
+    <section class="section" id="crew">
+      <div class="wrap">
+        <header class="section-head reveal">
+          <div class="section-head__text">
+            <span class="section-eyebrow">05 — The regulars</span>
+            <h2 class="section-title">THE CREW</h2>
+            <p class="section-sub">The usual suspects. Click a face, land on their Instagram.</p>
+          </div>
+        </header>
+
+        <div class="crew reveal" id="crewGrid"></div>
+      </div>
+    </section>
+
+    <!-- ===================== GUESTBOOK ===================== -->
+    <section class="section" id="guestbook">
+      <div class="wrap">
+        <header class="section-head reveal">
+          <div class="section-head__text">
+            <span class="section-eyebrow">06 — Leave a mark</span>
+            <h2 class="section-title">GUESTBOOK</h2>
+            <p class="section-sub">Say hello, drop a compliment, or roast the design. It's live for everyone.</p>
+          </div>
+          <span class="badge" id="notesCount">0 messages</span>
+        </header>
+
+        <div class="guestbook reveal">
+          <form class="gb-form card" id="gbForm" onsubmit="return false">
+            <div class="field">
+              <label class="field__label" for="gbName">Your name</label>
+              <input class="input" id="gbName" type="text" maxlength="30" placeholder="who's asking?" autocomplete="nickname">
+            </div>
+            <div class="field">
+              <label class="field__label" for="gbText">Message</label>
+              <textarea class="textarea" id="gbText" maxlength="500" placeholder="say something worth reading…"></textarea>
+              <span class="counter" id="gbCount">0/500</span>
+            </div>
+            <button class="btn btn--primary" id="btnPost" type="button">Post message</button>
+            <p class="studio__hint"><kbd>Ctrl</kbd>+<kbd>Enter</kbd> to post</p>
+          </form>
+
+          <div>
+            <div class="gb-toolbar">
+              <input class="input" id="gbSearch" type="search" placeholder="Search messages…" aria-label="Search messages">
+            </div>
+            <div class="notes" id="notesWall"></div>
+            <div class="center" style="margin-top: 1rem">
+              <button class="btn btn--sm" id="btnMoreNotes" type="button" hidden>Load more</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== ADMIN GALLERY ===================== -->
+    <section class="section" id="adminGallery" hidden>
+      <div class="wrap">
+        <div class="panel">
+          <button class="panel__head" data-panel-toggle type="button" aria-expanded="false" aria-controls="galleryBody">
+            <span class="panel__icon">🖼️</span>
+            <span class="panel__title">ART SENT TO GHASSAN</span>
+            <span class="panel__hint">admin only</span>
+          </button>
+          <div class="panel__body" id="galleryBody">
+            <div>
+              <div class="panel__inner">
+                <div class="art-grid" id="artGallery"></div>
+                <div class="center" style="margin-top: 1.25rem">
+                  <button class="btn btn--sm btn--danger" id="btnClearArt" type="button">Clear entire gallery</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===================== FOOTER ===================== -->
   <footer class="footer">
-    <p style="font-size: 10px; margin-bottom: 15px; color: var(--accent);">
-      CRAFTED WITH PIXELS AND PASSION
-    </p>
-    <p style="font-size: 8px; opacity: 0.7; color: #ff8888;">
-      © 2024 GHASSAN MAZEN • ALL PIXELS RESERVED
-    </p>
+    <div class="wrap footer__grid">
+      <div>
+        <p class="footer__note">Crafted with pixels and stubbornness.</p>
+        <p class="footer__note">© <span id="year">2026</span> Ghassan Mazen — all pixels reserved.</p>
+      </div>
+
+      <div class="stack" style="gap: .75rem">
+        <span class="field__label">Accent</span>
+        <div class="theme-row" id="themeRow"></div>
+      </div>
+
+      <div class="footer__links">
+        <button type="button" data-open-palette>Command palette</button>
+        <button type="button" data-open-achievements>Achievements</button>
+        <button type="button" data-toggle-motion>Reduce motion</button>
+        <button type="button" data-open-admin>Admin</button>
+        <button type="button" id="btnTrap">🔞 18+ content</button>
+        <a href="ai/">Ghassan AI</a>
+      </div>
+    </div>
   </footer>
-  
-  <div class="easter-egg" id="easterEgg" style="position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:rgba(0,0,0,0.95); padding:20px; border:3px solid var(--primary); z-index:10000; text-align:center; display:none;">
-    <h2 style="color:var(--accent);">🎮 SECRET UNLOCKED! 🎮</h2>
-    <p>You found the hidden easter egg!</p>
-    <button onclick="closeEasterEgg()" class="pixel-button">CLOSE</button>
+
+  <button class="to-top" id="toTop" type="button" aria-label="Back to top">
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+  </button>
+
+  <span class="badge" id="adminBadge" hidden
+        style="position:fixed;top:calc(var(--nav-h) + 10px);left:1rem;z-index:1150">
+    ADMIN MODE
+  </span>
+
+  <!-- ===================== COMMAND PALETTE ===================== -->
+  <div class="modal palette" id="palette" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Command palette">
+    <div class="palette__box">
+      <input class="palette__input" id="paletteInput" type="text" placeholder="Type a command or section…"
+             role="combobox" aria-expanded="true" aria-controls="paletteList" autocomplete="off">
+      <ul class="palette__list" id="paletteList" role="listbox" aria-label="Commands"></ul>
+      <div class="palette__foot">
+        <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+        <span><kbd>↵</kbd> run</span>
+        <span><kbd>esc</kbd> close</span>
+      </div>
+    </div>
   </div>
-  
+
+  <!-- ===================== ACHIEVEMENTS ===================== -->
+  <div class="modal" id="achvModal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Achievements">
+    <div class="modal__box">
+      <header class="modal__head">
+        <span class="modal__title">🏆 ACHIEVEMENTS</span>
+        <span class="badge" data-achv-count>0/12</span>
+        <button class="icon-btn modal__close" data-close type="button" aria-label="Close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+        </button>
+      </header>
+      <div class="modal__body">
+        <p class="section-sub" style="margin-bottom:1rem">
+          Tracked in this browser only. Nothing is sent anywhere.
+        </p>
+        <div class="achv-list" id="achvList"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== ADMIN ===================== -->
+  <div class="modal" id="adminModal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Admin mode">
+    <div class="modal__box">
+      <header class="modal__head">
+        <span class="modal__title">🔐 ADMIN MODE</span>
+        <button class="icon-btn modal__close" data-close type="button" aria-label="Close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+        </button>
+      </header>
+      <div class="modal__body stack" style="gap:1rem">
+        <div class="field">
+          <label class="field__label" for="adminPass">Passcode</label>
+          <input class="input" id="adminPass" type="password" placeholder="••••••" autocomplete="current-password">
+        </div>
+        <div class="row">
+          <button class="btn btn--primary" id="btnAdminGo" type="button">Activate</button>
+          <button class="btn btn--sm" id="btnAdminOff" type="button">Deactivate</button>
+        </div>
+        <p class="section-sub" id="adminState">Admin mode inactive.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== THE PRANK ===================== -->
+  <div class="shame" id="shame" role="dialog" aria-modal="true" aria-label="Shame">
+    <div>
+      <p class="shame__text">
+        GHASSAN HAS BEEN NOTIFIED<br>
+        THAT YOU TRIED<br>
+        TO SEE HIM NAKED<br><br>
+        SHAME ON YOU
+      </p>
+      <button class="btn btn--primary" id="btnSorry" type="button" style="margin-top:2rem">I'm sorry</button>
+    </div>
+  </div>
+
+  <!-- Firebase compat SDK must load before the modules that wrap it. -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
-  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-  
-  <script>
-    const firebaseConfig = {
-      databaseURL: "https://dungeon-data-base-default-rtdb.firebaseio.com/"
-    };
-    
-    const app = firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
-    
-    let isAdmin = false;
-    let konamiIndex = 0;
-    let currentColor = '#0088ff';
-    let gridSize = 16;
-    let fortuneCount = 0;
-    const ADMIN_PASSWORD = "ananke";
-    const konamiCode = [
-      'ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown',
-      'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight',
-      'KeyB', 'KeyA'
-    ];
-    
-    // Full color palette
-    const colors = [
-      '#0088ff', '#00ddff', '#0055aa', '#00aa00',
-      '#ff5500', '#ff0080', '#aa00ff', '#ffff00',
-      '#ffffff', '#000000', '#888888', '#ffaa00',
-      '#ff00ff', '#00ffff', '#8800ff', '#ff8800',
-      '#cc0000', '#ff3333', '#990000', '#ff6666',
-      '#00cc00', '#33ff33', '#006600', '#66ff66',
-      '#ffcc00', '#ff9900', '#cc6600', '#ffcc33'
-    ];
-    
-    const fortunes = [
-      "A beautiful, smart, and loving person will be coming into your life.",
-      "A dubious friend may be an enemy in camouflage.",
-      "A faithful friend is a strong defense.",
-      "A fresh start will put you on your way.",
-      "A friend asks only for your time not your money.",
-      "A friend is a present you give yourself.",
-      "A gambler not only will lose what he has, but also will lose what he doesn't have.",
-      "A golden egg of opportunity falls into your lap this month.",
-      "A good friendship is often more important than a passionate romance.",
-      "A good time to finish up old tasks.",
-      "A hunch is creativity trying to tell you something.",
-      "A lifetime friend shall soon be made.",
-      "A lifetime of happiness lies ahead of you.",
-      "A light heart carries you through all the hard times.",
-      "A new perspective will come with the new year.",
-      "A person is never too old to learn.",
-      "A person of words and not deeds is like a garden full of weeds.",
-      "A pleasant surprise is waiting for you.",
-      "A short pencil is usually better than a long memory any day.",
-      "A small donation is call for. It's the right thing to do.",
-      "A smile is your personal welcome mat.",
-      "A smooth long journey! Great expectations.",
-      "A soft voice may be awfully persuasive.",
-      "A truly rich life contains love and art in abundance.",
-      "Accept something that you cannot change, and you will feel better.",
-      "Adventure can be real happiness.",
-      "Advice is like kissing. It costs nothing and is a pleasant thing to do.",
-      "Advice, when most needed, is least heeded.",
-      "All the effort you are making will ultimately pay off.",
-      "All the troubles you have will pass away very quickly.",
-      "All will go well with your new project.",
-      "All your hard work will soon pay off.",
-      "Allow compassion to guide your decisions.",
-      "An acquaintance of the past will affect you in the near future.",
-      "An agreeable romance might begin to take on the appearance.",
-      "An important person will offer you support.",
-      "An inch of time is an inch of gold.",
-      "Any decision you have to make tomorrow is a good decision.",
-      "At the touch of love, everyone becomes a poet.",
-      "Be careful or you could fall for some tricks today.",
-      "Beauty in its various forms appeals to you.",
-      "Because you demand more from yourself, others respect you deeply.",
-      "Believe in yourself and others will too.",
-      "Believe it can be done.",
-      "Better ask twice than lose yourself once.",
-      "Bide your time, for success is near.",
-      "Carve your name on your heart and not on marble.",
-      "Change is happening in your life, so go with the flow!",
-      "Competence like yours is underrated.",
-      "Congratulations! You are on your way.",
-      "Could I get some directions to your heart?",
-      "Courtesy begins in the home.",
-      "Courtesy is contagious.",
-      "Curiosity kills boredom. Nothing can kill curiosity.",
-      "Dedicate yourself with a calm mind to the task at hand.",
-      "Depart not from the path which fate has you assigned.",
-      "Determination is what you need now.",
-      "Disbelief destroys the magic.",
-      "Distance yourself from the vain.",
-      "Do not be intimidated by the eloquence of others.",
-      "Do not demand for someone's soul if you already got his heart.",
-      "Do not let ambitions overshadow small success.",
-      "Do not make extra work for yourself.",
-      "Do not underestimate yourself. Human beings have unlimited potentials.",
-      "Don't be discouraged, because every wrong attempt discarded is another step forward.",
-      "Don't confuse recklessness with confidence.",
-      "Don't just spend time. Invest it.",
-      "Don't just think, act!",
-      "Don't let friends impose on you, work calmly and silently.",
-      "Don't let the past and useless detail choke your existence.",
-      "Don't let your limitations overshadow your talents.",
-      "Don't worry; prosperity will knock on your door soon.",
-      "Each day, compel yourself to do something you would rather not do.",
-      "Education is the ability to meet life's situations.",
-      "Embrace this love relationship you have!",
-      "Emulate what you admire in your parents.",
-      "Emulate what you respect in your friends.",
-      "Every flower blooms in its own sweet time.",
-      "Every wise man started out by asking many questions.",
-      "Everyday in your life is a special occasion.",
-      "Failure is the chance to do better next time.",
-      "Fear and desire – two sides of the same coin.",
-      "Fearless courage is the foundation of victory.",
-      "Feeding a cow with roses does not get extra appreciation.",
-      "First think of what you want to do; then do what you have to do.",
-      "Follow the middle path. Neither extreme will make you happy.",
-      "For hate is never conquered by hate. Hate is conquered by love.",
-      "For the things we have to learn before we can do them, we learn by doing them.",
-      "Fortune Not Found: Abort, Retry, Ignore?",
-      "From listening comes wisdom and from speaking repentance.",
-      "From now on your kindness will lead you to success.",
-      "Get your mind set – confidence will lead you on.",
-      "Get your mind set…confidence will lead you on.",
-      "Go for the gold today! You'll be the champion of whatever.",
-      "Go take a rest; you deserve it.",
-      "Good news will be brought to you by mail.",
-      "Good news will come to you by mail.",
-      "Good to begin well, better to end well.",
-      "Happiness begins with facing life with a smile and a wink.",
-      "Happiness will bring you good luck.",
-      "Happy life is just in front of you.",
-      "Hard words break no bones, fine words butter no parsnips.",
-      "Have a beautiful day.",
-      "He who expects no gratitude shall never be disappointed.",
-      "He who knows he has enough is rich.",
-      "Help! I'm being held prisoner in a fortune cookie factory.",
-      "How you look depends on where you go.",
-      "I learn by going where I have to go.",
-      "If a true sense of value is to be yours it must come through service.",
-      "If certainty were truth, we would never be wrong.",
-      "If you continually give, you will continually have.",
-      "If you look in the right places, you can find some good offerings.",
-      "If you think you can do a thing or think you can't do a thing, you're right.",
-      "If you wish to see the best in others, show the best of yourself.",
-      "If your desires are not extravagant, they will be granted.",
-      "If your desires are not to extravagant they will be granted.",
-      "If you're feeling down, try throwing yourself into your work.",
-      "Imagination rules the world.",
-      "In order to take, one must first give.",
-      "In the end all things will be known.",
-      "It could be better, but its good enough.",
-      "It is better to be an optimist and proven a fool than to be a pessimist and be proven right.",
-      "It is better to deal with problems before they arise.",
-      "It is honorable to stand up for what is right, however unpopular it seems.",
-      "It is worth reviewing some old lessons.",
-      "It takes courage to admit fault.",
-      "It's time to get moving. Your spirits will lift accordingly.",
-      "Keep your face to the sunshine and you will never see shadows.",
-      "Let the world be filled with tranquility and goodwill.",
-      "Like the river flow into the sea. Something are just meant to be.",
-      "Listen not to vain words of empty tongue.",
-      "Listen to everyone. Ideas come from everywhere.",
-      "Living with a commitment to excellence shall take you far.",
-      "Long life is in store for you.",
-      "Love is a warm fire to keep the soul warm.",
-      "Love is like sweet medicine, good to the last drop.",
-      "Love lights up the world.",
-      "Love truth, but pardon error.",
-      "Man is born to live and not prepared to live.",
-      "Man's mind, once stretched by a new idea, never regains its original dimensions.",
-      "Many will travel to hear you speak.",
-      "Meditation with an old enemy is advised.",
-      "Miles are covered one step at a time.",
-      "Nature, time and patience are the three great physicians.",
-      "Never fear! The end of something marks the start of something new.",
-      "New ideas could be profitable.",
-      "New people will bring you new realizations, especially about big issues.",
-      "No one can walk backwards into the future.",
-      "Nothing is more difficult, and therefore more precious, than to be able to decide.",
-      "Now is a good time to buy stock.",
-      "Now is the time to go ahead and pursue that love interest!",
-      "Now is the time to try something new.",
-      "Observe all men, but most of all yourself.",
-      "One can never fill another's shoes, rather he must outgrow the old shoes.",
-      "One of the first things you should look for in a problem is its positive side.",
-      "Others can help you now.",
-      "Pennies from heaven find their way to your doorstep this year!",
-      "People are attracted by your Delicate features.",
-      "People find it difficult to resist your persuasive manner.",
-      "Perhaps you've been focusing too much on saving.",
-      "Physical activity will dramatically improve your outlook today.",
-      "Pick battles big enough to matter, small enough to win.",
-      "Place special emphasis on old friendship.",
-      "Please visit us at www.wontheluck.com",
-      "Practice makes perfect.",
-      "Protective measures will prevent costly disasters.",
-      "Put your mind into planning today. Look into the future.",
-      "Remember the birthday but never the age.",
-      "Remember to share good fortune as well as bad with your friends.",
-      "Rest has a peaceful effect on your physical and emotional health.",
-      "Resting well is as important as working hard.",
-      "Romance moves you in a new direction.",
-      "Savor your freedom – it is precious.",
-      "Say hello to others. You will have a happier day.",
-      "Self-knowledge is a life long process.",
-      "Share your joys and sorrows with your family.",
-      "Sift through your past to get a better idea of the present.",
-      "Sloth makes all things difficult; industry all easy.",
-      "Small confidences mark the onset of a friendship.",
-      "Society prepares the crime; the criminal commits it.",
-      "Someone you care about seeks reconciliation.",
-      "Soon life will become more interesting.",
-      "Stand tall. Don't look down upon yourself.",
-      "Stop searching forever, happiness is just next to you.",
-      "Success is a journey, not a destination.",
-      "Success is going from failure to failure without loss of enthusiasm.",
-      "Take care and sensitivity you show towards others will return to you.",
-      "Take the high road.",
-      "The austerity you see around you covers the richness of life like a veil.",
-      "The best prediction of future is the past.",
-      "The change you started already have far-reaching effects. Be ready.",
-      "The first man gets the oyster, the second man gets the shell.",
-      "The greatest achievement in life is to stand up again after falling.",
-      "The harder you work, the luckier you get.",
-      "The night life is for you.",
-      "The one that recognizes the illusion does not act as if it is real.",
-      "The only people who never fail are those who never try.",
-      "The person who will not stand for something will fall for anything.",
-      "The philosophy of one century is the common sense of the next.",
-      "The saints are the sinners who keep on trying.",
-      "The secret to good friends is no secret to you.",
-      "The small courtesies sweeten life, the greater ennoble it.",
-      "The smart thing to do is to begin trusting your intuitions.",
-      "The strong person understands how to withstand substantial loss.",
-      "The sure way to predict the future is to invent it.",
-      "The truly generous share, even with the undeserving.",
-      "The value lies not within any particular thing, but in the desire placed on that thing.",
-      "The weather is wonderful.",
-      "There is a time for caution, but not for fear.",
-      "There is no mistake so great as that of being always right.",
-      "There is no wisdom greater than kindness.",
-      "There's no such thing as an ordinary cat.",
-      "Things don't just happen; they happen just.",
-      "Those who care will make the effort.",
-      "Time and patience are called for many surprises await you!",
-      "Time is precious, but truth is more precious than time.",
-      "To know oneself, one should assert oneself.",
-      "To the world you may be one person, but to one person you may be the world.",
-      "Today is the conserve yourself, as things just won't budge.",
-      "Today, your mouth might be moving but no one is listening.",
-      "Tomorrow will be a busy day. Be prepared.",
-      "Tonight you will be blinded by passion.",
-      "Treasure what you have.",
-      "Use your eloquence where it will do the most good.",
-      "Welcome change.",
-      "Well done is better than well said.",
-      "What's hidden in an empty box?",
-      "What's that in your eye? Oh...it's a sparkle.",
-      "When your heart is pure, your mind is clear.",
-      "Wish you happiness.",
-      "You always bring others happiness.",
-      "You are a person of another time.",
-      "You are a talented storyteller.",
-      "You are admired by everyone for your talent and ability.",
-      "You are almost there.",
-      "You are busy, but you are happy.",
-      "You are generous to an extreme and always think of the other fellow.",
-      "You are going to have some new clothes.",
-      "You are in good hands this evening.",
-      "You are interested in higher education, whether material or spiritual.",
-      "You are modest and courteous.",
-      "You are never selfish with your advice or your help.",
-      "You are next in line for promotion in your firm.",
-      "You are offered the dream of a lifetime. Say yes!",
-      "You are open-minded and quick to make new friends.",
-      "You are solid and dependable.",
-      "You are soon going to change your present line of work.",
-      "You are talented in many ways.",
-      "You are the master of every situation.",
-      "You are very expressive and positive in words, act and feeling.",
-      "You are working hard.",
-      "You begin to appreciate how important it is to share your personal beliefs.",
-      "You can keep a secret.",
-      "You can see a lot just by looking.",
-      "You can't steal second base and keep your foot on first.",
-      "You desire recognition and you will find it.",
-      "You have a deep appreciation of the arts and music.",
-      "You have a deep interest in all that is artistic.",
-      "You have a friendly heart and are well admired.",
-      "You have a shrewd knack for spotting insincerity.",
-      "You have a yearning for perfection.",
-      "You have an active mind and a keen imagination.",
-      "You have an ambitious nature and may make a name for yourself.",
-      "You have an unusual equipment for success, use it properly.",
-      "You have exceeded what was expected.",
-      "You have had a good start. Work harder!",
-      "You have the power to write your own fortune.",
-      "You have yearning for perfection.",
-      "You know where you are going and how to get there.",
-      "You look pretty.",
-      "You love challenge.",
-      "You love chinese food.",
-      "You make people realize that there exist other beauties in the world.",
-      "You never know who you touch.",
-      "You only treasure what you lost.",
-      "You seek to shield those you love and like the role of provider.",
-      "You should be able to make money and hold on to it.",
-      "You should be able to undertake and complete anything.",
-      "You should pay for this check. Be generous.",
-      "You understand how to have fun with others and to enjoy your solitude.",
-      "You will always be surrounded by true friends.",
-      "You will always get what you want through your charm and personality.",
-      "You will always have good luck in your personal affairs.",
-      "You will be a great success both in the business world and society.",
-      "You will be blessed with longevity.",
-      "You will be pleasantly surprised tonight.",
-      "You will be successful in your work.",
-      "You will be traveling and coming into a fortune.",
-      "You will be unusually successful in business.",
-      "You will become a great philanthropist in your later years.",
-      "You will become more and more wealthy.",
-      "You will enjoy good health.",
-      "You will enjoy good health; you will be surrounded by luxury.",
-      "You will find great contentment in the daily, routine activities.",
-      "You will have a fine capacity for the enjoyment of life.",
-      "You will have gold pieces by the bushel.",
-      "You will inherit a large sum of money.",
-      "You will make change for the better.",
-      "You will soon be surrounded by good friends and laughter.",
-      "You will take a chance in something in near future.",
-      "You will travel far and wide, both pleasure and business.",
-      "You will travel far and wide,both pleasure and business.",
-      "Your abilities are unparalleled.",
-      "Your ability is appreciated.",
-      "Your ability to juggle many tasks will take you far.",
-      "Your biggest virtue is your modesty.",
-      "Your character can be described as natural and unrestrained.",
-      "Your difficulties will strengthen you.",
-      "Your dreams are never silly; depend on them to guide you.",
-      "Your dreams are worth your best efforts to achieve them.",
-      "Your energy returns and you get things done.",
-      "Your family is young, gifted and attractive.",
-      "Your first love has never forgotten you.",
-      "Your happiness is before you, not behind you! Cherish it.",
-      "Your hard work will payoff today.",
-      "Your heart will always make itself known through your words.",
-      "Your home is the center of great love.",
-      "Your ideals are well within your reach.",
-      "Your infinite capacity for patience will be rewarded sooner or later.",
-      "Your leadership qualities will be tested and proven.",
-      "Your life will be happy and peaceful.",
-      "Your life will get more and more exciting.",
-      "Your love life will be happy and harmonious.",
-      "Your love of music will be an important part of your life.",
-      "Your loyalty is a virtue, but not when it's wedded with blind stubbornness.",
-      "Your mentality is alert, practical, and analytical.",
-      "Your mind is creative, original and alert.",
-      "Your mind is your greatest asset.",
-      "Your moods signal a period of change.",
-      "Your quick wits will get you out of a tough situation.",
-      "Your reputation is your wealth.",
-      "Your success will astonish everyone.",
-      "Your talents will be recognized and suitably rewarded.",
-      "Your work interests can capture the highest status or prestige."
-    ];
-    
-    function toggleCollapse(contentId, headerElement) {
-      const content = document.getElementById(contentId);
-      const arrow = headerElement.querySelector('.collapse-arrow');
-      
-      if (content.classList.contains('open')) {
-        content.classList.remove('open');
-        if (arrow) arrow.textContent = '▶';
-      } else {
-        content.classList.add('open');
-        if (arrow) arrow.textContent = '▼';
-      }
-    }
-    
-    document.addEventListener('DOMContentLoaded', function() {
-      initParticles();
-      initCharacterInteraction();
-      loadNotes();
-      initKonamiCode();
-      initPixelArtCreator();
-      updateAdminStatus();
-      initMobileTouchSupport();
-      updateFortuneCounter();
-      if (isAdmin) {
-        initArtListener();
-      }
-    });
-    
-    function initMobileTouchSupport() {
-      document.addEventListener('touchstart', function(event) {
-        if (event.touches.length > 1) {
-          event.preventDefault();
-        }
-      }, { passive: false });
-      
-      document.addEventListener('contextmenu', function(event) {
-        event.preventDefault();
-        return false;
-      });
-      
-      document.addEventListener('gesturestart', function(e) {
-        e.preventDefault();
-      });
-    }
-    
-    function showTrap() {
-      const userConfirmed = confirm("⚠️ WARNING: This content contains explicit material.\nAre you sure you want to see Ghassan's nudes?");
-      
-      if (userConfirmed) {
-        document.getElementById('shamePage').style.display = 'flex';
-        document.querySelector('.pixel-nav').style.display = 'none';
-        document.querySelector('.hero').style.display = 'none';
-        document.querySelectorAll('.collapse-section').forEach(el => el.style.display = 'none');
-        document.querySelector('.admin-section').style.display = 'none';
-        document.querySelector('#admin-gallery').style.display = 'none';
-        document.querySelector('.footer').style.display = 'none';
-        document.querySelector('.trap-button').style.display = 'none';
-      }
-    }
-    
-    function returnToSite() {
-      document.getElementById('shamePage').style.display = 'none';
-      document.querySelector('.pixel-nav').style.display = 'flex';
-      document.querySelector('.hero').style.display = 'block';
-      document.querySelectorAll('.collapse-section').forEach(el => el.style.display = 'block');
-      document.querySelector('.admin-section').style.display = 'block';
-      document.querySelector('.footer').style.display = 'block';
-      document.querySelector('.trap-button').style.display = 'block';
-    }
-    
-    function getFortune() {
-      const fortuneText = document.getElementById('fortuneText');
-      const fortuneDisplay = document.getElementById('fortuneDisplay');
-      const fortuneSubtitle = document.getElementById('fortuneSubtitle');
-      const crystalBallSvg = document.getElementById('crystalBallSvg');
-      
-      const randomIndex = Math.floor(Math.random() * fortunes.length);
-      const selectedFortune = fortunes[randomIndex];
-      
-      fortuneText.textContent = `"${selectedFortune}"`;
-      
-      const subtitles = [
-        "- Ghassan's Fortune Teller",
-        "- The Oracle Speaks",
-        "- Fortune Cookie Wisdom",
-        "- Mystical Insight",
-        "- Ancient Prophecy",
-        "- Digital Divination",
-        "- Pixel Fortune"
-      ];
-      const randomSubtitle = subtitles[Math.floor(Math.random() * subtitles.length)];
-      fortuneSubtitle.textContent = randomSubtitle;
-      
-      fortuneDisplay.classList.add('fortune-pop');
-      setTimeout(() => fortuneDisplay.classList.remove('fortune-pop'), 500);
-      
-      crystalBallSvg.classList.add('glow');
-      setTimeout(() => crystalBallSvg.classList.remove('glow'), 2000);
-      
-      fortuneCount++;
-      updateFortuneCounter();
-    }
-    
-    function updateFortuneCounter() {
-      const counter = document.getElementById('fortuneCounter');
-      if (fortuneCount === 0) {
-        counter.textContent = "Click the crystal ball for your first fortune!";
-      } else if (fortuneCount === 1) {
-        counter.textContent = "You've revealed 1 fortune! The future is looking bright.";
-      } else if (fortuneCount < 5) {
-        counter.textContent = `${fortuneCount} fortunes revealed! Keep going!`;
-      } else if (fortuneCount < 10) {
-        counter.textContent = `${fortuneCount} fortunes! You're becoming a fortune expert!`;
-      } else {
-        counter.textContent = `${fortuneCount} fortunes revealed! You're a fortune master!`;
-      }
-    }
-    
-    function initCharacterInteraction() {
-      const character = document.getElementById('pixelCharacter');
-      const bubble = document.getElementById('speechBubble');
-      const speech = document.getElementById('characterSpeech');
-      let clickCount = 0;
-      
-      const dialogues = [
-        "Welcome to my digital hub!",
-        "Try the Pixel Art Creator!",
-        "Get your fortune from the crystal ball!",
-        "Want to know your future?",
-        "The fortune teller knows all!",
-        "Fortune favors the bold!"
-      ];
-      
-      character.addEventListener('click', function() {
-        clickCount = (clickCount + 1) % dialogues.length;
-        speech.textContent = dialogues[clickCount];
-        bubble.classList.add('show');
-        setTimeout(() => { bubble.classList.remove('show'); }, 4000);
-      });
-      
-      character.addEventListener('touchstart', function(e) {
-        e.preventDefault();
-        clickCount = (clickCount + 1) % dialogues.length;
-        speech.textContent = dialogues[clickCount];
-        bubble.classList.add('show');
-        setTimeout(() => { bubble.classList.remove('show'); }, 4000);
-      }, { passive: false });
-    }
-    
-    function initPixelArtCreator() {
-      createColorPalette();
-      createPixelGrid(gridSize);
-    }
-    
-    function createColorPalette() {
-      const colorPalette = document.getElementById('colorPalette');
-      colorPalette.innerHTML = '';
-      
-      colors.forEach(color => {
-        const colorOption = document.createElement('div');
-        colorOption.className = 'color-option';
-        colorOption.style.backgroundColor = color;
-        colorOption.dataset.color = color;
-        
-        if (color === currentColor) {
-          colorOption.classList.add('active');
-        }
-        
-        colorOption.addEventListener('click', function() {
-          selectColor(this);
-        });
-        
-        colorOption.addEventListener('touchstart', function(e) {
-          e.preventDefault();
-          selectColor(this);
-        }, { passive: false });
-        
-        colorPalette.appendChild(colorOption);
-      });
-      
-      document.getElementById('selectedColor').textContent = currentColor;
-      document.getElementById('selectedColor').style.color = currentColor;
-    }
-    
-    function selectColor(element) {
-      currentColor = element.dataset.color;
-      document.getElementById('selectedColor').textContent = currentColor;
-      document.getElementById('selectedColor').style.color = currentColor;
-      
-      document.querySelectorAll('.color-option').forEach(opt => {
-        opt.classList.remove('active');
-      });
-      element.classList.add('active');
-    }
-    
-    function createPixelGrid(size) {
-      const pixelGrid = document.getElementById('pixelGrid');
-      pixelGrid.innerHTML = '';
-      
-      let cellSize;
-      const screenWidth = window.innerWidth;
-      
-      if (screenWidth <= 480) {
-        if (size <= 16) cellSize = 15;
-        else if (size <= 24) cellSize = 12;
-        else cellSize = 8;
-      } else if (screenWidth <= 768) {
-        if (size <= 16) cellSize = 20;
-        else if (size <= 24) cellSize = 15;
-        else cellSize = 10;
-      } else {
-        if (size <= 16) cellSize = 25;
-        else if (size <= 24) cellSize = 18;
-        else cellSize = 12;
-      }
-      
-      pixelGrid.style.gridTemplateColumns = `repeat(${size}, ${cellSize}px)`;
-      pixelGrid.style.width = `${size * cellSize}px`;
-      pixelGrid.style.height = `${size * cellSize}px`;
-      
-      for (let i = 0; i < size * size; i++) {
-        const cell = document.createElement('div');
-        cell.className = 'pixel-cell';
-        cell.style.backgroundColor = '#000000';
-        cell.style.width = `${cellSize}px`;
-        cell.style.height = `${cellSize}px`;
-        
-        cell.addEventListener('click', function() {
-          this.style.backgroundColor = currentColor;
-        });
-        
-        cell.addEventListener('touchstart', function(e) {
-          e.preventDefault();
-          this.style.backgroundColor = currentColor;
-          
-          const paint = (touchEvent) => {
-            touchEvent.preventDefault();
-            const touch = touchEvent.touches[0];
-            const element = document.elementFromPoint(touch.clientX, touch.clientY);
-            if (element && element.classList.contains('pixel-cell')) {
-              element.style.backgroundColor = currentColor;
-            }
-          };
-          
-          this.addEventListener('touchmove', paint, { passive: false });
-          
-          const stopPainting = () => {
-            this.removeEventListener('touchmove', paint);
-            document.removeEventListener('touchend', stopPainting);
-          };
-          
-          document.addEventListener('touchend', stopPainting);
-        }, { passive: false });
-        
-        pixelGrid.appendChild(cell);
-      }
-      
-      let isPainting = false;
-      
-      pixelGrid.addEventListener('mousedown', function(e) {
-        if (e.target.classList.contains('pixel-cell')) {
-          isPainting = true;
-          e.target.style.backgroundColor = currentColor;
-        }
-      });
-      
-      pixelGrid.addEventListener('mouseover', function(e) {
-        if (isPainting && e.target.classList.contains('pixel-cell')) {
-          e.target.style.backgroundColor = currentColor;
-        }
-      });
-      
-      document.addEventListener('mouseup', function() {
-        isPainting = false;
-      });
-    }
-    
-    function changeCanvasSize() {
-      gridSize = parseInt(document.getElementById('canvasSize').value);
-      createPixelGrid(gridSize);
-    }
-    
-    function clearGrid() {
-      const cells = document.querySelectorAll('.pixel-cell');
-      cells.forEach(cell => {
-        cell.style.backgroundColor = '#000000';
-      });
-    }
-    
-    function fillRandom() {
-      const cells = document.querySelectorAll('.pixel-cell');
-      cells.forEach(cell => {
-        const randomColor = colors[Math.floor(Math.random() * colors.length)];
-        cell.style.backgroundColor = randomColor;
-      });
-    }
-    
-    function saveArt() {
-      const notification = document.createElement('div');
-      notification.style.position = 'fixed';
-      notification.style.top = '20px';
-      notification.style.right = '20px';
-      notification.style.background = '#cc0000';
-      notification.style.color = 'white';
-      notification.style.padding = '15px 20px';
-      notification.style.fontFamily = "'Press Start 2P', cursive";
-      notification.style.fontSize = '10px';
-      notification.style.zIndex = '10000';
-      notification.style.border = '2px solid #ff3333';
-      notification.style.boxShadow = '0 0 20px rgba(255, 0, 0, 0.5)';
-      notification.textContent = 'Sending art to cloud...';
-      document.body.appendChild(notification);
-      
-      const gridData = [];
-      const cells = document.querySelectorAll('.pixel-cell');
-      cells.forEach(cell => {
-        gridData.push(cell.style.backgroundColor || '#000000');
-      });
-      
-      const artRef = db.ref("artGallery").push();
-      artRef.set({
-        id: Date.now(),
-        size: gridSize,
-        colors: gridData,
-        timestamp: new Date().toLocaleString()
-      }).then(() => {
-        notification.textContent = '✅ Art saved to cloud!';
-        notification.style.background = '#006600';
-        
-        setTimeout(() => {
-          notification.remove();
-        }, 2000);
-        
-        if (isAdmin) {
-          updateAdminGallery();
-        }
-      }).catch((error) => {
-        notification.textContent = '❌ Failed to save art';
-        notification.style.background = '#ff0000';
-        setTimeout(() => {
-          notification.remove();
-        }, 2000);
-        console.error("Error saving art: ", error);
-      });
-    }
-    
-    function initArtListener() {
-      db.ref("artGallery").on("value", function(snapshot) {
-        if (isAdmin) {
-          updateAdminGallery();
-        }
-      });
-    }
-    
-    function activateAdmin() {
-      const password = document.getElementById('adminPassword').value;
-      
-      if (password === ADMIN_PASSWORD) {
-        isAdmin = true;
-        document.getElementById('adminPassword').value = "";
-        updateAdminStatus();
-        loadNotes();
-        
-        const status = document.getElementById('adminStatus');
-        status.textContent = "✅ ADMIN MODE ACTIVATED! You can now delete notes and view art gallery.";
-        status.style.color = "#00ff00";
-        
-        if (!document.querySelector('.admin-indicator')) {
-          const indicator = document.createElement('div');
-          indicator.className = 'admin-indicator';
-          indicator.style.position = 'fixed';
-          indicator.style.top = '10px';
-          indicator.style.right = '10px';
-          indicator.style.background = '#ff0000';
-          indicator.style.color = '#fff';
-          indicator.style.padding = '5px 10px';
-          indicator.style.fontSize = '9px';
-          indicator.style.zIndex = '1001';
-          indicator.textContent = 'ADMIN MODE';
-          document.body.appendChild(indicator);
-        }
-        
-        document.getElementById('admin-gallery').style.display = 'block';
-        initArtListener();
-        updateAdminGallery();
-      } else {
-        const status = document.getElementById('adminStatus');
-        status.textContent = "❌ Wrong password! Try again.";
-        status.style.color = "#ff0000";
-      }
-    }
-    
-    function deactivateAdmin() {
-      isAdmin = false;
-      updateAdminStatus();
-      loadNotes();
-      
-      const indicator = document.querySelector('.admin-indicator');
-      if (indicator) {
-        indicator.remove();
-      }
-      
-      document.getElementById('admin-gallery').style.display = 'none';
-      db.ref("artGallery").off();
-    }
-    
-    function updateAdminStatus() {
-      const status = document.getElementById('adminStatus');
-      if (isAdmin) {
-        status.textContent = "🛡️ Admin mode is ACTIVE. You can delete notes and view art gallery.";
-        status.style.color = "#00ff00";
-      } else {
-        status.textContent = "🔒 Admin mode is INACTIVE. Enter password to enable.";
-        status.style.color = "var(--accent)";
-      }
-    }
-    
-    function updateAdminGallery() {
-      if (!isAdmin) return;
-      
-      const gallery = document.getElementById('artGallery');
-      const gallerySection = document.getElementById('admin-gallery');
-      
-      if (!gallery || !gallerySection) return;
-      
-      gallerySection.style.display = 'block';
-      
-      db.ref("artGallery").once("value", function(snapshot) {
-        gallery.innerHTML = '';
-        
-        if (!snapshot.exists()) {
-          gallery.innerHTML = '<p style="text-align: center; font-size: 9px; color: var(--accent); grid-column: 1/-1;">No art has been sent to Ghassan yet.</p>';
-          return;
-        }
-        
-        const artPieces = [];
-        snapshot.forEach(function(childSnapshot) {
-          artPieces.push({
-            firebaseKey: childSnapshot.key,
-            ...childSnapshot.val()
-          });
-        });
-        
-        artPieces.sort((a, b) => {
-          if (a.timestamp && b.timestamp) {
-            return new Date(b.timestamp) - new Date(a.timestamp);
-          }
-          return 0;
-        });
-        
-        artPieces.forEach((art, index) => {
-          const artContainer = document.createElement('div');
-          artContainer.className = 'art-item';
-          
-          const canvas = document.createElement('canvas');
-          canvas.width = 80;
-          canvas.height = 80;
-          const ctx = canvas.getContext('2d');
-          
-          const cellSize = 80 / art.size;
-          for (let y = 0; y < art.size; y++) {
-            for (let x = 0; x < art.size; x++) {
-              const color = art.colors[y * art.size + x] || '#000000';
-              ctx.fillStyle = color;
-              ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
-            }
-          }
-          
-          artContainer.appendChild(canvas);
-          
-          const timestamp = document.createElement('div');
-          timestamp.className = 'art-timestamp';
-          timestamp.textContent = art.timestamp || 'Unknown date';
-          artContainer.appendChild(timestamp);
-          
-          const deleteBtn = document.createElement('button');
-          deleteBtn.className = 'art-delete-btn';
-          deleteBtn.innerHTML = 'X';
-          deleteBtn.onclick = (e) => {
-            e.stopPropagation();
-            deleteArt(art.firebaseKey);
-          };
-          artContainer.appendChild(deleteBtn);
-          
-          gallery.appendChild(artContainer);
-        });
-      });
-    }
-    
-    function deleteArt(firebaseKey) {
-      if (!isAdmin) return;
-      
-      if (!confirm('Delete this art piece from the cloud?')) return;
-      
-      db.ref("artGallery/" + firebaseKey).remove().then(() => {
-        updateAdminGallery();
-      }).catch((error) => {
-        console.error("Error deleting art: ", error);
-        alert("Failed to delete art: " + error.message);
-      });
-    }
-    
-    function clearAllArt() {
-      if (!isAdmin) return;
-      
-      if (!confirm('Delete ALL art sent to Ghassan from the cloud? This cannot be undone!')) return;
-      
-      db.ref("artGallery").remove().then(() => {
-        updateAdminGallery();
-        alert("All art has been cleared from the cloud.");
-      }).catch((error) => {
-        console.error("Error clearing art: ", error);
-        alert("Failed to clear art: " + error.message);
-      });
-    }
-    
-    function initParticles() {
-      const isMobile = window.innerWidth <= 768;
-      
-      particlesJS('particles-js', {
-        particles: {
-          number: { 
-            value: isMobile ? 50 : 100, 
-            density: { enable: true, value_area: 800 } 
-          },
-          color: { value: ["#cc0000", "#ff0000", "#990000", "#ff3333"] },
-          shape: { type: "circle" },
-          opacity: { value: 0.5, random: true },
-          size: { value: isMobile ? 2 : 3, random: true, anim: { enable: true, speed: 3 } },
-          line_linked: {
-            enable: true,
-            distance: isMobile ? 100 : 150,
-            color: "#ff0000",
-            opacity: 0.3,
-            width: 1
-          },
-          move: {
-            enable: true,
-            speed: isMobile ? 1 : 2,
-            direction: "none",
-            random: true,
-            straight: false,
-            out_mode: "out",
-            bounce: false
-          }
-        },
-        interactivity: {
-          detect_on: "canvas",
-          events: {
-            onhover: { enable: !isMobile, mode: "repulse" },
-            onclick: { enable: true, mode: "push" },
-            resize: true
-          }
-        },
-        retina_detect: true
-      });
-    }
-    
-    function addNote() {
-      const nickname = document.getElementById('nickname').value.trim();
-      const noteText = document.getElementById('noteText').value.trim();
-      
-      if (!nickname || !noteText) {
-        alert("Please enter both a nickname and a message!");
-        return;
-      }
-      
-      const newNote = {
-        nickname: nickname,
-        noteText: noteText,
-        timestamp: Date.now()
-      };
-      
-      db.ref("notes").push(newNote);
-      
-      document.getElementById('nickname').value = "";
-      document.getElementById('noteText').value = "";
-      
-      alert("Message posted successfully!");
-    }
-    
-    function loadNotes() {
-      const notesWall = document.getElementById('notesWall');
-      db.ref("notes").on("value", function(snapshot) {
-        notesWall.innerHTML = "";
-        
-        if (!snapshot.exists()) {
-          notesWall.innerHTML = '<p style="text-align: center; font-size: 10px; color: var(--accent);">No messages yet. Be the first to leave a message!</p>';
-          return;
-        }
-        
-        const notes = [];
-        snapshot.forEach(function(childSnapshot) {
-          notes.push({
-            id: childSnapshot.key,
-            ...childSnapshot.val()
-          });
-        });
-        
-        notes.sort((a, b) => b.timestamp - a.timestamp);
-        const displayNotes = window.innerWidth <= 768 ? notes.slice(0, 20) : notes;
-        
-        displayNotes.forEach(note => {
-          const noteElement = document.createElement('div');
-          noteElement.className = 'note';
-          
-          noteElement.innerHTML = `
-            <span class="note-author">${escapeHTML(note.nickname)}</span>
-            <div class="note-content">${escapeHTML(note.noteText).replace(/\n/g, '<br>')}</div>
-            ${isAdmin ? `<button class="delete-btn" onclick="deleteNote('${note.id}')">DELETE</button>` : ''}
-          `;
-          
-          notesWall.appendChild(noteElement);
-        });
-        
-        if (window.innerWidth <= 768 && notes.length > 20) {
-          const limitMessage = document.createElement('p');
-          limitMessage.style.textAlign = 'center';
-          limitMessage.style.fontSize = '9px';
-          limitMessage.style.color = 'var(--accent)';
-          limitMessage.style.marginTop = '15px';
-          limitMessage.textContent = `Showing 20 newest of ${notes.length} messages`;
-          notesWall.appendChild(limitMessage);
-        }
-      });
-    }
-    
-    function deleteNote(noteId) {
-      if (!isAdmin) return;
-      
-      if (confirm("Are you sure you want to delete this message?")) {
-        db.ref("notes/" + noteId).remove();
-      }
-    }
-    
-    function initKonamiCode() {
-      document.addEventListener('keydown', (e) => {
-        if (e.code === konamiCode[konamiIndex]) {
-          konamiIndex++;
-          if (konamiIndex === konamiCode.length) {
-            activateEasterEgg();
-          }
-        } else {
-          konamiIndex = 0;
-        }
-      });
-    }
-    
-    function activateEasterEgg() {
-      document.getElementById('easterEgg').style.display = 'block';
-    }
-    
-    function closeEasterEgg() {
-      document.getElementById('easterEgg').style.display = 'none';
-    }
-    
-    function escapeHTML(str) {
-      const div = document.createElement('div');
-      div.textContent = str;
-      return div.innerHTML;
-    }
-    
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function(e) {
-        e.preventDefault();
-        const targetId = this.getAttribute('href');
-        if (targetId === '#') return;
-        
-        const targetElement = document.querySelector(targetId);
-        if (targetElement) {
-          const headerOffset = 80;
-          const elementPosition = targetElement.getBoundingClientRect().top;
-          const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-          
-          window.scrollTo({
-            top: offsetPosition,
-            behavior: 'smooth'
-          });
-        }
-      });
-    });
-  </script>
+  <script type="module" src="assets/js/main.js"></script>
 </body>
 </html>
