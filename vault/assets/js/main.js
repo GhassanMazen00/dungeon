@@ -3,6 +3,7 @@
 import { CHAMBERS, CLAIM } from './chambers.js';
 import { unseal, normalise } from './crypto.js';
 import { TOOLS } from './tools.js';
+import { initEmbers } from './embers.js';
 
 const KEY = 'vault_progress_v1';
 const HINT_GATES = [10, 30, 60]; // minutes on a chamber before each hint opens
@@ -98,6 +99,7 @@ function renderChamber() {
   save(progress);
 
   qs('#roman').textContent = chamber.roman;
+  qs('#ghost').textContent = chamber.roman;
   qs('#chamberName').textContent = chamber.name;
   qs('#brief').textContent = chamber.brief;
   qs('#aside').textContent = chamber.aside;
@@ -119,6 +121,8 @@ function renderChamber() {
 async function showClaim() {
   const payload = await unseal(CLAIM, progress.keys.at(-1));
   if (!payload) return;
+  index = CHAMBERS.length;  // so the track reads a full 5 / 5, not 4 / 5
+  renderProgress();
   qs('#vault').hidden = true;
   qs('#opened').hidden = false;
   qs('#claimTitle').textContent = payload.title;
@@ -177,6 +181,8 @@ async function submit() {
 /* ----------------------------------------------------------------------- boot */
 
 async function boot() {
+  initEmbers(document.getElementById('embers'));
+
   const resumed = await openTo(index);
   index = resumed.index;
   chamber = resumed.payload;

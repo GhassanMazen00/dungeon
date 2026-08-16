@@ -6,7 +6,7 @@
   <title>The Vault</title>
 
   <meta name="description" content="Five chambers. Five keys. No coding required — the vault lends you every instrument you need. One prize for the first person through.">
-  <meta name="theme-color" content="#0b0c0f">
+  <meta name="theme-color" content="#080203">
   <meta name="robots" content="index, nofollow">
 
   <meta property="og:type" content="website">
@@ -14,7 +14,7 @@
   <meta property="og:description" content="Five chambers. Five keys. Nobody has opened it yet.">
   <meta property="og:url" content="https://abomazen.com/vault/">
 
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%230b0c0f'/><circle cx='16' cy='16' r='9' fill='none' stroke='%23d6b06a' stroke-width='2'/><circle cx='16' cy='16' r='2.5' fill='%23d6b06a'/></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23080203'/><circle cx='16' cy='16' r='9' fill='none' stroke='%23ff5334' stroke-width='2'/><circle cx='16' cy='16' r='2.5' fill='%23ff5334'/></svg>">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,6 +23,7 @@
   <link rel="stylesheet" href="assets/css/vault.css">
 </head>
 <body>
+  <canvas id="embers" aria-hidden="true"></canvas>
 
   <header class="wrap top">
     <span class="sigil" aria-hidden="true">◎</span>
@@ -34,6 +35,7 @@
   <!-- ===================== THE CHAMBERS ===================== -->
   <main class="wrap chamber" id="vault">
     <div class="chamber__head">
+      <div class="chamber__ghost" id="ghost" aria-hidden="true">I</div>
       <div class="chamber__roman" id="roman">I</div>
       <h1 class="chamber__name" id="chamberName">The Plate</h1>
       <p class="brief" id="brief"></p>
