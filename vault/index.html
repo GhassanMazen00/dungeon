@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>The Vault</title>
+
+  <meta name="description" content="Five chambers. Five keys. No coding required — the vault lends you every instrument you need. One prize for the first person through.">
+  <meta name="theme-color" content="#0b0c0f">
+  <meta name="robots" content="index, nofollow">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="The Vault">
+  <meta property="og:description" content="Five chambers. Five keys. Nobody has opened it yet.">
+  <meta property="og:url" content="https://abomazen.com/vault/">
+
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%230b0c0f'/><circle cx='16' cy='16' r='9' fill='none' stroke='%23d6b06a' stroke-width='2'/><circle cx='16' cy='16' r='2.5' fill='%23d6b06a'/></svg>">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/css/vault.css">
+</head>
+<body>
+
+  <header class="wrap top">
+    <span class="sigil" aria-hidden="true">◎</span>
+    <span class="top__name">The Vault</span>
+    <div class="track" id="track" aria-label="Progress"></div>
+    <span class="track__count" id="trackCount">0 / 5</span>
+  </header>
+
+  <!-- ===================== THE CHAMBERS ===================== -->
+  <main class="wrap chamber" id="vault">
+    <div class="chamber__head">
+      <div class="chamber__roman" id="roman">I</div>
+      <h1 class="chamber__name" id="chamberName">The Plate</h1>
+      <p class="brief" id="brief"></p>
+      <span class="aside" id="aside"></span>
+    </div>
+
+    <section class="stage" id="stage" aria-label="Apparatus"></section>
+
+    <div class="keyway">
+      <label class="sr-only" for="answer">The key</label>
+      <input id="answer" type="text" autocomplete="off" autocapitalize="characters"
+             spellcheck="false" placeholder="speak the key…">
+      <button class="btn btn--primary" id="tryKey" type="button">Turn</button>
+    </div>
+    <p class="verdict" id="verdict"></p>
+
+    <div class="hints" id="hints"></div>
+  </main>
+
+  <!-- ===================== OPENED ===================== -->
+  <section class="wrap opened" id="opened" hidden>
+    <h1 class="opened__title" id="claimTitle"></h1>
+    <p class="opened__body" id="claimBody"></p>
+    <p class="claim" id="claimCode"></p>
+  </section>
+
+  <footer class="wrap foot">
+    <span>Five chambers · every instrument provided · no code, no tools, no outside knowledge</span>
+    <span>
+      <button id="abandon" type="button">erase progress</button>
+      &nbsp;·&nbsp;
+      <a href="../">abomazen.com</a>
+    </span>
+  </footer>
+
+  <script type="module" src="assets/js/main.js"></script>
+</body>
+</html>
