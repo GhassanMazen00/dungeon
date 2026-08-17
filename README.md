@@ -104,6 +104,51 @@ failover chain — a rate-limited model automatically hands off to the next.
 `FALLBACK_FREE_MODELS` in `config.js` covers the case where the catalogue itself
 is unreachable.
 
+## The Vault (`/vault`)
+
+A standalone five-chamber puzzle with a prize on it. Self-contained — it shares
+nothing with the rest of the site and needs no coding, tooling or outside
+knowledge to solve. Each chamber lends the player whatever apparatus it needs.
+
+| # | Chamber | Faculty | Apparatus |
+| --- | --- | --- | --- |
+| I | The Plate | observation | a lamp with colour filters and a brightness window |
+| II | The Choir | lateral wordplay | a sorting board |
+| III | The Lattice | pure deduction | a nonogram grid |
+| IV | The Lock | interactive deduction | five wheels and a feedback readout |
+| V | The Door | synthesis | nothing — only the four keys already held |
+
+### How it stays honest
+
+**Chamber N+1 is AES-GCM ciphertext, keyed on the answer to chamber N.** The
+shipped page contains no readable content past the chamber you have reached, so
+opening devtools shows noise. There is no "is this correct?" branch to bypass —
+a wrong answer simply fails the authentication tag. Key derivation runs 250,000
+rounds of PBKDF2, so each guess costs ~0.3s and brute force is impractical.
+
+Chamber I ships in plaintext because it is the way in; its hints are written so
+that none of them names its answer.
+
+Answers are normalised (case, spacing and punctuation ignored) so nobody loses
+on formatting. Hints unlock on a timer — 10, 30 and 60 minutes into a chamber —
+identically for everyone. Progress is kept in `localStorage`.
+
+Opening the vault reveals a **claim code** that exists nowhere else in the
+source. That code is the proof a winner sends; it cannot be produced by anyone
+who has not actually finished.
+
+### Editing the puzzle
+
+Everything lives in `tools/build-vault.mjs` — riddles, answers, hints, the
+grid, the lock combination and the claim code. Change it and re-run:
+
+```bash
+node tools/build-vault.mjs      # re-seals vault/assets/js/chambers.js
+```
+
+The script prints the answer list so you can keep a copy. Never commit that
+output anywhere public.
+
 ## Editing content
 
 Almost everything readable lives in `assets/js/data/site.js` — bio, skills,
