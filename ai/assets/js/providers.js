@@ -4,12 +4,21 @@
 // format, auth header and stream envelope, so each gets a thin adapter and the
 // rest of the app never knows which one answered.
 
-import { PROVIDERS, PROVIDER_ORDER, PARAMS, STORAGE } from './config.js';
+import { PROVIDERS, PROVIDER_ORDER, PARAMS, STORAGE, keyShapeWarning } from './config.js';
 
 /* ---------------------------------------------------------------- selection */
 
-/** Providers that actually have a key, in preference order. */
+/**
+ * Providers with a key that stands a chance of authenticating, in preference
+ * order. A key of the wrong shape is skipped rather than tried first: it can
+ * only 401, and letting it head the chain delays every single reply behind a
+ * request that cannot succeed.
+ */
 export const availableProviders = () =>
+  PROVIDER_ORDER.filter((id) => PROVIDERS[id]?.key?.trim() && !keyShapeWarning(id));
+
+/** Every provider holding a key, including unusable ones — for diagnostics. */
+export const configuredProviders = () =>
   PROVIDER_ORDER.filter((id) => PROVIDERS[id]?.key?.trim());
 
 let active = availableProviders()[0] ?? null;
@@ -340,6 +349,13 @@ export async function probeAll(onResult) {
     const cfg = PROVIDERS[id];
     if (!cfg.key?.trim()) {
       const row = { id, model: '—', ok: false, note: 'no key set' };
+      out.push(row);
+      onResult?.(row);
+      continue;
+    }
+    const shape = keyShapeWarning(id);
+    if (shape) {
+      const row = { id, model: '—', ok: false, note: `key skipped — ${shape}` };
       out.push(row);
       onResult?.(row);
       continue;

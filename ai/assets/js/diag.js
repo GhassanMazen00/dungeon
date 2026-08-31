@@ -6,7 +6,7 @@
 // verbatim. It asks nothing of the visitor — the page ships ready to use.
 
 import { PROVIDERS, PROVIDER_ORDER, keyShapeWarning } from './config.js';
-import { probeAll } from './providers.js';
+import { probeAll, availableProviders } from './providers.js';
 
 const qs = (s) => document.querySelector(s);
 
@@ -68,9 +68,12 @@ export function initDiag() {
   });
 
   // Summary line so the panel is useful before running anything.
-  qs('#diagKeys').textContent = PROVIDER_ORDER.map(
-    (id) => `${PROVIDERS[id].label}: ${PROVIDERS[id].key?.trim() ? 'key set' : 'no key'}`
-  ).join('  ·  ');
+  const usable = new Set(availableProviders());
+  qs('#diagKeys').textContent = PROVIDER_ORDER.map((id) => {
+    const has = PROVIDERS[id].key?.trim();
+    const state = !has ? 'no key' : usable.has(id) ? 'in use' : 'key skipped';
+    return `${PROVIDERS[id].label}: ${state}`;
+  }).join('  ·  ');
 
   // A wrong-shaped key is the likeliest cause of a blanket 401, so say so
   // before anyone spends time running the check.
