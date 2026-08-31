@@ -65,6 +65,35 @@ try {
   /* malformed or unavailable storage — fall back to the committed keys */
 }
 
+// A key pasted from the wrong page is the single most likely setup mistake, and
+// it surfaces as an opaque 401. These shapes turn that into a readable message.
+// They warn, never block: if a provider changes its format, the call still runs.
+export const KEY_SHAPES = {
+  gemini: {
+    test: /^AIza[\w-]{30,}$/,
+    hint: 'An AI Studio key starts with "AIza" and is about 39 characters. ' +
+          'A value starting with "AQ." or "ya29." is an OAuth token from a ' +
+          'different Google page and will not work here. Create one at ' +
+          'aistudio.google.com/apikey → "Create API key".'
+  },
+  groq: {
+    test: /^gsk_[\w-]{20,}$/,
+    hint: 'A Groq key starts with "gsk_". Create one at console.groq.com/keys.'
+  },
+  openrouter: {
+    test: /^sk-or-[\w-]{20,}$/,
+    hint: 'An OpenRouter key starts with "sk-or-".'
+  }
+};
+
+/** Returns a warning when a key is present but the wrong shape, else null. */
+export function keyShapeWarning(id) {
+  const key = PROVIDERS[id]?.key?.trim();
+  const shape = KEY_SHAPES[id];
+  if (!key || !shape) return null;
+  return shape.test.test(key) ? null : shape.hint;
+}
+
 export const STORAGE = {
   chat: 'doctor_chat_v1',
   provider: 'doctor_provider_v1',
