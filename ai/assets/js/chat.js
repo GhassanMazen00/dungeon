@@ -1,7 +1,7 @@
 // Chat. One conversation, one persona, streaming, bilingual.
 
 import { STORAGE, HISTORY_TURNS } from './config.js';
-import { SYSTEM, OPENERS, PROMPTS } from './persona.js';
+import { SYSTEM, OPENERS } from './persona.js';
 import { streamReply, availableProviders, providerLabel, currentProvider } from './providers.js';
 import { renderMarkdown } from './markdown.js';
 
@@ -74,26 +74,22 @@ function bubbleFor(message) {
 
 function renderEmpty() {
   const opener = OPENERS[Math.floor(Math.random() * OPENERS.length)];
-  area.innerHTML = `
-    <div class="intro">
-      <div class="intro__eye" aria-hidden="true"><span></span></div>
-      <p class="intro__line">${opener}</p>
-      <div class="intro__prompts">
-        ${PROMPTS.map(
-          (p) =>
-            `<button class="seed" type="button" dir="auto">${p
-              .replace(/&/g, '&amp;')
-              .replace(/</g, '&lt;')}</button>`
-        ).join('')}
-      </div>
-    </div>`;
+  area.replaceChildren();
 
-  area.querySelectorAll('.seed').forEach((b) =>
-    b.addEventListener('click', () => {
-      input.value = b.textContent;
-      send();
-    })
-  );
+  const intro = document.createElement('div');
+  intro.className = 'intro';
+
+  const eye = document.createElement('div');
+  eye.className = 'intro__eye';
+  eye.setAttribute('aria-hidden', 'true');
+  eye.append(document.createElement('span'));
+
+  const line = document.createElement('p');
+  line.className = 'intro__line';
+  line.textContent = opener;
+
+  intro.append(eye, line);
+  area.append(intro);
 }
 
 function render() {

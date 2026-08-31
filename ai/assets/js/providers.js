@@ -4,7 +4,7 @@
 // format, auth header and stream envelope, so each gets a thin adapter and the
 // rest of the app never knows which one answered.
 
-import { PROVIDERS, PROVIDER_ORDER, PARAMS } from './config.js';
+import { PROVIDERS, PROVIDER_ORDER, PARAMS, STORAGE } from './config.js';
 
 /* ---------------------------------------------------------------- selection */
 
@@ -13,6 +13,32 @@ export const availableProviders = () =>
   PROVIDER_ORDER.filter((id) => PROVIDERS[id]?.key?.trim());
 
 let active = availableProviders()[0] ?? null;
+
+/* A model that answered once is tried first next time, so the walk below
+   normally costs nothing after the first success. */
+const remembered = (() => {
+  try {
+    return JSON.parse(localStorage.getItem(STORAGE.models) ?? '{}');
+  } catch {
+    return {};
+  }
+})();
+
+function rememberModel(id, model) {
+  remembered[id] = model;
+  try {
+    localStorage.setItem(STORAGE.models, JSON.stringify(remembered));
+  } catch {
+    /* storage unavailable — we just re-walk next load */
+  }
+}
+
+/** Candidate models for a provider, the last known-good one first. */
+function modelsFor(id) {
+  const list = PROVIDERS[id].models;
+  const won = remembered[id];
+  return won && list.includes(won) ? [won, ...list.filter((m) => m !== won)] : [...list];
+}
 
 export const currentProvider = () => active;
 export const providerLabel = (id = active) => PROVIDERS[id]?.label ?? 'offline';
@@ -25,9 +51,9 @@ export function setProvider(id) {
 /* ------------------------------------------------------------------ adapters */
 
 /** Gemini: system prompt is its own field, and roles are user/model. */
-function geminiRequest(cfg, system, messages) {
+function geminiRequest(cfg, model, system, messages) {
   return {
-    url: cfg.endpoint(cfg.model),
+    url: cfg.endpoint(model),
     headers: { 'Content-Type': 'application/json', 'x-goog-api-key': cfg.key },
     body: {
       systemInstruction: { parts: [{ text: system }] },
@@ -53,9 +79,9 @@ function geminiRequest(cfg, system, messages) {
 }
 
 /** Groq and OpenRouter both speak the OpenAI chat-completions shape. */
-function openaiRequest(cfg, system, messages, id) {
+function openaiRequest(cfg, model, system, messages, id) {
   return {
-    url: cfg.endpoint(cfg.model),
+    url: cfg.endpoint(model),
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${cfg.key}`,
@@ -64,7 +90,7 @@ function openaiRequest(cfg, system, messages, id) {
         : {})
     },
     body: {
-      model: cfg.model,
+      model,
       stream: true,
       temperature: PARAMS.temperature,
       max_tokens: PARAMS.maxTokens,
@@ -92,14 +118,17 @@ class HttpError extends Error {
   }
 }
 
-const RETRYABLE = [408, 429, 500, 502, 503, 504];
+// Move to the next MODEL: this one is gone or was rejected outright.
+const DEAD_MODEL = [400, 404, 422];
+// Move to the next PROVIDER: the key or the service is the problem.
+const DEAD_PROVIDER = [401, 402, 403, 408, 429, 500, 502, 503, 504];
 
-async function streamOnce(id, system, messages, signal, onToken) {
+async function streamOnce(id, model, system, messages, signal, onToken) {
   const cfg = PROVIDERS[id];
   const req =
     id === 'gemini'
-      ? geminiRequest(cfg, system, messages)
-      : openaiRequest(cfg, system, messages, id);
+      ? geminiRequest(cfg, model, system, messages)
+      : openaiRequest(cfg, model, system, messages, id);
 
   const res = await fetch(req.url, {
     method: 'POST',
@@ -154,31 +183,48 @@ export async function streamReply({ system, messages, signal, onToken, onProvide
   const chain = availableProviders();
   if (!chain.length) throw new Error('No API key configured.');
 
-  // Start from the active provider, then try the others in order.
+  // Start from the active provider, then the rest in order.
   const ordered = [active, ...chain.filter((id) => id !== active)].filter(Boolean);
   let lastError = null;
 
   for (const id of ordered) {
-    const started = performance.now();
-    let ttft = 0;
-    try {
-      if (id !== active) {
-        active = id;
-        onProvider?.(id);
+    if (id !== active) {
+      active = id;
+      onProvider?.(id);
+    }
+
+    // Within a provider, walk its models: a retired ID answers 404 and should
+    // cost one failed request, not the whole conversation.
+    for (const model of modelsFor(id)) {
+      const started = performance.now();
+      let ttft = 0;
+      try {
+        const text = await streamOnce(id, model, system, messages, signal, (d, full) => {
+          if (!ttft) ttft = Math.round(performance.now() - started);
+          onToken?.(d, full);
+        });
+        rememberModel(id, model);
+        return {
+          text,
+          provider: id,
+          model,
+          ms: Math.round(performance.now() - started),
+          ttft
+        };
+      } catch (error) {
+        if (error.name === 'AbortError') throw error;
+        lastError = error;
+
+        const status = error instanceof HttpError ? error.status : 0;
+        console.warn(`[${id}/${model}] ${error.message}`);
+
+        if (status && DEAD_PROVIDER.includes(status)) break;      // next provider
+        if (status && !DEAD_MODEL.includes(status)) break;        // unknown: don't grind
+        // DEAD_MODEL or a network/parse failure: try this provider's next model.
       }
-      const text = await streamOnce(id, system, messages, signal, (d, full) => {
-        if (!ttft) ttft = Math.round(performance.now() - started);
-        onToken?.(d, full);
-      });
-      return { text, provider: id, ms: Math.round(performance.now() - started), ttft };
-    } catch (error) {
-      if (error.name === 'AbortError') throw error;
-      lastError = error;
-      const retryable = error instanceof HttpError ? RETRYABLE.includes(error.status) : true;
-      console.warn(`[${id}] ${error.message}`);
-      if (!retryable) throw error;
     }
   }
 
   throw lastError ?? new Error('Every provider refused.');
 }
+

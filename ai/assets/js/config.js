@@ -8,12 +8,15 @@
 // accepted trade here: every provider below is configured to a free model, so
 // the worst case is someone burning a daily quota, not a bill.
 
+// Each provider lists candidate models, best first. Providers retire model IDs
+// without warning — a dead ID answers 404 — so the client walks the list until
+// one works and remembers the winner. Never hardcode a single ID here.
 export const PROVIDERS = {
   gemini: {
     label: 'Gemini Flash',
     // Paste a key from https://aistudio.google.com/apikey — free, resets daily.
     key: '',
-    model: 'gemini-2.0-flash',
+    models: ['gemini-2.0-flash', 'gemini-2.0-flash-001', 'gemini-1.5-flash', 'gemini-1.5-flash-8b'],
     endpoint: (model) =>
       `https://generativelanguage.googleapis.com/v1beta/models/${model}:streamGenerateContent?alt=sse`
   },
@@ -21,13 +24,20 @@ export const PROVIDERS = {
     label: 'Groq',
     // https://console.groq.com/keys — fastest tokens/sec of the three.
     key: '',
-    model: 'llama-3.3-70b-versatile',
+    models: ['llama-3.3-70b-versatile', 'llama-3.1-8b-instant', 'gemma2-9b-it'],
     endpoint: () => 'https://api.groq.com/openai/v1/chat/completions'
   },
   openrouter: {
     label: 'OpenRouter',
     key: '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',
-    model: 'meta-llama/llama-3.3-70b-instruct:free',
+    models: [
+      'meta-llama/llama-3.3-70b-instruct:free',
+      'deepseek/deepseek-chat-v3-0324:free',
+      'google/gemma-3-27b-it:free',
+      'qwen/qwen-2.5-72b-instruct:free',
+      'mistralai/mistral-small-3.1-24b-instruct:free',
+      'meta-llama/llama-3.2-3b-instruct:free'
+    ],
     endpoint: () => 'https://openrouter.ai/api/v1/chat/completions'
   }
 };
@@ -50,7 +60,8 @@ try {
 
 export const STORAGE = {
   chat: 'doctor_chat_v1',
-  provider: 'doctor_provider_v1'
+  provider: 'doctor_provider_v1',
+  models: 'doctor_models_v1'   // last model known to work, per provider
 };
 
 // Tuned for latency, not for essays. The persona is terse by design, so a low

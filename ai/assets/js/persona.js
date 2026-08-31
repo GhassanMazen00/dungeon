@@ -67,11 +67,3 @@ export const OPENERS = [
   'The chair is still warm.',
   'I kept your file.'
 ];
-
-export const PROMPTS = [
-  "i can't sleep",
-  'ما بعرف شو بدي',
-  'everyone is annoying me',
-  'أشعر أني عالق',
-  'why am I like this'
-];

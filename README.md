@@ -106,7 +106,12 @@ localStorage.setItem('ai_keys', JSON.stringify({ gemini: 'AIza...' }))
 
 ### Speed
 
-Time-to-first-word is the only metric that matters here, so: no model-discovery
+Each provider lists candidate models rather than one hardcoded ID, because
+providers retire IDs without warning and a dead ID answers 404. The client walks
+the list, then remembers the winner in `localStorage`, so the walk costs nothing
+after the first success.
+
+Time-to-first-word is the only metric that matters here, so: no model-catalogue
 round trip, no web fonts, one stylesheet, a short system prompt, a 12-turn
 history window, a 400-token ceiling, `preconnect` to the model host, and
 streaming so the first word paints before the sentence exists.
