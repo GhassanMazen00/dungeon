@@ -22,7 +22,7 @@ export const PROVIDERS = {
   gemini: {
     label: 'Gemini Flash',
     // Paste a key from https://aistudio.google.com/apikey — free, resets daily.
-    key: '',
+    key: 'AQ.Ab8RN6Jd3-6MTJKhtb7GFnpZt4TY0f_VyvVlyLmow-FkVp2dHw',
     models: ['gemini-2.0-flash', 'gemini-2.0-flash-001', 'gemini-1.5-flash', 'gemini-1.5-flash-8b'],
     endpoint: (model) =>
       `https://generativelanguage.googleapis.com/v1beta/models/${model}:streamGenerateContent?alt=sse`
