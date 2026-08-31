@@ -1,6 +1,6 @@
 // Chat. One conversation, one persona, streaming, bilingual.
 
-import { STORAGE, HISTORY_TURNS } from './config.js';
+import { STORAGE, HISTORY_TURNS, keyShapeWarning } from './config.js';
 import { SYSTEM, OPENERS } from './persona.js';
 import { streamReply, availableProviders, providerLabel, currentProvider } from './providers.js';
 import { renderMarkdown } from './markdown.js';
@@ -166,10 +166,14 @@ async function turn() {
       note.className = 'sys sys--bad';
       // The provider's own message is the only thing that makes this
       // debuggable from a phone, so show it verbatim.
+      const shape = availableProviders().map(keyShapeWarning).find(Boolean);
       note.textContent =
         availableProviders().length === 0
-          ? 'No API key configured. Tap the line under THE DOCTOR to add one.'
-          : error.detail || error.message;
+          ? 'No API key configured.'
+          : shape
+            ? `${error.detail || error.message}\n\n${shape}`
+            : error.detail || error.message;
+      note.style.whiteSpace = 'pre-line';
       area.append(note);
 
       const help = document.createElement('button');

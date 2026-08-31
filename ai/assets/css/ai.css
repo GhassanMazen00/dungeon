@@ -455,3 +455,16 @@ button.who__sub {
 .diag__head { color: var(--bone); }
 .diag__model { color: var(--mute); font-size: 10px; overflow-wrap: anywhere; }
 .diag__note { color: var(--dim); overflow-wrap: anywhere; margin-top: 3px; }
+
+.diag__warn {
+  border: 1px solid var(--line-2);
+  border-left-width: 3px;
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 14px;
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.65;
+  color: var(--red);
+  background: rgba(255, 59, 48, 0.07);
+}

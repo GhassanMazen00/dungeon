@@ -5,7 +5,7 @@
 // something anyone can debug. This shows what every provider actually returned,
 // verbatim. It asks nothing of the visitor — the page ships ready to use.
 
-import { PROVIDERS, PROVIDER_ORDER } from './config.js';
+import { PROVIDERS, PROVIDER_ORDER, keyShapeWarning } from './config.js';
 import { probeAll } from './providers.js';
 
 const qs = (s) => document.querySelector(s);
@@ -71,4 +71,20 @@ export function initDiag() {
   qs('#diagKeys').textContent = PROVIDER_ORDER.map(
     (id) => `${PROVIDERS[id].label}: ${PROVIDERS[id].key?.trim() ? 'key set' : 'no key'}`
   ).join('  ·  ');
+
+  // A wrong-shaped key is the likeliest cause of a blanket 401, so say so
+  // before anyone spends time running the check.
+  const warnings = PROVIDER_ORDER
+    .map((id) => [PROVIDERS[id].label, keyShapeWarning(id)])
+    .filter(([, w]) => w);
+
+  const host = qs('#diagWarn');
+  host.replaceChildren();
+  host.hidden = warnings.length === 0;
+  for (const [label, text] of warnings) {
+    const p = document.createElement('p');
+    p.className = 'diag__warn';
+    p.textContent = `${label}: ${text}`;
+    host.append(p);
+  }
 }
