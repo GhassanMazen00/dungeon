@@ -112,8 +112,18 @@ function deltaFrom(json, id) {
 
 class HttpError extends Error {
   constructor(status, body) {
-    super(`HTTP ${status}`);
+    // Providers put the useful part in the body — OpenRouter's "No endpoints
+    // found matching your data policy" is a 404 that says nothing without it.
+    let detail = '';
+    try {
+      const json = JSON.parse(body);
+      detail = json?.error?.message ?? json?.message ?? '';
+    } catch {
+      detail = String(body ?? '').slice(0, 200);
+    }
+    super(detail ? `${status}: ${detail}` : `HTTP ${status}`);
     this.status = status;
+    this.detail = detail;
     this.body = body;
   }
 }
@@ -228,3 +238,37 @@ export async function streamReply({ system, messages, signal, onToken, onProvide
   throw lastError ?? new Error('Every provider refused.');
 }
 
+
+
+/* ------------------------------------------------------------- diagnostics */
+
+/**
+ * Tries every configured provider/model once with a minimal request and
+ * reports exactly what came back. Used by the in-page connection check so a
+ * failure can be read off the screen instead of guessed at.
+ */
+export async function probeAll(onResult) {
+  const out = [];
+  for (const id of PROVIDER_ORDER) {
+    const cfg = PROVIDERS[id];
+    if (!cfg.key?.trim()) {
+      const row = { id, model: '—', ok: false, note: 'no key set' };
+      out.push(row);
+      onResult?.(row);
+      continue;
+    }
+    for (const model of cfg.models) {
+      let row;
+      try {
+        await streamOnce(id, model, 'Reply with the single word: ok', [{ role: 'user', content: 'ping' }], undefined, () => {});
+        row = { id, model, ok: true, note: 'works' };
+      } catch (error) {
+        row = { id, model, ok: false, note: error.detail || error.message };
+      }
+      out.push(row);
+      onResult?.(row);
+      if (row.ok) break; // no need to test the rest of this provider's list
+    }
+  }
+  return out;
+}

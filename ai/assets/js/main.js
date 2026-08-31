@@ -1,6 +1,7 @@
 // Entry point.
 
 import { initChat } from './chat.js';
+import { initDiag } from './diag.js';
 
 // Keep the composer above the on-screen keyboard on mobile. visualViewport is
 // the only reliable signal for this on iOS; without it the input hides behind
@@ -20,6 +21,7 @@ function trackViewport() {
 function boot() {
   trackViewport();
   initChat();
+  initDiag();
 }
 
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);

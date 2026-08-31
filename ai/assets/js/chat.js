@@ -160,14 +160,24 @@ async function turn() {
       status('stopped');
     } else {
       console.error(error);
-      status(error.message, 'is-bad');
+      status('failed — tap for details', 'is-bad');
+
       const note = document.createElement('p');
-      note.className = 'sys';
+      note.className = 'sys sys--bad';
+      // The provider's own message is the only thing that makes this
+      // debuggable from a phone, so show it verbatim.
       note.textContent =
         availableProviders().length === 0
-          ? 'No API key is configured. See ai/assets/js/config.js.'
-          : 'The Doctor is not answering. Try again.';
+          ? 'No API key configured. Tap the line under THE DOCTOR to add one.'
+          : error.detail || error.message;
       area.append(note);
+
+      const help = document.createElement('button');
+      help.className = 'sys-action';
+      help.type = 'button';
+      help.textContent = 'connection check';
+      help.addEventListener('click', () => document.getElementById('status').click());
+      area.append(help);
       toBottom();
     }
   } finally {

@@ -28,7 +28,7 @@
     <a class="back" href="../" aria-label="Back">←</a>
     <div class="who">
       <div class="who__name">The Doctor</div>
-      <div class="who__sub" id="status">connecting</div>
+      <button class="who__sub" id="status" type="button" title="Connection check">connecting</button>
     </div>
     <div class="bar__end">
       <button class="icon" id="clear" type="button" aria-label="End the session" title="End the session">✕</button>
@@ -45,6 +45,29 @@
                 autocapitalize="sentences" maxlength="2000"></textarea>
       <button class="push" id="send" type="button" aria-label="Send">↑</button>
       <button class="push push--stop" id="stop" type="button" aria-label="Stop" hidden>■</button>
+    </div>
+  </div>
+
+  <!-- Connection panel: what each provider actually returned. -->
+  <div class="diag" id="diag" hidden>
+    <div class="diag__box">
+      <header class="diag__bar">
+        <span class="diag__title">CONNECTION</span>
+        <button class="icon" id="diagClose" type="button" aria-label="Close">✕</button>
+      </header>
+
+      <p class="diag__keys" id="diagKeys"></p>
+
+      <label class="diag__label" for="diagKey">Gemini key (stays on this device)</label>
+      <div class="diag__field">
+        <input id="diagKey" type="password" autocomplete="off" spellcheck="false"
+               placeholder="AIza…">
+        <button class="diag__btn" id="diagSave" type="button">Save</button>
+      </div>
+      <p class="diag__hint">Get one free at aistudio.google.com/apikey</p>
+
+      <button class="diag__btn diag__btn--wide" id="diagRun" type="button">Run check</button>
+      <ul class="diag__list" id="diagList"></ul>
     </div>
   </div>
 
