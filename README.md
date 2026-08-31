@@ -30,7 +30,8 @@ in `assets/js/data/site.js`. If you change the portrait, regenerate
 
 ```
 index.html              markup only — all behaviour lives in modules
-ai/index.html           the AI arcade (chat + dungeon) — see below
+ai/index.html           The Doctor — the AI chat page, see below
+vault/index.html        The Vault — the puzzle, see below
 assets/
   css/
     tokens.css          colours, type scale, spacing, accent themes
@@ -64,45 +65,59 @@ assets/
   img/                  put ghassan.jpg here
 ```
 
-## The AI arcade (`/ai`)
+## The Doctor (`/ai`)
 
-Two modes, both running on OpenRouter's **free** models only.
+A single-purpose chat page. One persona — a cold, rude, faintly sinister
+therapist — that answers in whatever language you write in, English or Arabic.
 
 ```
 ai/index.html
 ai/assets/
-  css/ai.css            app shell, chat, dungeon (reuses the site's tokens)
+  css/ai.css            one self-contained stylesheet, no imports, no web fonts
   js/
-    config.js           key, model ranking, tunables
-    openrouter.js       free-model discovery, SSE streaming, failover
-    personas.js         the 11 personalities  ← edit voices here
+    config.js           provider keys, model choice, tunables
+    providers.js        one streaming interface over Gemini / Groq / OpenRouter
+    persona.js          the system prompt  ← edit the character here
     markdown.js         escape-first markdown renderer
-    chat.js             chat mode
-    dungeon.js          dungeon mode
-    sfx.js              WebAudio blips
-    main.js             boot + mode switching
+    chat.js             the conversation, RTL handling
+    main.js             boot + mobile keyboard tracking
 ```
 
-**Chat** streams replies token by token, renders markdown and code blocks, keeps
-history in localStorage, and has 11 personas (pirate, therapist, villain,
-Gen Z, noir detective, medieval peasant…). Slash commands: `/help`, `/persona`,
-`/models`, `/model`, `/dungeon`, `/clear`.
+### Providers
 
-**Dungeon** is an AI dungeon master with real state — HP, gold, inventory, turn
-count — that persists across refreshes. The model returns a strict JSON object
-each turn; every field is clamped and validated, and a malformed reply degrades
-to plain narration instead of breaking the run. Pick one of three choices
-(or press `1`/`2`/`3`), or type any action you like.
+`providers.js` speaks three APIs behind one interface. The first provider with
+a key is used and the rest are failover, so a rate limit falls through to the
+next instead of showing an error.
 
-### Staying free
+| Provider | Why | Key from |
+| --- | --- | --- |
+| **Gemini Flash** (default) | free quota resets daily, fastest of the three for this workload, strongest Arabic | [aistudio.google.com/apikey](https://aistudio.google.com/apikey) |
+| Groq | fastest raw tokens/sec | [console.groq.com/keys](https://console.groq.com/keys) |
+| OpenRouter | already configured, free models only | openrouter.ai |
 
-`openrouter.js` fetches the live model catalogue on load and keeps only models
-priced at zero, so the list can never drift onto a paid model as OpenRouter's
-lineup changes. Models are ranked by family, reasoning models are demoted
-(their `<think>` blocks ruin the timing of a joke), and the top eight become a
-failover chain — a rate-limited model automatically hands off to the next.
-`FALLBACK_FREE_MODELS` in `config.js` covers the case where the catalogue itself
-is unreachable.
+Gemini serves CORS headers for browser origins, so the page calls it directly
+with no backend — same as OpenRouter today.
+
+To trial a key on one device without committing it:
+
+```js
+localStorage.setItem('ai_keys', JSON.stringify({ gemini: 'AIza...' }))
+```
+
+### Speed
+
+Time-to-first-word is the only metric that matters here, so: no model-discovery
+round trip, no web fonts, one stylesheet, a short system prompt, a 12-turn
+history window, a 400-token ceiling, `preconnect` to the model host, and
+streaming so the first word paints before the sentence exists.
+
+### The safety override
+
+The persona is deliberately unpleasant, and a page that calls itself a therapist
+will be handed real distress eventually. The system prompt opens — before any
+character description — with an instruction to drop the act entirely on any sign
+of genuine crisis and point the person to real help. It is written to outrank
+the rest of the prompt. Keep it there if you edit `persona.js`.
 
 ## The Vault (`/vault`)
 
@@ -166,7 +181,6 @@ Section names, order, and the nav come from `SECTIONS` in `assets/js/config.js`.
 | `Ctrl+Z` / `Ctrl+Shift+Z` | Studio: undo / redo |
 | `Ctrl+Enter` | Guestbook: post |
 | `↑↑↓↓←→←→BA` | CRT mode |
-| `1` `2` `3` | Dungeon: pick a choice |
 | `Enter` / `Shift+Enter` | Chat: send / newline |
 
 ## Security notes
@@ -180,8 +194,8 @@ to hide them:
    on the server side — right now the database is world-writable, so anyone can
    post to the guestbook or the art gallery directly. **This one is worth fixing.**
 
-2. **The OpenRouter API key** in `ai/assets/js/config.js` is visible to anyone
-   who views the source. This is a deliberate trade: the client is locked to
-   zero-cost models, so the worst case is someone burning through the free rate
-   limits, not a bill. If that ever becomes annoying, rotate the key and put it
-   behind a small proxy (a Cloudflare Worker) that holds it server-side.
+2. **The model API keys** in `ai/assets/js/config.js` are visible to anyone who
+   views the source. This is a deliberate trade: every provider is pointed at a
+   free tier, so the worst case is someone burning a daily quota, not a bill.
+   If that becomes annoying, rotate the key and put it behind a small proxy (a
+   Cloudflare Worker) that holds it server-side.

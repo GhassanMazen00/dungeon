@@ -1,114 +1,98 @@
-// Chat mode: streaming replies, personas, slash commands, markdown, history.
+// Chat. One conversation, one persona, streaming, bilingual.
 
-import { STORAGE, CHAT_PARAMS, HISTORY_TURNS } from './config.js';
-import { PERSONAS, DEFAULT_PERSONA, getPersona, STARTERS } from './personas.js';
-import { streamChat, current, getChain, pinModel } from './openrouter.js';
-import { renderMarkdown, bindCodeCopy } from './markdown.js';
-import { sfx } from './sfx.js';
-import { el, qs, toast, createModal } from '../../../assets/js/core/dom.js';
-import { read, write } from '../../../assets/js/core/store.js';
+import { STORAGE, HISTORY_TURNS } from './config.js';
+import { SYSTEM, OPENERS, PROMPTS } from './persona.js';
+import { streamReply, availableProviders, providerLabel, currentProvider } from './providers.js';
+import { renderMarkdown } from './markdown.js';
 
-let personaId = read(STORAGE.persona, DEFAULT_PERSONA);
-let messages = read(STORAGE.chat, []);
+const qs = (s) => document.querySelector(s);
+
+/** Arabic, Persian and Hebrew blocks — enough to decide text direction. */
+const RTL = /[֐-׿؀-ۿݐ-ݿࢠ-ࣿﭐ-﷿ﹰ-﻿]/;
+
+/** True when a string is *mostly* RTL, so a stray English word doesn't flip it. */
+function isRTL(text) {
+  const letters = text.replace(/[^\p{L}]/gu, '');
+  if (!letters) return false;
+  const rtl = (letters.match(new RegExp(RTL, 'gu')) ?? []).length;
+  return rtl / letters.length > 0.35;
+}
+
+let messages = [];
 let controller = null;
 let busy = false;
 
-let msgArea;
+let area;
 let input;
-let personaModal;
-let onStatus = () => {};
 
-/* --- Persistence ---------------------------------------------------------- */
+/* ------------------------------------------------------------------ storage */
 
-const save = () => write(STORAGE.chat, messages.slice(-HISTORY_TURNS * 2));
+const load = () => {
+  try {
+    return JSON.parse(localStorage.getItem(STORAGE.chat)) ?? [];
+  } catch {
+    return [];
+  }
+};
 
-/** System prompt + a rolling window of turns. */
-function buildPayload() {
-  const persona = getPersona(personaId);
-  return [
-    { role: 'system', content: persona.prompt },
-    ...messages.slice(-HISTORY_TURNS).map(({ role, content }) => ({ role, content }))
-  ];
-}
+const save = () => {
+  try {
+    localStorage.setItem(STORAGE.chat, JSON.stringify(messages.slice(-HISTORY_TURNS * 2)));
+  } catch {
+    /* private mode — the session just won't persist */
+  }
+};
 
-/* --- Rendering ------------------------------------------------------------ */
+/* ---------------------------------------------------------------- rendering */
 
-function avatarFor(role) {
-  const persona = getPersona(personaId);
-  return el('div', {
-    class: `msg__avatar msg__avatar--${role}`,
-    text: role === 'user' ? 'YOU' : persona.emoji
+const atBottom = () => area.scrollHeight - area.scrollTop - area.clientHeight < 140;
+
+const toBottom = () => {
+  requestAnimationFrame(() => {
+    area.scrollTop = area.scrollHeight;
   });
+};
+
+function bubbleFor(message) {
+  const row = document.createElement('div');
+  row.className = `msg msg--${message.role}`;
+
+  const bubble = document.createElement('div');
+  bubble.className = 'bubble';
+
+  if (isRTL(message.content)) {
+    bubble.dir = 'rtl';
+    bubble.classList.add('is-rtl');
+  }
+
+  if (message.role === 'assistant') bubble.innerHTML = renderMarkdown(message.content);
+  else bubble.textContent = message.content;
+
+  row.append(bubble);
+  return row;
 }
 
 function renderEmpty() {
-  const persona = getPersona(personaId);
-  msgArea.replaceChildren(
-    el(
-      'div',
-      { class: 'empty-state' },
-      el('div', { class: 'empty-state__mark', text: persona.emoji }),
-      el('h2', { class: 'empty-state__title', text: persona.name }),
-      el('p', { class: 'empty-state__sub', text: persona.tagline }),
-      el(
-        'div',
-        { class: 'starters' },
-        ...STARTERS.map((text) =>
-          el('button', {
-            class: 'chip starter',
-            type: 'button',
-            text,
-            onclick: () => {
-              input.value = text;
-              send();
-            }
-          })
-        )
-      ),
-      el('p', {
-        class: 'empty-state__hint',
-        html: 'Type <code>/help</code> for commands · <code>/persona</code> to change who you are talking to'
-      })
-    )
-  );
-}
+  const opener = OPENERS[Math.floor(Math.random() * OPENERS.length)];
+  area.innerHTML = `
+    <div class="intro">
+      <div class="intro__eye" aria-hidden="true"><span></span></div>
+      <p class="intro__line">${opener}</p>
+      <div class="intro__prompts">
+        ${PROMPTS.map(
+          (p) =>
+            `<button class="seed" type="button" dir="auto">${p
+              .replace(/&/g, '&amp;')
+              .replace(/</g, '&lt;')}</button>`
+        ).join('')}
+      </div>
+    </div>`;
 
-function messageNode(message, index) {
-  const bubble = el('div', { class: 'msg__bubble' });
-
-  if (message.role === 'assistant') {
-    bubble.innerHTML = renderMarkdown(message.content);
-    bindCodeCopy(bubble);
-  } else {
-    bubble.textContent = message.content;
-  }
-
-  const actions = el(
-    'div',
-    { class: 'msg__actions' },
-    el('button', {
-      class: 'msg__action',
-      type: 'button',
-      text: 'copy',
-      onclick: async () => {
-        try {
-          await navigator.clipboard.writeText(message.content);
-          toast('Copied.', 'ok', 1200);
-        } catch {
-          toast('Clipboard blocked.', 'bad');
-        }
-      }
-    }),
-    message.role === 'assistant' && index === messages.length - 1
-      ? el('button', { class: 'msg__action', type: 'button', text: 'retry', onclick: regenerate })
-      : null
-  );
-
-  return el(
-    'div',
-    { class: `msg msg--${message.role}` },
-    avatarFor(message.role),
-    el('div', { class: 'msg__body' }, bubble, actions)
+  area.querySelectorAll('.seed').forEach((b) =>
+    b.addEventListener('click', () => {
+      input.value = b.textContent;
+      send();
+    })
   );
 }
 
@@ -117,163 +101,82 @@ function render() {
     renderEmpty();
     return;
   }
-  msgArea.replaceChildren(...messages.map(messageNode));
-  scrollDown();
+  area.replaceChildren(...messages.map(bubbleFor));
+  toBottom();
 }
 
-const scrollDown = () => {
-  requestAnimationFrame(() => {
-    msgArea.scrollTop = msgArea.scrollHeight;
-  });
-};
-
-const nearBottom = () => msgArea.scrollHeight - msgArea.scrollTop - msgArea.clientHeight < 120;
-
-/* --- Slash commands ------------------------------------------------------- */
-
-function systemLine(html) {
-  msgArea.append(el('div', { class: 'sys-line', html }));
-  scrollDown();
-}
-
-function handleCommand(raw) {
-  const [cmd, ...rest] = raw.slice(1).trim().split(/\s+/);
-  const arg = rest.join(' ').toLowerCase();
-
-  switch (cmd.toLowerCase()) {
-    case 'help':
-      systemLine(
-        '<strong>commands</strong><br>' +
-          '<code>/persona</code> — open the persona picker<br>' +
-          `<code>/persona &lt;name&gt;</code> — ${PERSONAS.map((p) => p.id).join(', ')}<br>` +
-          '<code>/dungeon</code> — enter the dungeon<br>' +
-          '<code>/model</code> — which free model is running<br>' +
-          '<code>/models</code> — list available free models<br>' +
-          '<code>/clear</code> — wipe the conversation'
-      );
-      return true;
-
-    case 'persona': {
-      if (!arg) {
-        personaModal.open();
-        return true;
-      }
-      const found = PERSONAS.find((p) => p.id === arg || p.name.toLowerCase() === arg);
-      if (!found) {
-        systemLine(`no persona called <code>${arg}</code>. try <code>/persona</code>`);
-        return true;
-      }
-      setPersona(found.id);
-      return true;
-    }
-
-    case 'model': {
-      const model = current();
-      systemLine(model ? `running <code>${model.id}</code> — free tier` : 'no model connected');
-      return true;
-    }
-
-    case 'models': {
-      const chain = getChain();
-      systemLine(
-        chain.length
-          ? `<strong>free models in the chain</strong><br>${chain
-              .map((m, i) => `${i === 0 ? '▸' : '·'} <code>${m.id}</code>`)
-              .join('<br>')}`
-          : 'no models discovered yet'
-      );
-      return true;
-    }
-
-    case 'clear':
-      clearChat();
-      return true;
-
-    case 'dungeon':
-      document.dispatchEvent(new CustomEvent('arcade:mode', { detail: 'dungeon' }));
-      return true;
-
-    default:
-      systemLine(`unknown command <code>/${cmd}</code> — try <code>/help</code>`);
-      return true;
-  }
-}
-
-/* --- Sending -------------------------------------------------------------- */
+/* ------------------------------------------------------------------ sending */
 
 function setBusy(state) {
   busy = state;
-  qs('#btnSend').hidden = state;
-  qs('#btnStop').hidden = !state;
-  input.disabled = false;
+  qs('#send').hidden = state;
+  qs('#stop').hidden = !state;
 }
 
-async function stream(intoBubble) {
-  const started = performance.now();
+function status(text, kind = '') {
+  const node = qs('#status');
+  node.textContent = text;
+  node.classList.toggle('is-bad', kind === 'is-bad');
+}
+
+async function turn() {
+  const row = document.createElement('div');
+  row.className = 'msg msg--assistant';
+  const bubble = document.createElement('div');
+  bubble.className = 'bubble is-thinking';
+  bubble.innerHTML = '<i></i><i></i><i></i>';
+  row.append(bubble);
+  area.append(row);
+  toBottom();
+
+  setBusy(true);
   controller = new AbortController();
-  let firstToken = true;
+  let first = true;
 
   try {
-    const result = await streamChat({
-      messages: buildPayload(),
-      params: CHAT_PARAMS,
+    const result = await streamReply({
+      system: SYSTEM,
+      messages: messages.slice(-HISTORY_TURNS),
       signal: controller.signal,
-      onModelChange: (model) => onStatus({ model, note: 'switching model…' }),
-      onToken: (_delta, full) => {
-        if (firstToken) {
-          firstToken = false;
-          intoBubble.classList.remove('is-thinking');
-          sfx.receive();
+      onProvider: (id) => status(`switching to ${providerLabel(id)}…`),
+      onToken: (_d, full) => {
+        if (first) {
+          first = false;
+          bubble.classList.remove('is-thinking');
+          if (isRTL(full)) {
+            bubble.dir = 'rtl';
+            bubble.classList.add('is-rtl');
+          }
         }
-        const stick = nearBottom();
-        intoBubble.innerHTML = renderMarkdown(full);
-        if (stick) scrollDown();
+        const stick = atBottom();
+        bubble.innerHTML = renderMarkdown(full);
+        if (stick) toBottom();
       }
     });
 
-    intoBubble.innerHTML = renderMarkdown(result.text);
-    bindCodeCopy(intoBubble);
-    onStatus({ model: result.model, ms: Math.round(performance.now() - started) });
-    return result.text;
-  } finally {
-    controller = null;
-  }
-}
-
-async function runTurn() {
-  const row = el(
-    'div',
-    { class: 'msg msg--assistant' },
-    avatarFor('assistant'),
-    el(
-      'div',
-      { class: 'msg__body' },
-      el('div', { class: 'msg__bubble is-thinking', html: '<span></span><span></span><span></span>' })
-    )
-  );
-  msgArea.append(row);
-  scrollDown();
-
-  const bubble = row.querySelector('.msg__bubble');
-  setBusy(true);
-
-  try {
-    const text = await stream(bubble);
-    messages.push({ role: 'assistant', content: text });
+    messages.push({ role: 'assistant', content: result.text });
     save();
     render();
+    status(`${providerLabel(result.provider)} · ${result.ttft}ms to first word`);
   } catch (error) {
     row.remove();
     if (error.name === 'AbortError') {
-      systemLine('stopped.');
+      status('stopped');
     } else {
-      console.error('[chat]', error);
-      systemLine(`<span class="sys-line--bad">${error.message}</span>`);
-      sfx.bad();
+      console.error(error);
+      status(error.message, 'is-bad');
+      const note = document.createElement('p');
+      note.className = 'sys';
+      note.textContent =
+        availableProviders().length === 0
+          ? 'No API key is configured. See ai/assets/js/config.js.'
+          : 'The Doctor is not answering. Try again.';
+      area.append(note);
+      toBottom();
     }
   } finally {
+    controller = null;
     setBusy(false);
-    input.focus();
   }
 }
 
@@ -283,118 +186,64 @@ async function send() {
   if (!text) return;
 
   input.value = '';
-  autosize();
+  input.dir = 'auto';
+  sizeInput();
 
-  if (text.startsWith('/')) {
-    if (!messages.length) msgArea.replaceChildren();
-    handleCommand(text);
-    return;
-  }
-
-  sfx.send();
   messages.push({ role: 'user', content: text });
   save();
   render();
-  await runTurn();
+  await turn();
 }
 
-async function regenerate() {
-  if (busy || !messages.length) return;
-  if (messages[messages.length - 1].role === 'assistant') messages.pop();
-  save();
-  render();
-  await runTurn();
-}
-
-export function stop() {
-  controller?.abort();
-}
+export const stop = () => controller?.abort();
 
 function clearChat() {
   messages = [];
   save();
   render();
-  toast('Conversation cleared.', 'info', 1400);
+  status('');
+  input.dir = 'auto';
+  input.focus();
 }
 
-/* --- Personas ------------------------------------------------------------- */
+/* ---------------------------------------------------------------- composer */
 
-function setPersona(id) {
-  personaId = id;
-  write(STORAGE.persona, id);
-  const persona = getPersona(id);
-
-  qs('#personaEmoji').textContent = persona.emoji;
-  qs('#personaName').textContent = persona.name;
-
-  document
-    .querySelectorAll('.persona-card')
-    .forEach((card) => card.classList.toggle('is-active', card.dataset.persona === id));
-
-  if (messages.length) systemLine(`now speaking to <strong>${persona.name}</strong> — ${persona.tagline}`);
-  else render();
-
-  personaModal?.close();
-  sfx.click();
-}
-
-function buildPersonaPicker() {
-  qs('#personaGrid').replaceChildren(
-    ...PERSONAS.map((persona) =>
-      el(
-        'button',
-        {
-          class: `persona-card${persona.id === personaId ? ' is-active' : ''}`,
-          type: 'button',
-          dataset: { persona: persona.id },
-          onclick: () => setPersona(persona.id)
-        },
-        el('span', { class: 'persona-card__emoji', text: persona.emoji }),
-        el('span', { class: 'persona-card__name', text: persona.name }),
-        el('span', { class: 'persona-card__tag', text: persona.tagline })
-      )
-    )
-  );
-}
-
-/* --- Composer ------------------------------------------------------------- */
-
-function autosize() {
+function sizeInput() {
   input.style.height = 'auto';
-  input.style.height = `${Math.min(160, input.scrollHeight)}px`;
+  input.style.height = `${Math.min(140, input.scrollHeight)}px`;
 }
 
-/* --- Init ----------------------------------------------------------------- */
+/* --------------------------------------------------------------------- init */
 
-export function initChat({ onStatusChange }) {
-  msgArea = qs('#msgArea');
-  input = qs('#chatInput');
-  onStatus = onStatusChange ?? (() => {});
-  personaModal = createModal('personaModal');
+export function initChat() {
+  area = qs('#stream');
+  input = qs('#input');
 
-  buildPersonaPicker();
-  setPersona(personaId);
+  messages = load();
+  render();
 
-  qs('#btnSend').addEventListener('click', send);
-  qs('#btnStop').addEventListener('click', stop);
-  qs('#btnNewChat').addEventListener('click', clearChat);
-  qs('#personaBtn').addEventListener('click', () => personaModal.open());
+  qs('#send').addEventListener('click', send);
+  qs('#stop').addEventListener('click', stop);
+  qs('#clear').addEventListener('click', clearChat);
 
-  qs('#modelSelect').addEventListener('change', (event) => {
-    const model = pinModel(event.target.value);
-    onStatus({ model, note: 'pinned' });
-    toast(`Model pinned: ${model.name}`, 'info', 1600);
+  input.addEventListener('input', () => {
+    sizeInput();
+    // Let the field flip direction as the user types Arabic.
+    input.dir = isRTL(input.value) ? 'rtl' : 'ltr';
   });
 
-  input.addEventListener('input', autosize);
   input.addEventListener('keydown', (event) => {
-    if (event.key === 'Enter' && !event.shiftKey) {
+    if (event.key === 'Enter' && !event.shiftKey && !matchMedia('(max-width: 720px)').matches) {
       event.preventDefault();
       send();
     }
   });
 
-  render();
-}
+  status(
+    availableProviders().length
+      ? `${providerLabel(currentProvider())} · ready`
+      : 'no key configured'
+  );
 
-export const focusChat = () => input?.focus();
+  if (!matchMedia('(max-width: 720px)').matches) input.focus();
+}
