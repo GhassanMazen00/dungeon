@@ -3,29 +3,12 @@
 // Exists because a failing API call on a static page is otherwise invisible:
 // the browser console is not reachable on a phone, and "it doesn't work" is not
 // something anyone can debug. This shows what every provider actually returned,
-// verbatim, and lets a key be pasted in without editing or committing code.
+// verbatim. It asks nothing of the visitor — the page ships ready to use.
 
 import { PROVIDERS, PROVIDER_ORDER } from './config.js';
 import { probeAll } from './providers.js';
 
 const qs = (s) => document.querySelector(s);
-
-const KEYS = 'ai_keys';
-
-const readKeys = () => {
-  try {
-    return JSON.parse(localStorage.getItem(KEYS) ?? '{}');
-  } catch {
-    return {};
-  }
-};
-
-function saveKey(id, key) {
-  const keys = readKeys();
-  if (key.trim()) keys[id] = key.trim();
-  else delete keys[id];
-  localStorage.setItem(KEYS, JSON.stringify(keys));
-}
 
 function row(result) {
   const li = document.createElement('li');
@@ -50,11 +33,9 @@ function row(result) {
 export function initDiag() {
   const panel = qs('#diag');
   const list = qs('#diagList');
-  const input = qs('#diagKey');
 
   const open = () => {
     panel.hidden = false;
-    input.value = readKeys().gemini ?? '';
   };
   const close = () => {
     panel.hidden = true;
@@ -64,11 +45,6 @@ export function initDiag() {
   qs('#diagClose').addEventListener('click', close);
   panel.addEventListener('click', (e) => {
     if (e.target === panel) close();
-  });
-
-  qs('#diagSave').addEventListener('click', () => {
-    saveKey('gemini', input.value);
-    location.reload();
   });
 
   qs('#diagRun').addEventListener('click', async () => {

@@ -33,11 +33,86 @@ function rememberModel(id, model) {
   }
 }
 
-/** Candidate models for a provider, the last known-good one first. */
+/**
+ * Candidate models for a provider, the last known-good one first — including
+ * when that model came from live discovery and is not in the configured list.
+ * Without this the walk repeats every dead model on every single message.
+ */
 function modelsFor(id) {
   const list = PROVIDERS[id].models;
   const won = remembered[id];
-  return won && list.includes(won) ? [won, ...list.filter((m) => m !== won)] : [...list];
+  if (!won) return [...list];
+  return [won, ...list.filter((m) => m !== won)];
+}
+
+/* ------------------------------------------------- live free-model discovery */
+
+// OpenRouter retires `:free` variants without notice — the API answers
+// "This model is unavailable for free. The paid version is available now"
+// and helpfully suggests the PAID slug. Following that suggestion would start
+// charging the account, so it is ignored entirely. Instead the catalogue is
+// read and filtered on price, which is the only way to be certain a model is
+// actually free.
+
+const CATALOGUE_TTL = 6 * 60 * 60 * 1000;
+
+const isZeroCost = (m) => {
+  const p = m?.pricing ?? {};
+  const zero = (v) => v !== undefined && v !== null && Number(v) === 0;
+  return zero(p.prompt) && zero(p.completion);
+};
+
+// Prefer capable general-purpose models; demote tiny ones and reasoning models
+// (their <think> blocks wreck a one-line answer).
+const rank = (id) => {
+  let score = 50;
+  if (/llama-4|llama-3\.3/i.test(id)) score += 45;
+  else if (/deepseek-chat|deepseek-v3/i.test(id)) score += 42;
+  else if (/qwen.*(2\.5|3)/i.test(id)) score += 38;
+  else if (/gemma-3/i.test(id)) score += 34;
+  else if (/mistral-small|mistral-nemo/i.test(id)) score += 30;
+  else if (/gpt-oss|glm|kimi/i.test(id)) score += 26;
+  if (/\br1\b|reason|thinking|qwq/i.test(id)) score -= 60;
+  if (/(^|[^0-9])([1-3])b([^0-9]|$)/i.test(id)) score -= 25;
+  return score;
+};
+
+let cataloguePromise = null;
+
+/** Zero-cost OpenRouter model IDs, best first. Cached for six hours. */
+async function freeModels() {
+  try {
+    const cached = JSON.parse(localStorage.getItem('doctor_catalogue_v1') ?? 'null');
+    if (cached && Date.now() - cached.at < CATALOGUE_TTL && cached.ids?.length) return cached.ids;
+  } catch {
+    /* fall through to a fetch */
+  }
+
+  // One in-flight fetch, however many callers.
+  cataloguePromise ??= (async () => {
+    const res = await fetch(`${'https://openrouter.ai/api/v1'}/models`, {
+      headers: { Authorization: `Bearer ${PROVIDERS.openrouter.key}` }
+    });
+    if (!res.ok) throw new Error(`catalogue ${res.status}`);
+    const body = await res.json();
+    const ids = (body.data ?? [])
+      .filter(isZeroCost)
+      .map((m) => m.id)
+      .sort((a, b) => rank(b) - rank(a));
+    if (!ids.length) throw new Error('no free models listed');
+    try {
+      localStorage.setItem('doctor_catalogue_v1', JSON.stringify({ at: Date.now(), ids }));
+    } catch {
+      /* ignore */
+    }
+    return ids;
+  })();
+
+  try {
+    return await cataloguePromise;
+  } finally {
+    cataloguePromise = null;
+  }
 }
 
 export const currentProvider = () => active;
@@ -189,23 +264,16 @@ async function streamOnce(id, model, system, messages, signal, onToken) {
  * rate limit or a server error.
  * @returns {Promise<{text:string, provider:string, ms:number, ttft:number}>}
  */
-export async function streamReply({ system, messages, signal, onToken, onProvider }) {
+export async function streamReply({ system, messages, signal, onToken, onProvider, onNote }) {
   const chain = availableProviders();
   if (!chain.length) throw new Error('No API key configured.');
 
-  // Start from the active provider, then the rest in order.
   const ordered = [active, ...chain.filter((id) => id !== active)].filter(Boolean);
   let lastError = null;
 
-  for (const id of ordered) {
-    if (id !== active) {
-      active = id;
-      onProvider?.(id);
-    }
-
-    // Within a provider, walk its models: a retired ID answers 404 and should
-    // cost one failed request, not the whole conversation.
-    for (const model of modelsFor(id)) {
+  /** Try a list of models on one provider. Returns a result, or null. */
+  const tryModels = async (id, models) => {
+    for (const model of models) {
       const started = performance.now();
       let ttft = 0;
       try {
@@ -214,29 +282,48 @@ export async function streamReply({ system, messages, signal, onToken, onProvide
           onToken?.(d, full);
         });
         rememberModel(id, model);
-        return {
-          text,
-          provider: id,
-          model,
-          ms: Math.round(performance.now() - started),
-          ttft
-        };
+        return { text, provider: id, model, ms: Math.round(performance.now() - started), ttft };
       } catch (error) {
         if (error.name === 'AbortError') throw error;
         lastError = error;
-
         const status = error instanceof HttpError ? error.status : 0;
         console.warn(`[${id}/${model}] ${error.message}`);
+        if (status && DEAD_PROVIDER.includes(status)) return null;   // provider is the problem
+        if (status && !DEAD_MODEL.includes(status)) return null;     // unknown: stop grinding
+        // DEAD_MODEL or a transport hiccup: try this provider's next model.
+      }
+    }
+    return null;
+  };
 
-        if (status && DEAD_PROVIDER.includes(status)) break;      // next provider
-        if (status && !DEAD_MODEL.includes(status)) break;        // unknown: don't grind
-        // DEAD_MODEL or a network/parse failure: try this provider's next model.
+  for (const id of ordered) {
+    if (id !== active) {
+      active = id;
+      onProvider?.(id);
+    }
+
+    const hit = await tryModels(id, modelsFor(id));
+    if (hit) return hit;
+
+    // The configured list is stale. Ask the provider what is actually free
+    // right now and try that. This is what keeps the page working as free
+    // model IDs come and go, with no edit and no key from anyone.
+    if (id === 'openrouter') {
+      try {
+        onNote?.('finding a working model…');
+        const live = await freeModels();
+        const fresh = live.filter((m) => !PROVIDERS.openrouter.models.includes(m)).slice(0, 6);
+        const second = await tryModels(id, fresh);
+        if (second) return second;
+      } catch (error) {
+        console.warn('[openrouter] catalogue lookup failed:', error.message);
       }
     }
   }
 
   throw lastError ?? new Error('Every provider refused.');
 }
+
 
 
 

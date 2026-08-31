@@ -8,9 +8,16 @@
 // accepted trade here: every provider below is configured to a free model, so
 // the worst case is someone burning a daily quota, not a bill.
 
-// Each provider lists candidate models, best first. Providers retire model IDs
-// without warning — a dead ID answers 404 — so the client walks the list until
-// one works and remembers the winner. Never hardcode a single ID here.
+// Each provider lists candidate models, best first — a starting guess, not a
+// promise. OpenRouter retires `:free` variants regularly ("This model is
+// unavailable for free... use this slug instead" — which names the PAID slug,
+// and must never be followed). When the whole list is stale, providers.js reads
+// the live catalogue, keeps only models priced at exactly zero, and remembers
+// whichever answers. The page therefore repairs itself with no edit here.
+//
+// >>> To make this fast and stable for good, put a free Gemini key below.
+//     One line, committed once, works for every visitor with no action from
+//     them: https://aistudio.google.com/apikey
 export const PROVIDERS = {
   gemini: {
     label: 'Gemini Flash',

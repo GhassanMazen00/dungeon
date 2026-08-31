@@ -107,9 +107,16 @@ localStorage.setItem('ai_keys', JSON.stringify({ gemini: 'AIza...' }))
 ### Speed
 
 Each provider lists candidate models rather than one hardcoded ID, because
-providers retire IDs without warning and a dead ID answers 404. The client walks
-the list, then remembers the winner in `localStorage`, so the walk costs nothing
-after the first success.
+providers retire IDs without warning. OpenRouter in particular keeps removing
+`:free` variants, and its 404 helpfully suggests the **paid** slug — which the
+client deliberately ignores, since following it would start billing the account.
+
+When every configured model is stale, the client fetches OpenRouter's live
+catalogue, keeps only models priced at exactly zero, and tries those. Whatever
+answers is remembered in `localStorage` and tried first from then on, so the
+repair costs one slow message once and nothing afterwards.
+
+Visitors never enter a key. The page ships ready to use.
 
 Time-to-first-word is the only metric that matters here, so: no model-catalogue
 round trip, no web fonts, one stylesheet, a short system prompt, a 12-turn
