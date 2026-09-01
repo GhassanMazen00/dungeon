@@ -345,32 +345,71 @@ export async function streamReply({ system, messages, signal, onToken, onProvide
  */
 export async function probeAll(onResult) {
   const out = [];
+  const report = (row) => {
+    out.push(row);
+    onResult?.(row);
+    return row;
+  };
+
   for (const id of PROVIDER_ORDER) {
     const cfg = PROVIDERS[id];
     if (!cfg.key?.trim()) {
-      const row = { id, model: '—', ok: false, note: 'no key set' };
-      out.push(row);
-      onResult?.(row);
+      report({ id, model: '—', ok: false, note: 'no key set' });
       continue;
     }
     const shape = keyShapeWarning(id);
     if (shape) {
-      const row = { id, model: '—', ok: false, note: `key skipped — ${shape}` };
-      out.push(row);
-      onResult?.(row);
+      report({ id, model: '—', ok: false, note: `key skipped — ${shape}` });
       continue;
     }
+
+    let worked = false;
     for (const model of cfg.models) {
-      let row;
       try {
-        await streamOnce(id, model, 'Reply with the single word: ok', [{ role: 'user', content: 'ping' }], undefined, () => {});
-        row = { id, model, ok: true, note: 'works' };
+        await streamOnce(id, model, 'Reply with the single word: ok',
+          [{ role: 'user', content: 'ping' }], undefined, () => {});
+        report({ id, model, ok: true, note: 'works' });
+        worked = true;
+        break;
       } catch (error) {
-        row = { id, model, ok: false, note: error.detail || error.message };
+        report({ id, model, ok: false, note: error.detail || error.message });
       }
-      out.push(row);
-      onResult?.(row);
-      if (row.ok) break; // no need to test the rest of this provider's list
+    }
+
+    // The configured list is only a guess. Exercise the same live-catalogue
+    // fallback a real message would use, so this panel reflects what actually
+    // happens rather than a subset of it.
+    if (!worked && id === 'openrouter') {
+      let live = [];
+      try {
+        live = await freeModels();
+        report({
+          id, model: '(live catalogue)', ok: true,
+          note: `${live.length} zero-cost model${live.length === 1 ? '' : 's'} listed`
+        });
+      } catch (error) {
+        report({ id, model: '(live catalogue)', ok: false, note: `lookup failed — ${error.message}` });
+        continue;
+      }
+
+      if (!live.length) {
+        report({
+          id, model: '(live catalogue)', ok: false,
+          note: 'this account has no free models available'
+        });
+        continue;
+      }
+
+      for (const model of live.slice(0, 4)) {
+        try {
+          await streamOnce(id, model, 'Reply with the single word: ok',
+            [{ role: 'user', content: 'ping' }], undefined, () => {});
+          report({ id, model, ok: true, note: 'works' });
+          break;
+        } catch (error) {
+          report({ id, model, ok: false, note: error.detail || error.message });
+        }
+      }
     }
   }
   return out;
