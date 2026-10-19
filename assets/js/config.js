@@ -29,6 +29,7 @@ export const STORAGE_KEYS = {
 // Sections registered here power the nav, the scroll-spy and the command palette.
 export const SECTIONS = [
   { id: 'hero', label: 'Home', icon: '◆' },
+  { id: 'build', label: 'Build', icon: '◧' },
   { id: 'about', label: 'About', icon: '◇' },
   { id: 'studio', label: 'Studio', icon: '▩' },
   { id: 'oracle', label: 'Oracle', icon: '◉' },

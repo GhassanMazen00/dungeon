@@ -1,8 +1,27 @@
-// Renders the data-driven sections: about, socials, crew and the contact panel.
+// Renders the data-driven sections: capabilities, about, socials, crew and
+// the contact panel.
 
-import { PROFILE, SOCIALS, CREW, ENGAGEMENT } from '../data/site.js';
+import { PROFILE, SOCIALS, CREW, CAPABILITIES, ENGAGEMENT } from '../data/site.js';
 import { el, qs, toast } from '../core/dom.js';
 import { icon } from '../core/icons.js';
+
+function renderCapabilities() {
+  const host = qs('#capGrid');
+  if (!host) return;
+
+  host.replaceChildren(
+    ...CAPABILITIES.map((cap) =>
+      el(
+        'article',
+        { class: 'cap' },
+        el('span', { class: 'cap__mark', text: cap.icon, 'aria-hidden': 'true' }),
+        el('h3', { class: 'cap__title', text: cap.title }),
+        el('p', { class: 'cap__blurb', text: cap.blurb }),
+        el('div', { class: 'cap__tags' }, ...cap.tags.map((tag) => el('span', { class: 'chip', text: tag })))
+      )
+    )
+  );
+}
 
 function renderContact() {
   const status = qs('#engageStatus');
@@ -126,6 +145,7 @@ function renderCrew() {
 }
 
 export function initContent() {
+  renderCapabilities();
   renderAbout();
   renderSocials();
   renderCrew();

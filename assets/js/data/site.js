@@ -40,6 +40,58 @@ export const PROFILE = {
   ]
 };
 
+/* What I build — the offer, in plain language. */
+export const CAPABILITIES = [
+  {
+    icon: '◧',
+    title: 'Web apps',
+    blurb:
+      'Dashboards, booking flows, member portals, client areas. Real accounts, real data, ' +
+      'real permissions — not a pretty mockup that falls over on the second user.',
+    tags: ['Auth & roles', 'Live data', 'Payments', 'Dashboards']
+  },
+  {
+    icon: '◨',
+    title: 'Websites & landing pages',
+    blurb:
+      'Fast, responsive, and built to be found. Clean markup, proper metadata, images that ' +
+      'do not blow up on mobile data, and a page you can actually edit later.',
+    tags: ['Responsive', 'SEO & OG', 'Fast loads', 'Editable']
+  },
+  {
+    icon: '◰',
+    title: 'Backend & APIs',
+    blurb:
+      'The part nobody sees and everybody depends on. Databases, endpoints, authentication, ' +
+      'webhooks, scheduled jobs, and integrations with the tools you already pay for.',
+    tags: ['Databases', 'REST APIs', 'Webhooks', 'Integrations']
+  },
+  {
+    icon: '◱',
+    title: 'Systems for business',
+    blurb:
+      'Inventory, invoicing, orders, bookings, a lightweight CRM, an admin panel for your team. ' +
+      'Usually this replaces a spreadsheet that three people are fighting over.',
+    tags: ['Admin panels', 'Inventory', 'Invoicing', 'Reporting']
+  },
+  {
+    icon: '◲',
+    title: 'Automation',
+    blurb:
+      'The repetitive hour in your week, deleted. Data moved between tools, reports generated ' +
+      'and sent, files processed, alerts raised before a customer notices.',
+    tags: ['Scripts', 'Scheduled jobs', 'Reports', 'Alerts']
+  },
+  {
+    icon: '◳',
+    title: 'AI features',
+    blurb:
+      'Assistants that answer from your own documents, text that gets summarised, classified or ' +
+      'translated, support that triages itself. Wired into what you already run.',
+    tags: ['Chat assistants', 'Doc Q&A', 'Summarising', 'Bilingual']
+  }
+];
+
 /* The availability panel — a clear door, not a sales pitch. */
 export const ENGAGEMENT = {
   status: 'Open for projects',
