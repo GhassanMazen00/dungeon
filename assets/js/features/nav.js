@@ -16,7 +16,7 @@ export function initNav() {
 
   if (links) {
     links.replaceChildren(
-      ...SECTIONS.filter((section) => section.nav !== false).map((section) =>
+      ...SECTIONS.map((section) =>
         el('a', {
           class: 'nav__link',
           href: `#${section.id}`,

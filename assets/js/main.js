@@ -59,16 +59,6 @@ function registerPaletteCommands() {
       run: () => goTo('contact')
     },
     {
-      id: 'vault',
-      label: 'Open the Vault',
-      icon: '◎',
-      tag: 'link',
-      keywords: 'puzzle game chambers prize',
-      run: () => {
-        window.location.href = 'vault/';
-      }
-    },
-    {
       id: 'theme-cycle',
       label: 'Cycle accent theme',
       icon: '🎨',
