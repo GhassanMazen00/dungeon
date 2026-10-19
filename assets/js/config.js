@@ -27,14 +27,19 @@ export const STORAGE_KEYS = {
 };
 
 // Sections registered here power the nav, the scroll-spy and the command palette.
+// `nav: false` keeps a section out of the top bar (it stays in the palette and
+// the scroll-spy) so the bar does not overflow on a laptop.
 export const SECTIONS = [
-  { id: 'hero', label: 'Home', icon: '◆' },
-  { id: 'about', label: 'About', icon: '◇' },
-  { id: 'socials', label: 'Socials', icon: '◈' },
-  { id: 'studio', label: 'Pixel Studio', icon: '▩' },
-  { id: 'oracle', label: 'Oracle', icon: '◉' },
-  { id: 'crew', label: 'Crew', icon: '◍' },
-  { id: 'guestbook', label: 'Guestbook', icon: '✎' }
+  { id: 'hero', label: 'Home', icon: '◆', nav: false },
+  { id: 'build', label: 'Build', icon: '◧' },
+  { id: 'work', label: 'Work', icon: '◆' },
+  { id: 'process', label: 'Process', icon: '◇' },
+  { id: 'about', label: 'About', icon: '◈' },
+  { id: 'studio', label: 'Studio', icon: '▩' },
+  { id: 'oracle', label: 'Oracle', icon: '◉', nav: false },
+  { id: 'crew', label: 'Crew', icon: '◍', nav: false },
+  { id: 'guestbook', label: 'Guestbook', icon: '✎', nav: false },
+  { id: 'contact', label: 'Contact', icon: '✉' }
 ];
 
 export const THEMES = [

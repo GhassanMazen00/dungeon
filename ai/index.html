@@ -2,68 +2,245 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5">
-  <title>The Doctor</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Ghassan AI — in progress</title>
 
-  <meta name="description" content="A therapist with no bedside manner. Speaks English and Arabic.">
+  <meta name="description" content="A bilingual streaming chat assistant, Arabic and English. Currently being rebuilt on a new provider.">
   <meta name="theme-color" content="#070406">
   <meta name="color-scheme" content="dark">
+  <meta name="robots" content="noindex">
 
   <meta property="og:type" content="website">
-  <meta property="og:title" content="The Doctor">
-  <meta property="og:description" content="Sit down. — طبيب بلا لطف.">
+  <meta property="og:title" content="Ghassan AI — in progress">
+  <meta property="og:description" content="Bilingual streaming assistant. Back shortly.">
   <meta property="og:url" content="https://abomazen.com/ai/">
-
-  <!-- Warm the TLS handshake to the model host before the first message. -->
-  <link rel="preconnect" href="https://generativelanguage.googleapis.com" crossorigin>
-  <link rel="dns-prefetch" href="https://generativelanguage.googleapis.com">
 
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23070406'/><circle cx='16' cy='16' r='10' fill='none' stroke='%23ff3b30' stroke-width='1.5'/><circle cx='16' cy='16' r='3' fill='%23ff3b30'/></svg>">
 
-  <link rel="stylesheet" href="assets/css/ai.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Grotesk:wght@300..600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+  <!--
+    The chat itself (persona, streaming providers, RTL handling) still lives in
+    ai/assets/ and in git history — this page replaces the entrance while the
+    model provider is swapped out, so nobody lands on a dead endpoint.
+  -->
+  <style>
+    :root {
+      --accent: #ff3b30;
+      --bg: #070406;
+      --text: #f4eef0;
+      --dim: #b9a8ae;
+      --muted: #7c6a71;
+      --line: rgba(255, 255, 255, 0.09);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      min-height: 100dvh;
+      display: grid;
+      place-items: center;
+      padding: 2rem 1rem calc(2rem + env(safe-area-inset-bottom));
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* A single soft bloom behind the mark, so the page is not a flat rectangle. */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: -20vmax;
+      background: radial-gradient(42vmax 42vmax at 50% 34%, rgba(255, 59, 48, 0.11), transparent 70%);
+      pointer-events: none;
+    }
+
+    .panel {
+      position: relative;
+      width: min(540px, 100%);
+      text-align: center;
+    }
+
+    .ring {
+      width: 92px;
+      height: 92px;
+      margin: 0 auto 2rem;
+      display: grid;
+      place-items: center;
+    }
+
+    .ring svg { width: 100%; height: 100%; overflow: visible; }
+
+    .ring__orbit {
+      transform-origin: 50% 50%;
+      animation: spin 9s linear infinite;
+    }
+
+    .ring__core { animation: breathe 3.4s ease-in-out infinite; transform-origin: 50% 50%; }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes breathe {
+      0%, 100% { opacity: 0.45; transform: scale(0.88); }
+      50%      { opacity: 1;    transform: scale(1.1); }
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 12px;
+      margin-bottom: 1.5rem;
+      border: 1px solid rgba(255, 59, 48, 0.3);
+      border-radius: 999px;
+      background: rgba(255, 59, 48, 0.1);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.66rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .tag::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: breathe 2s ease-in-out infinite;
+    }
+
+    h1 {
+      font-family: 'Press Start 2P', monospace;
+      font-size: clamp(0.95rem, 4.4vw, 1.4rem);
+      line-height: 1.7;
+      margin-bottom: 1.25rem;
+    }
+
+    .lede {
+      font-size: 0.98rem;
+      line-height: 1.75;
+      color: var(--dim);
+      max-width: 44ch;
+      margin: 0 auto 2rem;
+    }
+
+    .specs {
+      display: grid;
+      gap: 0.6rem;
+      margin: 0 auto 2.25rem;
+      padding: 1.1rem 1.25rem;
+      max-width: 400px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.02);
+      text-align: left;
+    }
+
+    .specs li {
+      list-style: none;
+      position: relative;
+      padding-left: 1.2rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.74rem;
+      line-height: 1.6;
+      color: var(--muted);
+    }
+
+    .specs li::before {
+      content: '▸';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      justify-content: center;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.7rem 1.2rem;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--text);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      text-decoration: none;
+      transition: border-color 0.18s, transform 0.18s, background 0.18s;
+    }
+
+    .btn:hover {
+      border-color: rgba(255, 59, 48, 0.45);
+      transform: translateY(-2px);
+    }
+
+    .btn--primary {
+      background: rgba(255, 59, 48, 0.14);
+      border-color: rgba(255, 59, 48, 0.38);
+      color: #ffd9d6;
+    }
+
+    .foot {
+      margin-top: 2.5rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--muted);
+    }
+
+    .foot a { color: var(--dim); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .ring__orbit, .ring__core, .tag::before { animation: none; }
+    }
+  </style>
 </head>
 <body>
-
-  <header class="bar">
-    <a class="back" href="../" aria-label="Back">←</a>
-    <div class="who">
-      <div class="who__name">The Doctor</div>
-      <button class="who__sub" id="status" type="button" title="Connection check">connecting</button>
+  <main class="panel">
+    <div class="ring" aria-hidden="true">
+      <svg viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="38" fill="none" stroke="rgba(255,59,48,.18)" stroke-width="1"/>
+        <g class="ring__orbit">
+          <circle cx="50" cy="50" r="38" fill="none" stroke="#ff3b30" stroke-width="1.5"
+                  stroke-linecap="round" stroke-dasharray="26 213"/>
+          <circle cx="88" cy="50" r="2.6" fill="#ff3b30"/>
+        </g>
+        <circle class="ring__core" cx="50" cy="50" r="7" fill="#ff3b30"/>
+      </svg>
     </div>
-    <div class="bar__end">
-      <button class="icon" id="clear" type="button" aria-label="End the session" title="End the session">✕</button>
+
+    <span class="tag">In progress</span>
+
+    <h1>GHASSAN AI<br>IS BEING REBUILT</h1>
+
+    <p class="lede">
+      The assistant is off the air while its model provider is swapped out.
+      The interface is done — it is the engine behind it that needs replacing.
+    </p>
+
+    <ul class="specs">
+      <li>Streams replies token by token, no waiting on a full response</li>
+      <li>Arabic and English in the same conversation, direction detected per message</li>
+      <li>Built mobile-first, keyboard-aware, works one-handed</li>
+    </ul>
+
+    <div class="actions">
+      <a class="btn btn--primary" href="../#work">See what is already live</a>
+      <a class="btn" href="../">Back to abomazen.com</a>
     </div>
-  </header>
 
-  <main class="stream" id="stream" aria-live="polite" aria-label="Session"></main>
-
-  <div class="composer">
-    <div class="dock">
-      <label class="sr-only" for="input">Message</label>
-      <textarea id="input" rows="1" dir="auto" enterkeyhint="send"
-                placeholder="say something…" autocomplete="off"
-                autocapitalize="sentences" maxlength="2000"></textarea>
-      <button class="push" id="send" type="button" aria-label="Send">↑</button>
-      <button class="push push--stop" id="stop" type="button" aria-label="Stop" hidden>■</button>
-    </div>
-  </div>
-
-  <!-- Connection panel: what each provider actually returned. -->
-  <div class="diag" id="diag" hidden>
-    <div class="diag__box">
-      <header class="diag__bar">
-        <span class="diag__title">CONNECTION</span>
-        <button class="icon" id="diagClose" type="button" aria-label="Close">✕</button>
-      </header>
-
-      <p class="diag__keys" id="diagKeys"></p>
-      <div id="diagWarn" hidden></div>
-
-      <button class="diag__btn diag__btn--wide" id="diagRun" type="button">Run check</button>
-      <ul class="diag__list" id="diagList"></ul>
-    </div>
-  </div>
-
-  <script type="module" src="assets/js/main.js"></script>
+    <p class="foot">
+      Want one of these wired into your own product?
+      <a href="../#contact">Say so</a>.
+    </p>
+  </main>
 </body>
 </html>

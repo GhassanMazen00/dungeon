@@ -31,7 +31,7 @@ function registerPaletteCommands() {
     })),
     {
       id: 'ai',
-      label: 'Open Ghassan AI',
+      label: 'Ghassan AI — in progress',
       icon: '🤖',
       tag: 'link',
       keywords: 'chat bot assistant',
@@ -48,6 +48,24 @@ function registerPaletteCommands() {
       run: () => {
         goTo('oracle');
         setTimeout(drawFortune, 320);
+      }
+    },
+    {
+      id: 'hire',
+      label: 'Start a project',
+      icon: '✉',
+      tag: 'contact',
+      keywords: 'hire work email quote freelance build',
+      run: () => goTo('contact')
+    },
+    {
+      id: 'vault',
+      label: 'Open the Vault',
+      icon: '◎',
+      tag: 'link',
+      keywords: 'puzzle game chambers prize',
+      run: () => {
+        window.location.href = 'vault/';
       }
     },
     {
